@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
+
+import sys, ConfigParser
 from PyQt4 import QtCore, QtGui
 
 from mirlight_form import Ui_MainWindow
 
+config = ConfigParser.ConfigParser()
+config.read("mirlight.conf")
+
+
 class MyForm(QtGui.QMainWindow):
-	state = 1 #1 - waiting for action 2- working
+	state = 1 #1 - waiting for action 2- working ##XXX ugly hack
+	
 	def __init__(self, parent=None):
 		QtGui.QMainWindow.__init__(self, parent)
 		self.ui = Ui_MainWindow()
@@ -17,14 +23,14 @@ class MyForm(QtGui.QMainWindow):
 	
 	def setColor(self):
 		if self.state == 1:
-			self.ui.label.setText("Bum")
+			self.ui.label.setText("Bum") ##XXX testing purposes only
 			self.ui.pushButton.setText("Stop!")
-			self.state = 2
-			self._Timer.start(100)
+			self.state = 2 ##XXX ugly hack
+			self._Timer.start(config.getint('Timer', 'interval'))
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			self.state = 1
+			self.state = 1 ##XXX ugly hack
 
 	def timer(self):
 		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 100, 100, 1, 1)

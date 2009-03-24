@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Mon Mar 23 22:56:34 2009
+# Created: Tue Mar 24 10:40:14 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1170,7 +1170,7 @@ class Ui_MainWindow(object):
         self.label_8.setAutoFillBackground(True)
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
-        self.gridLayout.addWidget(self.label_8, 3, 0, 1, 3)
+        self.gridLayout.addWidget(self.label_8, 3, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
