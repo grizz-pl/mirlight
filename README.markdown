@@ -3,7 +3,7 @@ Mirlight by Witold Firlej
 
 ## Homemade ambilight not only for films
 Early, very early stage of development - ver. **0.01**.
-## homepage: <http://github.com/grizz-pl/mirlight>
+### homepage: <http://github.com/grizz-pl/mirlight>
 
 Requirements
 ------------
@@ -19,7 +19,9 @@ More info
 blah ;)
 
 ### EN
-Please Read doc/readme_en.pdf
+Please Read doc/readme_en.pdf - in a (distant) future
 
 ### PL
-Przeczytaj doc/readme_pl.pdf
+Przeczytaj doc/readme_pl.pdf - w (raczej dalekiej) przyszłości
+Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/> - ten program i <http://mirley.firlej.org> - cześć sprzętowa, ew. druga wersja programu (tylko na Windows).
+
