@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#mirlight ver. 0.01 by grizz - Witek Firlej http://grizz.pl
+
+__author__    = "Witold Firlej (http://grizz.pl)"
+__version__   = "0.01"
+__license__   = "GPLv2"
+__copyright__ = "Witold Firlej"
 
 import sys, ConfigParser
 from PyQt4 import QtCore, QtGui
