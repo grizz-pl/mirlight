@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 
 from mirlight_form import Ui_MainWindow
 
-config = ConfigParser.ConfigParser()
+config = ConfigParser.ConfigParser() ##TODO create config automatically
 config.read("mirlight.conf")
 
 
@@ -27,7 +27,7 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.setColor)
 	
-	def setColor(self):
+	def setColor(self): ##XXX rename this function!
 		if self.state == 1:
 			self.ui.label.setText("Bum") ##XXX testing purposes only
 			self.ui.pushButton.setText("Stop!")
@@ -38,30 +38,73 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.pushButton.setText("Start!")
 			self.state = 1 ##XXX ugly hack
 
+	def getColor(self, px, py, w, h, step = 1):
+		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), px, py, w, h)
+		self.destPixmap = self.originalPixmap.scaled(1, 1)
+		self.destImage = self.originalPixmap.toImage()
+		value = self.destImage.pixel(1,1)
+		return value
+
 	def timer(self):
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 100, 100, 1, 1)
-		self.ui.label.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
-		
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 1111, 100, 1, 1)
-		self.ui.label_2.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
-		
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 566, 848, 1, 1)
-		self.ui.label_3.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
-		
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 999, 664, 1, 1)
-		self.ui.label_4.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
-		
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 122, 15, 1, 1)
-		self.ui.label_5.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
-		
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 11, 1111, 1, 1)
-		self.ui.label_6.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
+			##TODO get it screen resolution independent. Now it's configured for 1920*1200
+			##TODO function to set label color and text
+		color = self.getColor(1, 700, 300, 500) #1
+		self.ui.label.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label.setPalette(palette)
 
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 122, 100, 1, 1)
-		self.ui.label_7.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
+		color = self.getColor(1, 200, 300, 500) #2
+		self.ui.label_2.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_2.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_2.setPalette(palette)
 
-		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), 887, 100, 1, 1)
-		self.ui.label_8.setPixmap(self.originalPixmap.scaled(self.ui.label.size()))
+		color =  self.getColor(1, 1, 640, 200) #3
+		self.ui.label_3.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_3.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_3.setPalette(palette)
+
+		color =  self.getColor(640, 1, 640, 200) #4
+		self.ui.label_4.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_4.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_4.setPalette(palette)
+
+		color =  self.getColor(1280, 1, 640, 200) #5
+		self.ui.label_5.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_5.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_5.setPalette(palette)
+
+		color =  self.getColor(1620, 200, 300, 300) #6
+		self.ui.label_6.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_6.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_6.setPalette(palette)
+
+		color =  self.getColor(1620, 700, 300, 300) #7
+		self.ui.label_7.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_7.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_7.setPalette(palette)
+
+		color =  self.getColor(300, 1080, 1320, 200) #8
+		self.ui.label_8.setText(str(color))
+		print color
+		palette = QtGui.QPalette(self.ui.label_8.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		self.ui.label_8.setPalette(palette)
+
+
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)

@@ -1,4 +1,5 @@
 name = mirlight
 [checklist]
+1237937256.71.7363 = False:1:create config automatically
 1237885536.29.7489 = False:0:auto make conf file in HOME directory
 [bookmark]
