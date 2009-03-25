@@ -47,63 +47,22 @@ class MyForm(QtGui.QMainWindow):
 
 	def timer(self):
 			##TODO get it screen resolution independent. Now it's configured for 1920*1200
-			##TODO function to set label color and text
-		color = self.getColor(1, 700, 300, 500) #1
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label.setPalette(palette)
-
-		color = self.getColor(1, 200, 300, 500) #2
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_2.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_2.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_2.setPalette(palette)
-
-		color =  self.getColor(1, 1, 640, 200) #3
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_3.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_3.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_3.setPalette(palette)
-
-		color =  self.getColor(640, 1, 640, 200) #4
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_4.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_4.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_4.setPalette(palette)
-
-		color =  self.getColor(1280, 1, 640, 200) #5
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_5.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_5.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_5.setPalette(palette)
-
-		color =  self.getColor(1620, 200, 300, 300) #6
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_6.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_6.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_6.setPalette(palette)
-
-		color =  self.getColor(1620, 700, 300, 300) #7
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_7.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_7.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_7.setPalette(palette)
-
-		color =  self.getColor(300, 1080, 1320, 200) #8
-		rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
-		self.ui.label_8.setText(str(rgb))
-		palette = QtGui.QPalette(self.ui.label_8.palette())
-		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-		self.ui.label_8.setPalette(palette)
-
+			##TODO function to set label color and text - almost DONE!
+		for label, x, y, w, h in [(self.ui.label, 1, 700, 300, 500), 		\
+									(self.ui.label_2, 1, 200, 300, 500), 	\
+									(self.ui.label_3, 1, 1, 640, 200), 		\
+									(self.ui.label_4, 640, 1, 640, 200), 	\
+									(self.ui.label_5, 1280, 1, 640, 200), 	\
+									(self.ui.label_6, 1620, 200, 300, 300),	\
+									(self.ui.label_7, 1620, 700, 300, 300),	\
+									(self.ui.label_8, 300, 1080, 1320, 200)]:
+			color = self.getColor(x, y, w, h)
+#			label = getattr(self.ui, label)
+			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
+			label.setText(str(rgb))
+			palette = QtGui.QPalette(label.palette())
+			palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+			label.setPalette(palette)
 
 
 if __name__ == "__main__":
