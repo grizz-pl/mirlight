@@ -12,12 +12,11 @@ from PyQt4 import QtCore, QtGui
 
 from mirlight_form import Ui_MainWindow
 
-config = ConfigParser.ConfigParser() ##TODO create config automatically
+config = ConfigParser.ConfigParser() 								##TODO create config automatically
 config.read("mirlight.conf")
 
 
 class MyForm(QtGui.QMainWindow):
-	state = 1 #1 - waiting for action 2- working ##XXX ugly hack
 	
 	def __init__(self, parent=None):
 		QtGui.QMainWindow.__init__(self, parent)
@@ -25,18 +24,15 @@ class MyForm(QtGui.QMainWindow):
 		self.ui.setupUi(self)
 		self._Timer = QtCore.QTimer(self)
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
-		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.setColor)
+		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 	
-	def setColor(self): ##XXX rename this function!
-		if self.state == 1:
-			self.ui.label.setText("Bum") ##XXX testing purposes only
+	def startStop(self): 											##XXX rename this function!
+		if self._Timer.isActive() == 0: 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
-			self.state = 2 ##XXX ugly hack
 			self._Timer.start(config.getint('Timer', 'interval'))
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			self.state = 1 ##XXX ugly hack
 
 	def getColor(self, px, py, w, h, step = 1):
 		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), px, py, w, h)
