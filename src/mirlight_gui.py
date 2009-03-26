@@ -27,6 +27,9 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 	
 	def startStop(self): 											##XXX rename this function!
+		"""
+		start/stop Timer and change text on Button
+		"""
 		if self._Timer.isActive() == 0: 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
 			self._Timer.start(config.getint('Timer', 'interval'))
@@ -34,7 +37,11 @@ class MyForm(QtGui.QMainWindow):
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
 
-	def getColor(self, px, py, w, h, step = 1):
+	def getColor(self, px, py, w, h ):
+		"""
+		Grab specific field and resize it to receive average color of field
+		@return a color value
+		"""
 		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), px, py, w, h)
 		self.destPixmap = self.originalPixmap.scaled(1, 1)
 		self.destImage = self.originalPixmap.toImage()
@@ -42,6 +49,9 @@ class MyForm(QtGui.QMainWindow):
 		return value
 
 	def timer(self):
+		"""
+		getColor for every field and display it on appropriate label
+		"""
 			##TODO get it screen resolution independent. Now it's configured for 1920*1200
 			##TODO function to set label color and text - almost DONE!
 		for label, x, y, w, h in [(self.ui.label, 1, 700, 300, 500), 		\
@@ -53,7 +63,6 @@ class MyForm(QtGui.QMainWindow):
 									(self.ui.label_7, 1620, 700, 300, 300),	\
 									(self.ui.label_8, 300, 1080, 1320, 200)]:
 			color = self.getColor(x, y, w, h)
-#			label = getattr(self.ui, label)
 			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color))
 			label.setText(str(rgb))
 			palette = QtGui.QPalette(label.palette())
