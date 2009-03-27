@@ -26,11 +26,11 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 	
-	def startStop(self): 											##XXX rename this function!
+	def startStop(self): 											
 		"""
 		start/stop Timer and change text on Button
 		"""
-		if self._Timer.isActive() == 0: 							# if timer doesn't work
+		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
 			self._Timer.start(config.getint('Timer', 'interval'))
 		else:
@@ -40,6 +40,7 @@ class MyForm(QtGui.QMainWindow):
 	def getColor(self, px, py, w, h ):
 		"""
 		Grab specific field and resize it to receive average color of field
+		
 		@return a color value
 		"""
 		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), px, py, w, h)
