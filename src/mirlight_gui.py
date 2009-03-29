@@ -7,7 +7,7 @@ __version__   = "0.2"
 __license__   = "GPLv2"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial
+import sys, ConfigParser, serial, time
 from PyQt4 import QtCore, QtGui
 
 from mirlight_form import Ui_MainWindow
@@ -47,9 +47,9 @@ class MyForm(QtGui.QMainWindow):
 		@return a color value
 		"""
 		self.originalPixmap = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId(), px, py, w, h)
-		self.destPixmap = self.originalPixmap.scaled(1, 1)
-		self.destImage = self.originalPixmap.toImage()
-		value = self.destImage.pixel(1,1)
+		self.destPixmap = self.originalPixmap.scaled(1, 1, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+		self.destImage = self.destPixmap.toImage()
+		value = self.destImage.pixel(0,0)
 		return value
 
 	def timer(self):
@@ -58,14 +58,14 @@ class MyForm(QtGui.QMainWindow):
 		"""
 			##TODO get it screen resolution independent. Now it's configured for 1920*1200
 			##TODO function to set label color and text - split, move, replace label with field
-		for field, label, x, y, w, h in [(1, self.ui.label, 1, 700, 300, 500), 		\
-									(2, self.ui.label_2, 1, 200, 300, 500), 	\
-									(3, self.ui.label_3, 1, 1, 640, 200), 		\
-									(4, self.ui.label_4, 640, 1, 640, 200), 	\
-									(5, self.ui.label_5, 1280, 1, 640, 200), 	\
-									(6, self.ui.label_6, 1620, 200, 300, 300),	\
-									(7, self.ui.label_7, 1620, 700, 300, 300),	\
-									(8, self.ui.label_8, 300, 1080, 1320, 200)]:
+		for field, label, x, y, w, h in [(1, self.ui.label, 0, 600, 30, 600), 		\
+									(2, self.ui.label_2, 0, 0, 30, 600), 	\
+									(3, self.ui.label_3, 0, 0, 640, 30), 		\
+									(4, self.ui.label_4, 640, 0, 640, 30), 	\
+									(5, self.ui.label_5, 1280, 0, 640, 30), 	\
+									(6, self.ui.label_6, 1890, 0, 30, 600),	\
+									(7, self.ui.label_7, 1890, 600, 30, 600),	\
+									(8, self.ui.label_8, 550, 1170, 820, 30)]:
 			color = self.getColor(x, y, w, h)
 			self.sendColor(field, color)
 			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color)) 	##TODO move it to standalone function
@@ -86,6 +86,7 @@ class MyForm(QtGui.QMainWindow):
 		ser.write(chr(value))
 		value = 16*(green*10/256+1)+(blue*10/256+1)
 		ser.write(chr(value))
+		time.sleep(0.001)
 
 #	def updateLabel (self, label, color): ##TODO move here instructions from timer()
 #		"""
