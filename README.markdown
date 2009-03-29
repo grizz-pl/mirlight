@@ -2,7 +2,7 @@ Mirlight by Witold Firlej
 =========================
 
 ## Homemade ambilight not only for films
-ver. **0.2**
+ver. **0.25**
 ### homepage: <http://github.com/grizz-pl/mirlight>
 
 Requirements
@@ -27,6 +27,8 @@ Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/>
 
 Changelog
 ---------
+### ver.0.25 2009/03/29
+Making average color for each screen region is much better.
 
 ### ver.0.2 2009/03/29
 All basic functions work.
