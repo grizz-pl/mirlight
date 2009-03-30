@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Mon Mar 30 09:01:38 2009
+# Created: Mon Mar 30 11:19:47 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1171,14 +1171,22 @@ class Ui_MainWindow(object):
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
         self.gridLayout.addWidget(self.label_8, 3, 1, 1, 1)
-        self.settingspushButton = QtGui.QPushButton(self.centralwidget)
-        self.settingspushButton.setGeometry(QtCore.QRect(12, 340, 621, 51))
+        self.showFieldsPushButton = QtGui.QPushButton(self.centralwidget)
+        self.showFieldsPushButton.setGeometry(QtCore.QRect(12, 340, 300, 51))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.settingspushButton.sizePolicy().hasHeightForWidth())
-        self.settingspushButton.setSizePolicy(sizePolicy)
-        self.settingspushButton.setObjectName("settingspushButton")
+        sizePolicy.setHeightForWidth(self.showFieldsPushButton.sizePolicy().hasHeightForWidth())
+        self.showFieldsPushButton.setSizePolicy(sizePolicy)
+        self.showFieldsPushButton.setObjectName("showFieldsPushButton")
+        self.saveFieldsPushButton = QtGui.QPushButton(self.centralwidget)
+        self.saveFieldsPushButton.setGeometry(QtCore.QRect(333, 340, 300, 51))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.saveFieldsPushButton.sizePolicy().hasHeightForWidth())
+        self.saveFieldsPushButton.setSizePolicy(sizePolicy)
+        self.saveFieldsPushButton.setObjectName("saveFieldsPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -1208,6 +1216,8 @@ class Ui_MainWindow(object):
         self.label_9.setText(QtGui.QApplication.translate("MainWindow", "mirlight", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setStatusTip(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setText(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
-        self.settingspushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Zwieszajmy procka!", None, QtGui.QApplication.UnicodeUTF8))
-        self.settingspushButton.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
+        self.showFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Zwieszajmy procka!", None, QtGui.QApplication.UnicodeUTF8))
+        self.showFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Show fields", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Zwieszajmy procka!", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Save fields", None, QtGui.QApplication.UnicodeUTF8))
 

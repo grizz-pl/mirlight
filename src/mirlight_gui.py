@@ -28,6 +28,8 @@ class MyForm(QtGui.QMainWindow):
 		self._Timer = QtCore.QTimer(self)
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
+		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
+		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
 	
 	def startStop(self): 											
 		"""
@@ -69,7 +71,7 @@ class MyForm(QtGui.QMainWindow):
 			color = self.getColor(x, y, w, h)
 			self.sendColor(field, color)
 			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color)) 	##TODO move it to standalone function
-			label.setText(str(rgb))
+			label.setText(`x` + ", " + `y` + ", " + `w` + ", " + `h`)
 			palette = QtGui.QPalette(label.palette())
 			palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
 			label.setPalette(palette)
@@ -92,8 +94,55 @@ class MyForm(QtGui.QMainWindow):
 #		"""
 #		change label color, and text
 #		"""
+	def showFields(self):
+		"""
+		draw fields
+		"""
+		self.widget1 = FieldDialog(1)
+		self.widget1.show()
+
+	def saveFields(self):
+		"""
+		save fields to conf file
+		"""
+		x, y, w, h = self.widget1.getGeometry()
+		self.ui.label.setText(str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
+
+class FieldDialog(QtGui.QWidget):
+	def __init__(self, field, parent=None):
+		QtGui.QWidget.__init__(self, parent)
+		x = config.getint(str(field), 'x')
+		y = config.getint(str(field), 'y')
+		w = config.getint(str(field), 'w')
+		h = config.getint(str(field), 'h')
+		self.setGeometry(x, y, w, h)
+		self.setWindowTitle('Field: ' + str(field))
+		
+		self.button = QtGui.QPushButton('', self)
+		self.button.setFocusPolicy(QtCore.Qt.NoFocus)
+
+		self.label = QtGui.QLabel('Dialog', self)
+		self.label.setText("Saved position: " + str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
+		self.label.move(0, 50)
 
 
+		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
+	
+	def showPos(self):
+		x, y, w, h = self.getGeometry()
+		self.label.setText(str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
+	
+	def getGeometry(self):
+		"""
+		get frame geometry
+		@return x, y, w, h
+		"""
+		geometry = self.frameGeometry()
+		x = geometry.x()
+		y = geometry.y()
+		w = geometry.width()
+		h = geometry.height()
+		return x, y, w, h
 
 
 
