@@ -31,6 +31,9 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
 
+		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
+		self.fieldsWidgets = []
+
 	def startStop(self):
 		"""
 		start/stop Timer and change text on Button
@@ -89,14 +92,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		@return label corresponding to field
 		"""
-		if field == 1: return self.ui.label
-		if field == 2: return self.ui.label_2
-		if field == 3: return self.ui.label_3
-		if field == 4: return self.ui.label_4
-		if field == 5: return self.ui.label_5
-		if field == 6: return self.ui.label_6
-		if field == 7: return self.ui.label_7
-		if field == 8: return self.ui.label_8
+		return self.labels[field-1]
 
 	def updateLabel (self, field, x, y, w, h, color = 0): # default color is black
 		"""
@@ -113,15 +109,37 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		draw fields
 		"""
+		self.fieldsWidgets = [] ## clear to avoid multiple instances
 		self.widget1 = FieldDialog(1)
-		self.widget1.show()
+		self.fieldsWidgets.append(self.widget1)
+		self.widget2 = FieldDialog(2)
+		self.fieldsWidgets.append(self.widget2)
+		self.widget3 = FieldDialog(3)
+		self.fieldsWidgets.append(self.widget3)
+		self.widget4 = FieldDialog(4)
+		self.fieldsWidgets.append(self.widget4)
+		self.widget5 = FieldDialog(5)
+		self.fieldsWidgets.append(self.widget5)
+		self.widget6 = FieldDialog(6)
+		self.fieldsWidgets.append(self.widget6)
+		self.widget7 = FieldDialog(7)
+		self.fieldsWidgets.append(self.widget7)
+		self.widget8 = FieldDialog(8)
+		self.fieldsWidgets.append(self.widget8)
+
+		for widget in self.fieldsWidgets:
+			widget.show()
+
 
 	def saveFields(self):
 		"""
 		save fields to conf file
 		"""
-		x, y, w, h = self.widget1.getGeometry()
-		self.ui.label.setText(str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
+
+	def closeEvent(self, closeEvent):
+		for widget in self.fieldsWidgets:
+			widget.close()
+
 
 class FieldDialog(QtGui.QWidget):
 	def __init__(self, field, parent=None):
@@ -131,14 +149,17 @@ class FieldDialog(QtGui.QWidget):
 		w = config.getint(str(field), 'w')
 		h = config.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
+#		self.setMinimumSize (30, 30)						##XXX do it?
 		self.setWindowTitle('Field: ' + str(field))
 		
 		self.button = QtGui.QPushButton('', self)
+		self.button.setGeometry(0, 0, 30, 30)
+		self.button.setText(str(field))
 		self.button.setFocusPolicy(QtCore.Qt.NoFocus)
 
 		self.label = QtGui.QLabel('Dialog', self)
 		self.label.setText("Saved position: " + str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
-		self.label.move(0, 50)
+		self.label.move(35, 8)
 
 
 		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
