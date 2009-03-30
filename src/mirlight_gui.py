@@ -30,8 +30,8 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
-	
-	def startStop(self): 											
+
+	def startStop(self):
 		"""
 		start/stop Timer and change text on Button
 		"""
@@ -58,23 +58,17 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		getColor for every field and display it on appropriate label
 		"""
-			##TODO get it screen resolution independent. Now it's configured for 1920*1200
-			##TODO function to set label color and text - split, move, replace label with field
-		for field, label, x, y, w, h in [(1, self.ui.label, config.getint('1', 'x'), config.getint('1', 'y'), config.getint('1', 'w'), config.getint('1', 'h')), 		\
-									(2, self.ui.label_2, config.getint('2', 'x'), config.getint('2', 'y'), config.getint('2', 'w'), config.getint('2', 'h')),
-									(3, self.ui.label_3, config.getint('3', 'x'), config.getint('3', 'y'), config.getint('3', 'w'), config.getint('3', 'h')),
-									(4, self.ui.label_4, config.getint('4', 'x'), config.getint('4', 'y'), config.getint('4', 'w'), config.getint('4', 'h')),
-									(5, self.ui.label_5, config.getint('5', 'x'), config.getint('5', 'y'), config.getint('5', 'w'), config.getint('5', 'h')),
-									(6, self.ui.label_6, config.getint('6', 'x'), config.getint('6', 'y'), config.getint('6', 'w'), config.getint('6', 'h')),
-									(7, self.ui.label_7, config.getint('7', 'x'), config.getint('7', 'y'), config.getint('7', 'w'), config.getint('7', 'h')),
-									(8, self.ui.label_8, config.getint('8', 'x'), config.getint('8', 'y'), config.getint('8', 'w'), config.getint('8', 'h'))]:
+		for field, x, y, w, h in [(1, config.getint('1', 'x'), config.getint('1', 'y'), config.getint('1', 'w'), config.getint('1', 'h')),
+									(2, config.getint('2', 'x'), config.getint('2', 'y'), config.getint('2', 'w'), config.getint('2', 'h')),
+									(3, config.getint('3', 'x'), config.getint('3', 'y'), config.getint('3', 'w'), config.getint('3', 'h')),
+									(4, config.getint('4', 'x'), config.getint('4', 'y'), config.getint('4', 'w'), config.getint('4', 'h')),
+									(5, config.getint('5', 'x'), config.getint('5', 'y'), config.getint('5', 'w'), config.getint('5', 'h')),
+									(6, config.getint('6', 'x'), config.getint('6', 'y'), config.getint('6', 'w'), config.getint('6', 'h')),
+									(7, config.getint('7', 'x'), config.getint('7', 'y'), config.getint('7', 'w'), config.getint('7', 'h')),
+									(8, config.getint('8', 'x'), config.getint('8', 'y'), config.getint('8', 'w'), config.getint('8', 'h'))]:
 			color = self.getColor(x, y, w, h)
 			self.sendColor(field, color)
-			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color)) 	##TODO move it to standalone function
-			label.setText(`x` + ", " + `y` + ", " + `w` + ", " + `h`)
-			palette = QtGui.QPalette(label.palette())
-			palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
-			label.setPalette(palette)
+			self.updateLabel(field, x, y, w, h, color)
 
 	def sendColor(self, field, color):
 		"""
@@ -88,12 +82,33 @@ class MyForm(QtGui.QMainWindow):
 		ser.write(chr(value))
 		value = 16*(green*10/256+1)+(blue*10/256+1)
 		ser.write(chr(value))
-		time.sleep(0.001)
+		time.sleep(0.001) ##hack needed by hardware
 
-#	def updateLabel (self, label, color): ##TODO move here instructions from timer()
-#		"""
-#		change label color, and text
-#		"""
+
+	def getLabel (self, field):
+		"""
+		@return label corresponding to field
+		"""
+		if field == 1: return self.ui.label
+		if field == 2: return self.ui.label_2
+		if field == 3: return self.ui.label_3
+		if field == 4: return self.ui.label_4
+		if field == 5: return self.ui.label_5
+		if field == 6: return self.ui.label_6
+		if field == 7: return self.ui.label_7
+		if field == 8: return self.ui.label_8
+
+	def updateLabel (self, field, x, y, w, h, color = 0): # default color is black
+		"""
+		set label text and color
+		"""
+		label = self.getLabel(field)
+		label.setText(`x` + ", " + `y` + ", " + `w` + ", " + `h`)
+		palette = QtGui.QPalette(label.palette())
+		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
+		label.setPalette(palette)
+
+
 	def showFields(self):
 		"""
 		draw fields
