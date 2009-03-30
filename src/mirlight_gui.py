@@ -58,14 +58,14 @@ class MyForm(QtGui.QMainWindow):
 		"""
 			##TODO get it screen resolution independent. Now it's configured for 1920*1200
 			##TODO function to set label color and text - split, move, replace label with field
-		for field, label, x, y, w, h in [(1, self.ui.label, 0, 600, 30, 600), 		\
-									(2, self.ui.label_2, 0, 0, 30, 600), 	\
-									(3, self.ui.label_3, 0, 0, 640, 30), 		\
-									(4, self.ui.label_4, 640, 0, 640, 30), 	\
-									(5, self.ui.label_5, 1280, 0, 640, 30), 	\
-									(6, self.ui.label_6, 1890, 0, 30, 600),	\
-									(7, self.ui.label_7, 1890, 600, 30, 600),	\
-									(8, self.ui.label_8, 550, 1170, 820, 30)]:
+		for field, label, x, y, w, h in [(1, self.ui.label, config.getint('1', 'x'), config.getint('1', 'y'), config.getint('1', 'w'), config.getint('1', 'h')), 		\
+									(2, self.ui.label_2, config.getint('2', 'x'), config.getint('2', 'y'), config.getint('2', 'w'), config.getint('2', 'h')),
+									(3, self.ui.label_3, config.getint('3', 'x'), config.getint('3', 'y'), config.getint('3', 'w'), config.getint('3', 'h')),
+									(4, self.ui.label_4, config.getint('4', 'x'), config.getint('4', 'y'), config.getint('4', 'w'), config.getint('4', 'h')),
+									(5, self.ui.label_5, config.getint('5', 'x'), config.getint('5', 'y'), config.getint('5', 'w'), config.getint('5', 'h')),
+									(6, self.ui.label_6, config.getint('6', 'x'), config.getint('6', 'y'), config.getint('6', 'w'), config.getint('6', 'h')),
+									(7, self.ui.label_7, config.getint('7', 'x'), config.getint('7', 'y'), config.getint('7', 'w'), config.getint('7', 'h')),
+									(8, self.ui.label_8, config.getint('8', 'x'), config.getint('8', 'y'), config.getint('8', 'w'), config.getint('8', 'h'))]:
 			color = self.getColor(x, y, w, h)
 			self.sendColor(field, color)
 			rgb = str(QtGui.qRed(color)) + ", " + str(QtGui.qGreen(color)) + ", " + str(QtGui.qBlue(color)) 	##TODO move it to standalone function
