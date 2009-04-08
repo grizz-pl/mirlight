@@ -15,8 +15,12 @@ from mirlight_form import Ui_MainWindow
 config = ConfigParser.ConfigParser() 								##TODO create config automatically
 config.read("mirlight.conf")
 
-ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-print ser.portstr       # check which port was really used ##XXX debug purposes
+
+try:
+	ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
+	print ser.portstr       # check which port was really used ##XXX debug purposes
+except:
+	print "Error:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
 
 
 class MyForm(QtGui.QMainWindow):
