@@ -1,18 +1,5 @@
 # mirlight configuration file
 
-[Timer]
-interval = 300
-#milliseconds
-
-[Port]
-number = 1
-
-[Fields]
-autoarrange = off
-#use autoarrange insted of definied fiields below - on/off
-size = 1
-#10 steps
-
 [1]
 x = 0
 y = 600
