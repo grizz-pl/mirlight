@@ -120,7 +120,36 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		Auto arrange fields depends on screen resolution and "size" factor from conf file
 		"""
+		screen = QtGui.QDesktopWidget().screenGeometry()
+		sw = screen.width()
+		sh = screen.height()
+		factor = config.getint("Fields", "size")
 
+		verticalWidth = (sw/100)*factor
+		verticalHeight = sh/2
+		horizontalWidth = sw/3
+		horizontalHeight = (sh/100)*factor
+
+		def writeToConfing(field, x, y, w, h):
+			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
+				fieldsconfig.add_section(`field`)
+			fieldsconfig.set(`field`, "x", x)
+			fieldsconfig.set(`field`, "y", y)
+			fieldsconfig.set(`field`, "w", w)
+			fieldsconfig.set(`field`, "h", h)
+			with open('presets/autoarrange.mrl', 'wb') as configfile:
+				fieldsconfig.write(configfile)
+
+		###TODO do this like in timer()
+		for field, x, y, w, h in [(1, 0, sh/2, verticalWidth, verticalHeight),\
+									(2, 0, 0, verticalWidth, verticalHeight),\
+									(3, 0, 0, sw/3, horizontalHeight),\
+									(4, sw/3, 0, sw/3, horizontalHeight),\
+									(5, (sw/3)*2, 0, sw/3, horizontalHeight),\
+									(6, sw-verticalWidth, 0, verticalWidth, verticalWidth),\
+									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
+									(8, sw-sw/3, sh-horizontalHeight, sw/3, horizontalHeight)]:
+			writeToConfing(field, x, y, w, h)
 
 class FieldDialog(QtGui.QWidget):
 	def __init__(self, field, parent=None):
@@ -171,7 +200,7 @@ if __name__ == "__main__":
 	if config.get("Fields", "autoarrange") == "on":
 		print "Autoarrange fields" ##XXX debug purposes
 		myapp.autoArrangeFields()
-
+		fieldsconfig.read("presets/autoarrange.mrl")
 	else:
 		fieldsconfig.read("presets/default.mrl")
 		print "Loading default fields' preset" ##XXX debug purposes
