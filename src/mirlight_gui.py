@@ -12,13 +12,6 @@ from PyQt4 import QtCore, QtGui
 
 from mirlight_form import Ui_MainWindow
 
-config = ConfigParser.ConfigParser() 								##TODO create config automatically
-config.read("mirlight.conf")
-
-ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-print ser.portstr       # check which port was really used ##XXX debug purposes
-
-
 class MyForm(QtGui.QMainWindow):
 	
 	def __init__(self, parent=None):
@@ -61,14 +54,14 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		getColor for every field and display it on appropriate label
 		"""
-		for field, x, y, w, h in [(1, config.getint('1', 'x'), config.getint('1', 'y'), config.getint('1', 'w'), config.getint('1', 'h')),
-									(2, config.getint('2', 'x'), config.getint('2', 'y'), config.getint('2', 'w'), config.getint('2', 'h')),
-									(3, config.getint('3', 'x'), config.getint('3', 'y'), config.getint('3', 'w'), config.getint('3', 'h')),
-									(4, config.getint('4', 'x'), config.getint('4', 'y'), config.getint('4', 'w'), config.getint('4', 'h')),
-									(5, config.getint('5', 'x'), config.getint('5', 'y'), config.getint('5', 'w'), config.getint('5', 'h')),
-									(6, config.getint('6', 'x'), config.getint('6', 'y'), config.getint('6', 'w'), config.getint('6', 'h')),
-									(7, config.getint('7', 'x'), config.getint('7', 'y'), config.getint('7', 'w'), config.getint('7', 'h')),
-									(8, config.getint('8', 'x'), config.getint('8', 'y'), config.getint('8', 'w'), config.getint('8', 'h'))]:
+		for field, x, y, w, h in [(1, fieldsconfig.getint('1', 'x'), fieldsconfig.getint('1', 'y'), fieldsconfig.getint('1', 'w'), fieldsconfig.getint('1', 'h')),
+									(2, fieldsconfig.getint('2', 'x'), fieldsconfig.getint('2', 'y'), fieldsconfig.getint('2', 'w'), fieldsconfig.getint('2', 'h')),
+									(3, fieldsconfig.getint('3', 'x'), fieldsconfig.getint('3', 'y'), fieldsconfig.getint('3', 'w'), fieldsconfig.getint('3', 'h')),
+									(4, fieldsconfig.getint('4', 'x'), fieldsconfig.getint('4', 'y'), fieldsconfig.getint('4', 'w'), fieldsconfig.getint('4', 'h')),
+									(5, fieldsconfig.getint('5', 'x'), fieldsconfig.getint('5', 'y'), fieldsconfig.getint('5', 'w'), fieldsconfig.getint('5', 'h')),
+									(6, fieldsconfig.getint('6', 'x'), fieldsconfig.getint('6', 'y'), fieldsconfig.getint('6', 'w'), fieldsconfig.getint('6', 'h')),
+									(7, fieldsconfig.getint('7', 'x'), fieldsconfig.getint('7', 'y'), fieldsconfig.getint('7', 'w'), fieldsconfig.getint('7', 'h')),
+									(8, fieldsconfig.getint('8', 'x'), fieldsconfig.getint('8', 'y'), fieldsconfig.getint('8', 'w'), fieldsconfig.getint('8', 'h'))]:
 			color = self.getColor(x, y, w, h)
 			self.sendColor(field, color)
 			self.updateLabel(field, x, y, w, h, color)
@@ -141,13 +134,48 @@ class MyForm(QtGui.QMainWindow):
 			widget.close()
 
 
+	def autoArrangeFields(self):
+		"""
+		Auto arrange fields depends on screen resolution and "size" factor from conf file
+		"""
+		screen = QtGui.QDesktopWidget().screenGeometry()
+		sw = screen.width()
+		sh = screen.height()
+		factor = config.getint("Fields", "size")
+
+		verticalWidth = (sw/100)*factor
+		verticalHeight = sh/2
+		horizontalWidth = sw/3
+		horizontalHeight = (sh/100)*factor
+
+		def writeToConfing(field, x, y, w, h):
+			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
+				fieldsconfig.add_section(`field`)
+			fieldsconfig.set(`field`, "x", x)
+			fieldsconfig.set(`field`, "y", y)
+			fieldsconfig.set(`field`, "w", w)
+			fieldsconfig.set(`field`, "h", h)
+			with open('presets/autoarrange.mrl', 'wb') as configfile:
+				fieldsconfig.write(configfile)
+
+		###TODO do this like in timer()
+		for field, x, y, w, h in [(1, 0, sh/2, verticalWidth, verticalHeight),\
+									(2, 0, 0, verticalWidth, verticalHeight),\
+									(3, 0, 0, sw/3, horizontalHeight),\
+									(4, sw/3, 0, sw/3, horizontalHeight),\
+									(5, (sw/3)*2, 0, sw/3, horizontalHeight),\
+									(6, sw-verticalWidth, 0, verticalWidth, verticalWidth),\
+									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
+									(8, sw-sw/3, sh-horizontalHeight, sw/3, horizontalHeight)]:
+			writeToConfing(field, x, y, w, h)
+
 class FieldDialog(QtGui.QWidget):
 	def __init__(self, field, parent=None):
 		QtGui.QWidget.__init__(self, parent)
-		x = config.getint(str(field), 'x')
-		y = config.getint(str(field), 'y')
-		w = config.getint(str(field), 'w')
-		h = config.getint(str(field), 'h')
+		x = fieldsconfig.getint(str(field), 'x')
+		y = fieldsconfig.getint(str(field), 'y')
+		w = fieldsconfig.getint(str(field), 'w')
+		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
 #		self.setMinimumSize (30, 30)						##XXX do it?
 		self.setWindowTitle('Field: ' + str(field))
@@ -186,7 +214,24 @@ if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	myapp = MyForm()
 	myapp.show()
+
+	config = ConfigParser.ConfigParser() 								##TODO create config automatically
+	config.read("mirlight.conf")
+	fieldsconfig = ConfigParser.ConfigParser()
+	if config.get("Fields", "autoarrange") == "on":
+		print "Autoarrange fields" ##XXX debug purposes
+		myapp.autoArrangeFields()
+		fieldsconfig.read("presets/autoarrange.mrl")
+	else:
+		fieldsconfig.read("presets/default.mrl")
+		print "Loading default fields' preset" ##XXX debug purposes
+
+	try:
+		ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
+		print ser.portstr       # check which port was really used ##XXX debug purposes
+	except:
+		print "Error:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
+
+
 	sys.exit(app.exec_())
 #	ser.close()             # close port ##XXX here?
-
-
