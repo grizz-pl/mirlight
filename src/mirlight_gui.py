@@ -3,6 +3,7 @@
 #mirlight ver. 0.25 by grizz - Witek Firlej http://grizz.pl
 
 __author__    = "Witold Firlej (http://grizz.pl)"
+__project__      = "mirlight"
 __version__   = "0.25"
 __license__   = "GPLv2"
 __copyright__ = "Witold Firlej"
@@ -24,6 +25,8 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
 
+		self.setWindowTitle(__project__ + " ver. " + __version__ + " by " + __author__)
+
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
 
@@ -34,7 +37,7 @@ class MyForm(QtGui.QMainWindow):
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
 			fadeValue = config.getint('Hardware', 'fade')
-			if fadeValue > 255: 										# fadeValue can be between 1 and 10
+			if fadeValue > 255: 										# fadeValue can be between 1 and 255
 				fadeValue = 255
 			elif fadeValue < 1:
 				fadeValue = 1
