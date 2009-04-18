@@ -175,9 +175,9 @@ class MyForm(QtGui.QMainWindow):
 									(3, 0, 0, sw/3, horizontalHeight),\
 									(4, sw/3, 0, sw/3, horizontalHeight),\
 									(5, (sw/3)*2, 0, sw/3, horizontalHeight),\
-									(6, sw-verticalWidth, 0, verticalWidth, verticalWidth),\
+									(6, sw-verticalWidth, 0, verticalWidth, verticalHeight),\
 									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
-									(8, sw-sw/3, sh-horizontalHeight, sw/3, horizontalHeight)]:
+									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
 			writeToConfing(field, x, y, w, h)
 
 class FieldDialog(QtGui.QWidget):
