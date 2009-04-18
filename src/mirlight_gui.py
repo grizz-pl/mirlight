@@ -142,6 +142,10 @@ class MyForm(QtGui.QMainWindow):
 		sw = screen.width()
 		sh = screen.height()
 		factor = config.getint("Fields", "size")
+		if factor > 10: 										# factor can be between 1 and 10
+			factor = 10
+		elif factor < 1:
+			factor = 1
 
 		verticalWidth = (sw/100)*factor
 		verticalHeight = sh/2
