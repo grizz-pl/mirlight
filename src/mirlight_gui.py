@@ -33,6 +33,12 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
+			fadeValue = config.getint('Hardware', 'fade')
+			if fadeValue > 255: 										# fadeValue can be between 1 and 10
+				fadeValue = 255
+			elif fadeValue < 1:
+				fadeValue = 1
+			self.sendConfiguration(fadeValue)
 			self._Timer.start(config.getint('Timer', 'interval'))
 		else:
 			self._Timer.stop()
@@ -79,6 +85,17 @@ class MyForm(QtGui.QMainWindow):
 		value = 16*(green*10/256+1)+(blue*10/256+1)
 		ser.write(chr(value))
 		time.sleep(0.001) ##hack needed by hardware
+
+	def sendConfiguration(self, value):
+		"""
+		send fade value
+		"""
+		fadeId = 16*9
+		ser.write(chr(fadeId))
+		ser.write(chr(value))
+		time.sleep(0.001) ##hack needed by hardware
+
+
 
 
 	def getLabel (self, field):
