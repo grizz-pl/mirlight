@@ -19,10 +19,9 @@ More info
 blah ;)
 
 ### EN
-Please Read doc/readme_en.pdf - in a (distant) future
+blah ;)
 
 ### PL
-Przeczytaj doc/readme_pl.pdf - w (raczej dalekiej) przyszłości
 Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/> - ten program i <http://mirley.firlej.org> - cześć sprzętowa, ew. druga wersja programu (tylko na Windows).
 
 Changelog
