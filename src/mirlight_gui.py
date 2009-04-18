@@ -147,6 +147,13 @@ class MyForm(QtGui.QMainWindow):
 		verticalHeight = sh/2
 		horizontalWidth = sw/3
 		horizontalHeight = (sh/100)*factor
+		print "--\nAuto arranging..."
+		print "Size factor: \t\t%d" % factor 							#XXXX debug purposes
+		print "vertical width: \t%d" % verticalWidth
+		print "vertical height: \t%d" % verticalHeight
+		print "horizontal width: \t%d" % horizontalWidth
+		print "horizontal height: \t%d" % horizontalHeight
+
 
 		def writeToConfing(field, x, y, w, h):
 			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
@@ -219,18 +226,17 @@ if __name__ == "__main__":
 	config.read("mirlight.conf")
 	fieldsconfig = ConfigParser.ConfigParser()
 	if config.get("Fields", "autoarrange") == "on":
-		print "Autoarrange fields" ##XXX debug purposes
 		myapp.autoArrangeFields()
 		fieldsconfig.read("presets/autoarrange.mrl")
 	else:
 		fieldsconfig.read("presets/default.mrl")
-		print "Loading default fields' preset" ##XXX debug purposes
+		print "--\nLoading default fields' preset" ##XXX debug purposes
 
 	try:
 		ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-		print ser.portstr       # check which port was really used ##XXX debug purposes
+		print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
 	except:
-		print "Error:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
+		print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
 
 
 	sys.exit(app.exec_())
