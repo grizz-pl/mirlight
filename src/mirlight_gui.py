@@ -27,6 +27,8 @@ class MyForm(QtGui.QMainWindow):
 
 		self.setWindowTitle(__project__ + " ver. " + __version__ + " by " + __author__)
 
+		self.ui.AboutVersionLabel.setText("ver. " + __version__)
+
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
 
