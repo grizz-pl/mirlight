@@ -124,27 +124,55 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		draw fields
 		"""
-		self.fieldsWidgets = [] ## clear to avoid multiple instances
-		self.widget1 = FieldDialog(1)
-		self.fieldsWidgets.append(self.widget1)
-		self.widget2 = FieldDialog(2)
-		self.fieldsWidgets.append(self.widget2)
-		self.widget3 = FieldDialog(3)
-		self.fieldsWidgets.append(self.widget3)
-		self.widget4 = FieldDialog(4)
-		self.fieldsWidgets.append(self.widget4)
-		self.widget5 = FieldDialog(5)
-		self.fieldsWidgets.append(self.widget5)
-		self.widget6 = FieldDialog(6)
-		self.fieldsWidgets.append(self.widget6)
-		self.widget7 = FieldDialog(7)
-		self.fieldsWidgets.append(self.widget7)
-		self.widget8 = FieldDialog(8)
-		self.fieldsWidgets.append(self.widget8)
+		if  self.ui.showFieldsPushButton.isChecked():
+			self.fieldsWidgets = [] ## clear to avoid multiple instances
+			self.widget1 = FieldDialog(1)
+			self.fieldsWidgets.append(self.widget1)
+			self.widget2 = FieldDialog(2)
+			self.fieldsWidgets.append(self.widget2)
+			self.widget3 = FieldDialog(3)
+			self.fieldsWidgets.append(self.widget3)
+			self.widget4 = FieldDialog(4)
+			self.fieldsWidgets.append(self.widget4)
+			self.widget5 = FieldDialog(5)
+			self.fieldsWidgets.append(self.widget5)
+			self.widget6 = FieldDialog(6)
+			self.fieldsWidgets.append(self.widget6)
+			self.widget7 = FieldDialog(7)
+			self.fieldsWidgets.append(self.widget7)
+			self.widget8 = FieldDialog(8)
+			self.fieldsWidgets.append(self.widget8)
 
+			for widget in self.fieldsWidgets:
+				widget.show()
+			self.ui.showFieldsPushButton.setText("Hide fields")
+
+		else:
+			SAVE = "Save"
+			CANCEL = "Cancel"
+			message = QtGui.QMessageBox(self)
+			message.setText('Nie zapisano zmian w pliku')
+			message.setWindowTitle('Notatnik')
+			message.setIcon(QtGui.QMessageBox.Question)
+			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
+			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
+			message.exec_()
+			response = message.clickedButton().text()
+		if response == SAVE:
+			self.saveFields() 							###TODO save prompt
+			print "--\nSaved"
+			self.closeFields()
+		elif response == CANCEL:
+			print "--\nClosing without saving..."
+			self.closeFields()
+
+	def closeFields(self):
+		"""
+		hide fields preview
+		"""
 		for widget in self.fieldsWidgets:
-			widget.show()
-
+			widget.close()
+		self.ui.showFieldsPushButton.setText("Show fields")
 
 	def saveFields(self):
 		"""
@@ -152,9 +180,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 
 	def closeEvent(self, closeEvent):
-		for widget in self.fieldsWidgets:
-			widget.close()
-
+		self.closeFields()
 
 	def autoArrangeFields(self):
 		"""

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Apr 19 21:04:30 2009
+# Created: Sun Apr 19 21:21:54 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1337,6 +1337,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.showFieldsPushButton.sizePolicy().hasHeightForWidth())
         self.showFieldsPushButton.setSizePolicy(sizePolicy)
+        self.showFieldsPushButton.setCheckable(True)
+        self.showFieldsPushButton.setFlat(False)
         self.showFieldsPushButton.setObjectName("showFieldsPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
