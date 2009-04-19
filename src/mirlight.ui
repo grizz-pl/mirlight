@@ -3538,29 +3538,10 @@
      <attribute name="title">
       <string>settings</string>
      </attribute>
-     <widget class="QCheckBox" name="autoArrangeCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>220</y>
-        <width>111</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="statusTip">
-       <string>Use autoarrange insteed</string>
-      </property>
-      <property name="locale">
-       <locale language="English" country="UnitedStates"/>
-      </property>
-      <property name="text">
-       <string>Autoarrange</string>
-      </property>
-     </widget>
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="geometry">
        <rect>
-        <x>315</x>
+        <x>330</x>
         <y>250</y>
         <width>291</width>
         <height>32</height>
@@ -3573,18 +3554,24 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>147</width>
-        <height>30</height>
+        <width>181</width>
+        <height>42</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2">
+      <layout class="QGridLayout" name="gridLayout_2" rowminimumheight="0">
        <item row="0" column="1">
         <widget class="QSpinBox" name="portNumberSpinBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="locale">
           <locale language="English" country="UnitedStates"/>
          </property>
@@ -3598,6 +3585,12 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="portNumberLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="locale">
           <locale language="English" country="UnitedStates"/>
          </property>
@@ -3608,13 +3601,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>253</y>
-        <width>260</width>
-        <height>28</height>
+        <y>242</y>
+        <width>281</width>
+        <height>51</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
@@ -3623,7 +3616,7 @@
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>0</height>
+           <height>32</height>
           </size>
          </property>
          <property name="statusTip">
@@ -3633,6 +3626,12 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="PresetsLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string>Presets:</string>
          </property>
@@ -3640,18 +3639,24 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>430</x>
-        <y>50</y>
+        <y>60</y>
         <width>147</width>
-        <height>20</height>
+        <height>34</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
         <widget class="QLabel" name="FadeLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="statusTip">
           <string>Fade speed</string>
          </property>
@@ -3662,6 +3667,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QSlider" name="FadeHorizontalSlider">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="statusTip">
           <string>Fade speed</string>
          </property>
@@ -3681,18 +3692,24 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>50</y>
+        <y>60</y>
         <width>371</width>
-        <height>20</height>
+        <height>34</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
         <widget class="QLabel" name="TimerLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="statusTip">
           <string>Speed of scanning screen interval</string>
          </property>
@@ -3703,6 +3720,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QSlider" name="TimerHorizontalSlider">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="statusTip">
           <string>Speed of scanning screen interval</string>
          </property>
@@ -3725,8 +3748,70 @@
        </item>
        <item row="0" column="2">
         <widget class="QLabel" name="TimerValueLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string>0000</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>200</y>
+        <width>261</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="autoArrangeCheckBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Use autoarrange insteed</string>
+         </property>
+         <property name="locale">
+          <locale language="English" country="UnitedStates"/>
+         </property>
+         <property name="text">
+          <string>Autoarrange</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSlider" name="AutoarrangeHorizontalSlider">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Size Factor</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>10</number>
+         </property>
+         <property name="pageStep">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -3737,13 +3822,13 @@
      <attribute name="title">
       <string>about</string>
      </attribute>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>171</width>
-        <height>93</height>
+        <width>201</width>
+        <height>111</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_6">
@@ -3776,13 +3861,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>240</y>
-        <width>299</width>
-        <height>44</height>
+        <x>288</x>
+        <y>223</y>
+        <width>331</width>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
