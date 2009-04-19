@@ -179,6 +179,40 @@ class MyForm(QtGui.QMainWindow):
 		save fields to conf file
 		"""
 
+	def listAviablePresets(self):
+		"""
+		list presets aviable in presets folder
+		"""
+
+	def loadPreset(self, preset):
+		"""
+		load fields preset from file
+		"""
+
+	def saveConfiguration(self):
+		"""
+		save configuration to mirlight.conf file
+		"""
+
+	def loadConfiguration(self):
+		"""
+		load configuration from mirlight.conf
+		"""
+		config.read("mirlight.conf")
+		if config.get("Fields", "autoarrange") == "on":
+			self.autoArrangeFields()
+			fieldsconfig.read("presets/autoarrange.mrl")
+		else:
+			fieldsconfig.read("presets/default.mrl")
+			print "--\nLoading default fields' preset" ##XXX debug purposes
+
+		try:
+			global ser 									##XXX uhh a nasty code...
+			ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
+			print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
+		except:
+			print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
+
 	def closeEvent(self, closeEvent):
 		self.closeFields()
 
@@ -273,23 +307,9 @@ if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	myapp = MyForm()
 	myapp.show()
-
 	config = ConfigParser.ConfigParser() 								##TODO create config automatically
-	config.read("mirlight.conf")
 	fieldsconfig = ConfigParser.ConfigParser()
-	if config.get("Fields", "autoarrange") == "on":
-		myapp.autoArrangeFields()
-		fieldsconfig.read("presets/autoarrange.mrl")
-	else:
-		fieldsconfig.read("presets/default.mrl")
-		print "--\nLoading default fields' preset" ##XXX debug purposes
-
-	try:
-		ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-		print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
-	except:
-		print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
-
-
+	ser = "ziaaaf" 														# just an initialization
+	myapp.loadConfiguration()
 	sys.exit(app.exec_())
 #	ser.close()             # close port ##XXX here?
