@@ -52,7 +52,7 @@
      <locale language="English" country="UnitedStates"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3890,7 +3890,7 @@
           <cursorShape>UpArrowCursor</cursorShape>
          </property>
          <property name="text">
-          <string>http://grizz.pl/mirlight/</string>
+          <string>&lt;a href='http://grizz.pl/mirlight/'&gt;http://grizz.pl/mirlight/&lt;/a&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::AutoText</enum>
@@ -3922,7 +3922,7 @@
           <cursorShape>UpArrowCursor</cursorShape>
          </property>
          <property name="text">
-          <string>http://mirley.firlej.org/mirlight/</string>
+          <string>&lt;a href='http://mirley.firlej.org/mirlight/'&gt;http://mirley.firlej.org/mirlight/&lt;/a&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::AutoText</enum>
@@ -4001,12 +4001,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>155</x>
-     <y>92</y>
+     <x>251</x>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel">
-     <x>378</x>
-     <y>91</y>
+     <x>391</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>

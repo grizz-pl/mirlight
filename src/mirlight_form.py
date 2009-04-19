@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Apr 19 10:40:14 2009
+# Created: Sun Apr 19 21:04:30 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1344,7 +1344,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.TimerHorizontalSlider, QtCore.SIGNAL("sliderMoved(int)"), self.TimerValueLabel.setNum)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1388,9 +1388,9 @@ class Ui_MainWindow(object):
         self.AboutVersionLabel.setText(QtGui.QApplication.translate("MainWindow", "ver. XX", None, QtGui.QApplication.UnicodeUTF8))
         self.label_10.setText(QtGui.QApplication.translate("MainWindow", "by Witek Firlej", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutUrlDescLabel.setText(QtGui.QApplication.translate("MainWindow", "Software page: ", None, QtGui.QApplication.UnicodeUTF8))
-        self.AboutUrlLabel.setText(QtGui.QApplication.translate("MainWindow", "http://grizz.pl/mirlight/", None, QtGui.QApplication.UnicodeUTF8))
+        self.AboutUrlLabel.setText(QtGui.QApplication.translate("MainWindow", "<a href=\'http://grizz.pl/mirlight/\'>http://grizz.pl/mirlight/</a>", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutUrlDescLabel_2.setText(QtGui.QApplication.translate("MainWindow", "Hardware page: ", None, QtGui.QApplication.UnicodeUTF8))
-        self.AboutUrlLabel_2.setText(QtGui.QApplication.translate("MainWindow", "http://mirley.firlej.org/mirlight/", None, QtGui.QApplication.UnicodeUTF8))
+        self.AboutUrlLabel_2.setText(QtGui.QApplication.translate("MainWindow", "<a href=\'http://mirley.firlej.org/mirlight/\'>http://mirley.firlej.org/mirlight/</a>", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("MainWindow", "about", None, QtGui.QApplication.UnicodeUTF8))
         self.saveFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Save current fields settings to file", None, QtGui.QApplication.UnicodeUTF8))
         self.saveFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Save fields", None, QtGui.QApplication.UnicodeUTF8))
