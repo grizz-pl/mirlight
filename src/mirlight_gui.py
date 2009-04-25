@@ -20,7 +20,9 @@ class MyForm(QtGui.QMainWindow):
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
 		self._Timer = QtCore.QTimer(self)
+		self._watchTimer = QtCore.QTimer(self)
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
+		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
@@ -109,6 +111,17 @@ class MyForm(QtGui.QMainWindow):
 		ser.write(chr(value))
 		time.sleep(0.01) ##hack needed by hardware
 
+	def watch(self):
+		"""
+		Get remote code and perform an action
+		"""
+		try: 
+			temp=ser.read()
+			ser.flushInput()
+			x=ord(temp)
+			print x
+		except:
+			print "BUM!"
 
 
 
@@ -221,6 +234,8 @@ class MyForm(QtGui.QMainWindow):
 			print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
 		except:
 			print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
+		
+		self._watchTimer.start(300)
 
 	def closeEvent(self, closeEvent):
 		self.closeFields()
