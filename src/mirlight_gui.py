@@ -31,6 +31,8 @@ class MyForm(QtGui.QMainWindow):
 
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
+		self.oldColors = ["a","b","c","d","e","f","g", "h"] 			# just an initialization
+
 
 	def startStop(self):
 		"""
@@ -74,8 +76,14 @@ class MyForm(QtGui.QMainWindow):
 									(7, fieldsconfig.getint('7', 'x'), fieldsconfig.getint('7', 'y'), fieldsconfig.getint('7', 'w'), fieldsconfig.getint('7', 'h')),
 									(8, fieldsconfig.getint('8', 'x'), fieldsconfig.getint('8', 'y'), fieldsconfig.getint('8', 'w'), fieldsconfig.getint('8', 'h'))]:
 			color = self.getColor(x, y, w, h)
-			self.sendColor(field, color)
-			self.updateLabel(field, x, y, w, h, color)
+			if not self.oldColors[field-1] == str(color): 						# skip sending color if there is no change
+				self.sendColor(field, color)
+				self.oldColors[field-1]=str(color)
+				self.updateLabel(field, x, y, w, h, color)
+				print self.oldColors
+			else:
+				print "sending skipped"
+
 
 	def sendColor(self, field, color):
 		"""
@@ -89,7 +97,8 @@ class MyForm(QtGui.QMainWindow):
 		ser.write(chr(value))
 		value = 16*(green*10/256+1)+(blue*10/256+1)
 		ser.write(chr(value))
-		time.sleep(0.001) ##hack needed by hardware
+		time.sleep(0.01) ##hack needed by hardware
+		print str(value) + " sended"
 
 	def sendConfiguration(self, value):
 		"""
@@ -98,7 +107,7 @@ class MyForm(QtGui.QMainWindow):
 		fadeId = 16*9
 		ser.write(chr(fadeId))
 		ser.write(chr(value))
-		time.sleep(0.001) ##hack needed by hardware
+		time.sleep(0.01) ##hack needed by hardware
 
 
 
