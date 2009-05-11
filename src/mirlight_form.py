@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Apr 19 21:21:54 2009
+# Created: Mon May 11 19:51:13 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1180,8 +1180,8 @@ class Ui_MainWindow(object):
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.buttonBox = QtGui.QDialogButtonBox(self.tab_2)
-        self.buttonBox.setGeometry(QtCore.QRect(330, 250, 291, 32))
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Save)
+        self.buttonBox.setGeometry(QtCore.QRect(420, 250, 201, 32))
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Save)
         self.buttonBox.setCenterButtons(True)
         self.buttonBox.setObjectName("buttonBox")
         self.layoutWidget1 = QtGui.QWidget(self.tab_2)
