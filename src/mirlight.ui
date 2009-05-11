@@ -3771,25 +3771,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="autoArrangeCheckBox">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Use autoarrange insteed</string>
-         </property>
-         <property name="locale">
-          <locale language="English" country="UnitedStates"/>
-         </property>
-         <property name="text">
-          <string>Autoarrange</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="1">
         <widget class="QSlider" name="AutoarrangeHorizontalSlider">
          <property name="minimumSize">
@@ -3812,6 +3793,25 @@
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="AutoArrangeCheckBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Use autoarrange insteed</string>
+         </property>
+         <property name="locale">
+          <locale language="English" country="UnitedStates"/>
+         </property>
+         <property name="text">
+          <string>Autoarrange</string>
          </property>
         </widget>
        </item>

@@ -26,6 +26,9 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
+		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
+		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
+		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
 
 		self.setWindowTitle(__project__ + " ver. " + __version__ + " by " + __author__)
 
@@ -236,6 +239,24 @@ class MyForm(QtGui.QMainWindow):
 			print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
 		
 		self._watchTimer.start(300)
+		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
+		self.ui.TimerHorizontalSlider.setValue(config.getint("Timer", "interval"))
+		self.ui.TimerValueLabel.setText(str(config.getint("Timer", "interval")))
+		self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
+		if config.get("Fields", "autoarrange") == "on":
+			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
+		else:
+			self.ui.AutoArrangeCheckBox.setCheckState(0)
+		self.changePresetsComboBoxEnabled()
+		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
+
+	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
+		if self.ui.AutoArrangeCheckBox.checkState() == 2:
+			self.ui.PresetsComboBox.setEnabled(0)
+			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
+		else:
+			self.ui.PresetsComboBox.setEnabled(1)
+			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
 	def closeEvent(self, closeEvent):
 		self.closeFields()

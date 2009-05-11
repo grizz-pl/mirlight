@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Mon May 11 19:51:13 2009
+# Created: Mon May 11 20:38:48 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1255,10 +1255,6 @@ class Ui_MainWindow(object):
         self.layoutWidget5.setObjectName("layoutWidget5")
         self.gridLayout_8 = QtGui.QGridLayout(self.layoutWidget5)
         self.gridLayout_8.setObjectName("gridLayout_8")
-        self.autoArrangeCheckBox = QtGui.QCheckBox(self.layoutWidget5)
-        self.autoArrangeCheckBox.setMinimumSize(QtCore.QSize(0, 32))
-        self.autoArrangeCheckBox.setObjectName("autoArrangeCheckBox")
-        self.gridLayout_8.addWidget(self.autoArrangeCheckBox, 0, 0, 1, 1)
         self.AutoarrangeHorizontalSlider = QtGui.QSlider(self.layoutWidget5)
         self.AutoarrangeHorizontalSlider.setMinimumSize(QtCore.QSize(0, 32))
         self.AutoarrangeHorizontalSlider.setMinimum(1)
@@ -1267,6 +1263,10 @@ class Ui_MainWindow(object):
         self.AutoarrangeHorizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.AutoarrangeHorizontalSlider.setObjectName("AutoarrangeHorizontalSlider")
         self.gridLayout_8.addWidget(self.AutoarrangeHorizontalSlider, 0, 1, 1, 1)
+        self.AutoArrangeCheckBox = QtGui.QCheckBox(self.layoutWidget5)
+        self.AutoArrangeCheckBox.setMinimumSize(QtCore.QSize(0, 32))
+        self.AutoArrangeCheckBox.setObjectName("AutoArrangeCheckBox")
+        self.gridLayout_8.addWidget(self.AutoArrangeCheckBox, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -1382,9 +1382,9 @@ class Ui_MainWindow(object):
         self.TimerLabel.setText(QtGui.QApplication.translate("MainWindow", "Scan interval:", None, QtGui.QApplication.UnicodeUTF8))
         self.TimerHorizontalSlider.setStatusTip(QtGui.QApplication.translate("MainWindow", "Speed of scanning screen interval", None, QtGui.QApplication.UnicodeUTF8))
         self.TimerValueLabel.setText(QtGui.QApplication.translate("MainWindow", "0000", None, QtGui.QApplication.UnicodeUTF8))
-        self.autoArrangeCheckBox.setStatusTip(QtGui.QApplication.translate("MainWindow", "Use autoarrange insteed", None, QtGui.QApplication.UnicodeUTF8))
-        self.autoArrangeCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Autoarrange", None, QtGui.QApplication.UnicodeUTF8))
         self.AutoarrangeHorizontalSlider.setStatusTip(QtGui.QApplication.translate("MainWindow", "Size Factor", None, QtGui.QApplication.UnicodeUTF8))
+        self.AutoArrangeCheckBox.setStatusTip(QtGui.QApplication.translate("MainWindow", "Use autoarrange insteed", None, QtGui.QApplication.UnicodeUTF8))
+        self.AutoArrangeCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Autoarrange", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "settings", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutProjectLabel.setText(QtGui.QApplication.translate("MainWindow", "mirlight", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutVersionLabel.setText(QtGui.QApplication.translate("MainWindow", "ver. XX", None, QtGui.QApplication.UnicodeUTF8))
