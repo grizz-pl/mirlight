@@ -218,6 +218,19 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		save configuration to mirlight.conf file
 		"""
+		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
+		config.set("Port", "number", self.ui.portNumberSpinBox.value())
+		config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
+		if self.ui.AutoArrangeCheckBox.isChecked():
+			config.set("Fields", "autoarrange", "on")
+		else:
+			config.set("Fields", "autoarrange", "off")
+		config.set("Fields", "size", self.ui.AutoarrangeHorizontalSlider.value())
+		with open('mirlight.conf', 'wb') as configfile:
+				config.write(configfile)
+
+		self.loadConfiguration() 						# reload after saving
+
 
 	def loadConfiguration(self):
 		"""
