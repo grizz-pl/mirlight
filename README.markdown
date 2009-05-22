@@ -3,7 +3,8 @@ Mirlight by Witold Firlej
 
 ## Homemade ambilight not only for films
 ver. **0.25**
-### homepage: <http://github.com/grizz-pl/mirlight>
+### homepage  [PL only] <http://grizz.pl/mirlight>
+### page on github [EN / PL] <http://github.com/grizz-pl/mirlight/>
 ### hardware homepage [PL only] <http://mirley.firlej.org/mirlight>
 
 Requirements
