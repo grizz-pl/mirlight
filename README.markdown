@@ -2,10 +2,19 @@ Mirlight by Witold Firlej
 =========================
 
 ## Homemade ambilight not only for films
-ver. **0.25**
+stable ver. **0.25**
 ### homepage  [PL only] <http://grizz.pl/mirlight>
 ### page on github [EN / PL] <http://github.com/grizz-pl/mirlight/>
 ### hardware homepage [PL only] <http://mirley.firlej.org/mirlight>
+
+Pay attention
+-------------
+
+### EN
+Developer version works very well - except free fields setting and fields presets, but the rest of settings tab is fully functional.
+
+### PL
+Wersja rozwojowa programu działa bardzo dobrze, poza swobodnym ustawianiem i ładowaniem predefiniowanych obszarów. Reszta ustawień w zakładce settings jest w pełni działająca.
 
 Requirements
 ------------
