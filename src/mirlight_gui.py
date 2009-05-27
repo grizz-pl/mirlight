@@ -330,6 +330,7 @@ class FieldDialog(QtGui.QWidget):
 		self.setGeometry(x, y, w, h)
 #		self.setMinimumSize (30, 30)						##XXX do it?
 		self.setWindowTitle('Field: ' + str(field))
+		self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
 		
 		self.button = QtGui.QPushButton('', self)
 		self.button.setGeometry(0, 0, 30, 30)
