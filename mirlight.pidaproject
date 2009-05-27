@@ -1,10 +1,12 @@
 name = mirlight
 [checklist]
 1238343096.83.6979 = False:1:system tray support
+1243439637.42.606 = False:1:.exe version
 1238102025.84.7642 = "False:1:set fields - screen resolution independent "
 1237885536.29.7489 = False:0:auto make conf file in HOME directory
 1237937256.71.7363 = False:1:create config automatically
 1239253571.46.7288 = False:1:presets suport for fields
 1238099254.56.5474 = True:1:use configuration file for options - capture field size and position
 1238101923.43.8850 = True:2:serial port support - need for ver. 0.2 - first working one
+1243439673.95.3752 = False:1:full light after 10s of no color change
 [bookmark]
