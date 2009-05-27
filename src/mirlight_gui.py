@@ -46,15 +46,14 @@ class MyForm(QtGui.QMainWindow):
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
 			fadeValue = config.getint('Hardware', 'fade')
-			if fadeValue > 255: 										# fadeValue can be between 1 and 255
-				fadeValue = 255
-			elif fadeValue < 1:
-				fadeValue = 1
 			self.sendConfiguration(fadeValue)
 			self._Timer.start(config.getint('Timer', 'interval'))
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
+			for x in range(8):
+				self.sendColor(x+1,0)
+        	self.oldColors = ["a","b","c","d","e","f","g", "h"]             # reset colors after stop
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -109,6 +108,11 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		send fade value
 		"""
+		value = value*25+55
+		if value > 255: 										# fadeValue can be between 1 and 255 but in config it is 1-8 so multiply it!
+			value = 255
+		elif value < 1:
+			value = 1
 		fadeId = 16*9
 		ser.write(chr(fadeId))
 		ser.write(chr(value))
@@ -262,6 +266,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
+		self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
 
 	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
