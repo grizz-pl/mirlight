@@ -10,6 +10,8 @@ __copyright__ = "Witold Firlej"
 
 import sys, ConfigParser, serial, time
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtGui import QWidget, QApplication, QCursor
+from PyQt4.QtCore import Qt, QPoint
 
 from mirlight_form import Ui_MainWindow
 
@@ -348,6 +350,22 @@ class FieldDialog(QtGui.QWidget):
 
 
 		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
+
+	def mousePressEvent(self, event): # moving - thx to salmon http://forum.python.org.pl/index.php?topic=846.msg4359#msg4359
+		self.last_pos = QCursor.pos()
+
+	def mouseMoveEvent(self, event):
+		buttons = event.buttons()
+		new_pos = QCursor.pos()
+		offset = new_pos - self.last_pos
+		if buttons & Qt.LeftButton:
+			self.move(self.pos() + offset)
+			self.update()
+		elif buttons & Qt.RightButton:
+			size = self.size()
+			self.resize(size.width() + offset.x(), size.height() + offset.y())
+			self.update()
+		self.last_pos = QPoint(new_pos)
 	
 	def showPos(self):
 		x, y, w, h = self.getGeometry()
