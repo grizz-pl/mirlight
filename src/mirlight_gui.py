@@ -347,6 +347,7 @@ class FieldDialog(QtGui.QWidget):
 		self.label = QtGui.QLabel('Dialog', self)
 		self.label.setText("Saved position: " + str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
 		self.label.move(35, 8)
+		self.setToolTip("Click and hold left mouse button to move field \nClick and hold right mouse button to resize field")
 
 
 		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
