@@ -268,7 +268,10 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
-		self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
+		try:
+			self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
+		except:
+			print "--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!"
 
 	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
