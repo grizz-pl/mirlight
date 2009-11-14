@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#mirlight ver. 0.25 by grizz - Witek Firlej http://grizz.pl
+#mirlight by grizz - Witek Firlej http://grizz.pl
 # Copyright (C) 2009 Witold Firlej
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.25"
+__version__   = "0.5alpha"
 __license__   = "GPLv2"
 __copyright__ = "Witold Firlej"
 
@@ -62,14 +62,16 @@ class MyForm(QtGui.QMainWindow):
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
 			fadeValue = config.getint('Hardware', 'fade')
-			self.sendConfiguration(fadeValue)
-			self._Timer.start(config.getint('Timer', 'interval'))
+			#self.sendConfiguration(fadeValue)
+			#self._Timer.start(config.getint('Timer', 'interval'))
+			self._Timer.start(10) ##XXX
+			
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			for x in range(8):
-				self.sendColor(x+1,0)
-        	self.oldColors = ["a","b","c","d","e","f","g", "h"]             # reset colors after stop
+			# for x in range(8):
+				# self.sendColor(x+1,0)
+        	# self.oldColors = ["a","b","c","d","e","f","g", "h"]             # reset colors after stop
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -87,6 +89,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		getColor for every field and display it on appropriate label
 		"""
+		colors = []
 		for field, x, y, w, h in [(1, fieldsconfig.getint('1', 'x'), fieldsconfig.getint('1', 'y'), fieldsconfig.getint('1', 'w'), fieldsconfig.getint('1', 'h')),
 									(2, fieldsconfig.getint('2', 'x'), fieldsconfig.getint('2', 'y'), fieldsconfig.getint('2', 'w'), fieldsconfig.getint('2', 'h')),
 									(3, fieldsconfig.getint('3', 'x'), fieldsconfig.getint('3', 'y'), fieldsconfig.getint('3', 'w'), fieldsconfig.getint('3', 'h')),
@@ -96,29 +99,52 @@ class MyForm(QtGui.QMainWindow):
 									(7, fieldsconfig.getint('7', 'x'), fieldsconfig.getint('7', 'y'), fieldsconfig.getint('7', 'w'), fieldsconfig.getint('7', 'h')),
 									(8, fieldsconfig.getint('8', 'x'), fieldsconfig.getint('8', 'y'), fieldsconfig.getint('8', 'w'), fieldsconfig.getint('8', 'h'))]:
 			color = self.getColor(x, y, w, h)
-			if not self.oldColors[field-1] == str(color): 						# skip sending color if there is no change
-				self.sendColor(field, color)
-				self.oldColors[field-1]=str(color)
-				self.updateLabel(field, x, y, w, h, color)
-				print self.oldColors
-			else:
-				print "sending skipped"
+			colors.append(color)
+			self.updateLabel(field, x, y, w, h, color)
+		self.sendColors(colors)
+		
 
 
-	def sendColor(self, field, color):
-		"""
-		send field and color value to port
-		"""
+	# def sendColor(self, field, color):
+		# """
+		# send field and color value to port
+		# """
 		#if ser.isOpen(): ##XXX needed?
-		red = QtGui.qRed(color)
-		green = QtGui.qGreen(color)
-		blue = QtGui.qBlue(color)
-		value = 16*field + red*10/256+1
-		ser.write(chr(value))
-		value = 16*(green*10/256+1)+(blue*10/256+1)
-		ser.write(chr(value))
-		time.sleep(0.01) ##hack needed by hardware
-		print str(value) + " sended"
+		# red = QtGui.qRed(color)
+		# green = QtGui.qGreen(color)
+		# blue = QtGui.qBlue(color)
+		# value = 16*field + red*10/256+1
+		# ser.write(chr(value))
+		# value = 16*(green*10/256+1)+(blue*10/256+1)
+		# ser.write(chr(value))
+		# time.sleep(0.01) ##hack needed by hardware
+		# print str(value) + " sended"
+  
+	def addSum(self, value):
+		global sum
+		sum += value ##???
+		if sum > 255:
+			sum -=256
+
+
+	def sendColors(self, colors):
+		kod = chr(128) #kod inicjujacy poczatek standardowej paczki + konfig
+		global sum
+		sum = 0
+		self.addSum(128) #suma kontrolna tj. suma wszystkich wartoœci, skrocona do 7 bitow (bajt podzielony przez dwa)
+		for color in colors:
+			red = QtGui.qRed(color)*100/256+1
+			green = QtGui.qGreen(color)*100/256+1
+			blue = QtGui.qBlue(color)*100/256+1
+			kod += chr(red)
+			kod += chr(green) 
+			kod += chr(blue)
+			self.addSum(red)
+			self.addSum(green)
+			self.addSum(blue)
+		kod += chr(sum/2)
+		ser.write(kod)
+		time.sleep(0.009) # hack needed by hardware
 
 	def sendConfiguration(self, value):
 		"""
@@ -144,7 +170,8 @@ class MyForm(QtGui.QMainWindow):
 			x=ord(temp)
 			print x
 		except:
-			print "BUM!"
+			pass
+			#print "BUM!"
 
 
 
@@ -266,7 +293,7 @@ class MyForm(QtGui.QMainWindow):
 
 		try:
 			global ser 									##XXX uhh a nasty code...
-			ser = serial.Serial(config.getint('Port', 'number'), 9600, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
+			ser = serial.Serial(config.getint('Port', 'number'), 38400, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
 			print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
 		except:
 			print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
@@ -410,6 +437,7 @@ if __name__ == "__main__":
 	config = ConfigParser.ConfigParser() 								##TODO create config automatically
 	fieldsconfig = ConfigParser.ConfigParser()
 	ser = "ziaaaf" 														# just an initialization
+	sum = 0 ##XXX 	
 	myapp.loadConfiguration()
 	sys.exit(app.exec_())
 #	ser.close()             # close port ##XXX here?

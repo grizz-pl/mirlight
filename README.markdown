@@ -2,7 +2,6 @@ Mirlight by Witold Firlej
 =========================
 
 ## Homemade ambilight not only for films
-stable ver. **0.25**
 ### homepage  [PL only] <http://grizz.pl/mirlight>
 ### page on github [EN / PL] <http://github.com/grizz-pl/mirlight/>
 ### hardware homepage [PL only] <http://mirley.firlej.org/mirlight>
@@ -11,10 +10,12 @@ Pay attention
 -------------
 
 ### EN
-Developer version works very well - except free fields setting and fields presets, but the rest of settings tab is fully functional.
+Mirlight has two hardware versions. Software useing an old one is placed in branch **old_hardware_version** and it isn't developed anymore.  
+A new version (>= 0.5) is placed in branch **master**.
 
 ### PL
-Wersja rozwojowa programu działa bardzo dobrze, poza swobodnym ustawianiem i ładowaniem predefiniowanych obszarów. Reszta ustawień w zakładce settings jest w pełni działająca.
+Mirlight występuje w dwóch wersjach sprzetu. Oprogramowanie uzywające starej wersji umieszczone jest w gałęzi **old_hardware_version** i nie jest juz rozwijane.  
+Nowa wersja (>= 0.5) jest umieszczona w gałezi **master**.
 
 Requirements
 ------------
@@ -52,6 +53,9 @@ Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/>
 
 Changelog
 ---------
+### ver.0.5alfa 2009/11/15
+Switch to a new hardware.
+
 ### ver.0.25 2009/03/29
 Making average color for each screen region is much better.
 
