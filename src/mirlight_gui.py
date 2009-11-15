@@ -131,7 +131,7 @@ class MyForm(QtGui.QMainWindow):
 		kod = chr(128) #kod inicjujacy poczatek standardowej paczki + konfig
 		global sum
 		sum = 0
-		self.addSum(128) #suma kontrolna tj. suma wszystkich wartoœci, skrocona do 7 bitow (bajt podzielony przez dwa)
+		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
 		for color in colors:
 			red = QtGui.qRed(color)*100/256+1
 			green = QtGui.qGreen(color)*100/256+1
