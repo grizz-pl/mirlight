@@ -52,7 +52,6 @@ class MyForm(QtGui.QMainWindow):
 
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
-		self.oldColors = ["a","b","c","d","e","f","g", "h"] 			# just an initialization
 
 
 	def startStop(self):
@@ -69,9 +68,6 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			# for x in range(8):
-				# self.sendColor(x+1,0)
-        	# self.oldColors = ["a","b","c","d","e","f","g", "h"]             # reset colors after stop
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -104,22 +100,6 @@ class MyForm(QtGui.QMainWindow):
 		self.sendColors(colors)
 		
 
-
-	# def sendColor(self, field, color):
-		# """
-		# send field and color value to port
-		# """
-		#if ser.isOpen(): ##XXX needed?
-		# red = QtGui.qRed(color)
-		# green = QtGui.qGreen(color)
-		# blue = QtGui.qBlue(color)
-		# value = 16*field + red*10/256+1
-		# ser.write(chr(value))
-		# value = 16*(green*10/256+1)+(blue*10/256+1)
-		# ser.write(chr(value))
-		# time.sleep(0.01) ##hack needed by hardware
-		# print str(value) + " sended"
-  
 	def addSum(self, value):
 		global sum
 		sum += value ##???
