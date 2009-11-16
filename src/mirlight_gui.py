@@ -116,11 +116,12 @@ class MyForm(QtGui.QMainWindow):
 			red = QtGui.qRed(color)*10/255
 			green = QtGui.qGreen(color)*10/255
 			blue = QtGui.qBlue(color)*10/255
-			print "rgb: %f, %f, %f" % (red, green, blue)
+			print "k %d: " % (colors.index(color)+1) #XXX debug purposes
+			print"\trgb: %f, %f, %f" % (red, green, blue)
 			red = red*red
 			green = green*green
 			blue = blue*blue
-			print "\trgb: %f, %f, %f" % (red, green, blue)
+			print "\t\trgb: %f, %f, %f" % (red, green, blue) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
 			kod += chr(blue)
