@@ -63,7 +63,7 @@ class MyForm(QtGui.QMainWindow):
 			fadeValue = config.getint('Hardware', 'fade')
 			#self.sendConfiguration(fadeValue)
 			#self._Timer.start(config.getint('Timer', 'interval'))
-			self._Timer.start(10) ##XXX
+			self._Timer.start(100) ##XXX
 			
 		else:
 			self._Timer.stop()
@@ -116,9 +116,11 @@ class MyForm(QtGui.QMainWindow):
 			red = QtGui.qRed(color)*10/255
 			green = QtGui.qGreen(color)*10/255
 			blue = QtGui.qBlue(color)*10/255
+			print "rgb: %f, %f, %f" % (red, green, blue)
 			red = red*red
 			green = green*green
 			blue = blue*blue
+			print "\trgb: %f, %f, %f" % (red, green, blue)
 			kod += chr(red)
 			kod += chr(green) 
 			kod += chr(blue)
