@@ -116,12 +116,12 @@ class MyForm(QtGui.QMainWindow):
 			red = QtGui.qRed(color)*10/255
 			green = QtGui.qGreen(color)*10/255
 			blue = QtGui.qBlue(color)*10/255
-			print "k %d: " % (colors.index(color)+1) #XXX debug purposes
-			print"\trgb: %f, %f, %f" % (red, green, blue)
+			verbose("k: %d" % (colors.index(color)+1)) #XXX debug purposes
+			verbose("\trgb: %f, %f, %f" % (red, green, blue))
 			red = red*red
 			green = green*green
 			blue = blue*blue
-			print "\t\trgb: %f, %f, %f" % (red, green, blue) #XXX debug purposes
+			verbose("\t\trgb: %f, %f, %f" % (red, green, blue)) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
 			kod += chr(blue)
@@ -154,10 +154,10 @@ class MyForm(QtGui.QMainWindow):
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
-			print x
+			verbose(x)
 		except:
 			pass
-			#print "BUM!"
+			#verbose("BUM!")
 
 
 
@@ -218,10 +218,10 @@ class MyForm(QtGui.QMainWindow):
 			response = message.clickedButton().text()
 		if response == SAVE:
 			self.saveFields() 							###TODO save prompt
-			print "--\nSaved"
+			verbose("--\nSaved")
 			self.closeFields()
 		elif response == CANCEL:
-			print "--\nClosing without saving..."
+			verbose("--\nClosing without saving...")
 			self.closeFields()
 
 	def closeFields(self):
@@ -275,14 +275,14 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.read("presets/autoarrange.mrl")
 		else:
 			fieldsconfig.read("presets/default.mrl")
-			print "--\nLoading default fields' preset" ##XXX debug purposes
+			verbose("--\nLoading default fields' preset") ##XXX debug purposes
 
 		try:
 			global ser 									##XXX uhh a nasty code...
 			ser = serial.Serial(config.getint('Port', 'number'), 38400, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-			print "--\nSelected port: %s" % ser.portstr       # check which port was really used ##XXX debug purposes
+			verbose("--\nSelected port: %s" % ser.portstr)       # check which port was really used ##XXX debug purposes
 		except:
-			print "--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!"
+			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!")
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
@@ -298,7 +298,7 @@ class MyForm(QtGui.QMainWindow):
 		try:
 			self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
 		except:
-			print "--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!"
+			verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
 
 	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
@@ -328,12 +328,12 @@ class MyForm(QtGui.QMainWindow):
 		verticalHeight = sh/2
 		horizontalWidth = sw/3
 		horizontalHeight = (sh/100)*factor
-		print "--\nAuto arranging..."
-		print "Size factor: \t\t%d" % factor 							#XXXX debug purposes
-		print "vertical width: \t%d" % verticalWidth
-		print "vertical height: \t%d" % verticalHeight
-		print "horizontal width: \t%d" % horizontalWidth
-		print "horizontal height: \t%d" % horizontalHeight
+		verbose("--\nAuto arranging...")
+		verbose("Size factor: \t\t%d" % factor) 							#XXXX debug purposes
+		verbose("vertical width: \t%d" % verticalWidth)
+		verbose("vertical height: \t%d" % verticalHeight)
+		verbose("horizontal width: \t%d" % horizontalWidth)
+		verbose("horizontal height: \t%d" % horizontalHeight)
 
 
 		def writeToConfing(field, x, y, w, h):
@@ -414,7 +414,12 @@ class FieldDialog(QtGui.QWidget):
 		h = geometry.height()
 		return x, y, w, h
 
-
+def verbose (msg):
+	try:
+		if sys.argv[1] == "-v":
+			print msg;
+	except IndexError:
+		pass
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
