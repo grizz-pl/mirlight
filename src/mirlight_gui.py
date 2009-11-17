@@ -19,7 +19,7 @@
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
 __version__   = "0.25"
-__license__   = "GPLv2"
+__license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
 import sys, ConfigParser, serial, time
