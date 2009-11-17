@@ -113,14 +113,14 @@ class MyForm(QtGui.QMainWindow):
 		sum = 0
 		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
 		for color in colors:
-			red = QtGui.qRed(color)*10/255
-			green = QtGui.qGreen(color)*10/255
-			blue = QtGui.qBlue(color)*10/255
+			red = float(QtGui.qRed(color))/255
+			green = float(QtGui.qGreen(color))/255
+			blue = float(QtGui.qBlue(color))/255
 			verbose("k: %d" % (colors.index(color)+1)) #XXX debug purposes
 			verbose("\trgb: %f, %f, %f" % (red, green, blue))
-			red = red*red
-			green = green*green
-			blue = blue*blue
+			red = int(red*red*100)
+			green = int(green*green*100)
+			blue = int(blue*blue*100)
 			verbose("\t\trgb: %f, %f, %f" % (red, green, blue)) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
