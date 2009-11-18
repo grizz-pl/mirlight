@@ -60,7 +60,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
-			fadeValue = config.getint('Hardware', 'fade')
+			#fadeValue = config.getint('Hardware', 'fade')
 			#self.sendConfiguration(fadeValue)
 			#self._Timer.start(config.getint('Timer', 'interval'))
 			self._Timer.start(100) ##XXX
@@ -113,14 +113,14 @@ class MyForm(QtGui.QMainWindow):
 		sum = 0
 		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
 		for color in colors:
-			red = float(QtGui.qRed(color))/255
-			green = float(QtGui.qGreen(color))/255
-			blue = float(QtGui.qBlue(color))/255
+			red = QtGui.qRed(color)*10/255
+			green = QtGui.qGreen(color)*10/255
+			blue = QtGui.qBlue(color)*10/255
 			verbose("k: %d" % (colors.index(color)+1)) #XXX debug purposes
 			verbose("\trgb: %f, %f, %f" % (red, green, blue))
-			red = int(red*red*100)
-			green = int(green*green*100)
-			blue = int(blue*blue*100)
+			red = red*red
+			green = green*green
+			blue = blue*blue
 			verbose("\t\trgb: %f, %f, %f" % (red, green, blue)) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
@@ -253,7 +253,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
 		config.set("Port", "number", self.ui.portNumberSpinBox.value())
-		config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
+		#config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
 		if self.ui.AutoArrangeCheckBox.isChecked():
 			config.set("Fields", "autoarrange", "on")
 		else:
@@ -288,17 +288,17 @@ class MyForm(QtGui.QMainWindow):
 		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
 		self.ui.TimerHorizontalSlider.setValue(config.getint("Timer", "interval"))
 		self.ui.TimerValueLabel.setText(str(config.getint("Timer", "interval")))
-		self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
+		#self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
 		if config.get("Fields", "autoarrange") == "on":
 			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
 		else:
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
-		try:
-			self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
-		except:
-			verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
+		#try:
+			#self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
+		#except:
+			#verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
 
 	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:

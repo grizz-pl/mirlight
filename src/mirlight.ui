@@ -52,7 +52,7 @@
      <locale language="English" country="UnitedStates"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3613,6 +3613,9 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="1">
         <widget class="QComboBox" name="PresetsComboBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -3620,73 +3623,26 @@
           </size>
          </property>
          <property name="statusTip">
-          <string>Choose saved preset</string>
+          <string>Not yet available</string>
          </property>
         </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="PresetsLabel">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>0</width>
            <height>32</height>
           </size>
+         </property>
+         <property name="statusTip">
+          <string>Not yet available</string>
          </property>
          <property name="text">
           <string>Presets:</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>60</y>
-        <width>147</width>
-        <height>34</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="FadeLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Fade speed</string>
-         </property>
-         <property name="text">
-          <string>Fade:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="FadeHorizontalSlider">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Fade speed</string>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>8</number>
-         </property>
-         <property name="pageStep">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -3730,16 +3686,16 @@
           <string>Speed of scanning screen interval</string>
          </property>
          <property name="minimum">
-          <number>100</number>
+          <number>10</number>
          </property>
          <property name="maximum">
-          <number>2000</number>
+          <number>1000</number>
          </property>
          <property name="singleStep">
-          <number>50</number>
+          <number>10</number>
          </property>
          <property name="pageStep">
-          <number>200</number>
+          <number>50</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
