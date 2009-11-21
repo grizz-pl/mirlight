@@ -22,7 +22,7 @@ __version__   = "0.5alpha"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial, time
+import sys, ConfigParser, serial, time, os
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor
 from PyQt4.QtCore import Qt, QPoint
