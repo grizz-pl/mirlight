@@ -154,10 +154,25 @@ class MyForm(QtGui.QMainWindow):
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
-			verbose(x)
+			if x == 14: command='smplayer -send-action pause'#works as pause/play
+			if x == 59: command='smplayer -send-action pause'#works as pause/play
+			if x == 10: command='smplayer -send-action stop'
+			if x == 0: command='smplayer -send-action play'
+			if x == 16: command='smplayer -send-action increase_volume'
+			if x == 17: command='smplayer -send-action decrease_volume'
+			if x == 13: command='smplayer -send-action mute' #mute/unmute
+			if x == 5: command='smplayer -send-action dec_sub_scale' #decrease subtitles
+			if x == 8: command='smplayer -send-action inc_sub_scale' #increase subtitles
+			if x == 7: command='smplayer -send-action rewind1' #small jump
+			if x == 9: command='smplayer -send-action forward1'
+			if x == 4: command='smplayer -send-action rewind2' #medium jump
+			if x == 6: command='smplayer -send-action forward2'
+			if x == 1: command='smplayer -send-action rewind3'#large jump
+			if x == 3: command='smplayer -send-action forward3'
+			verbose("%s:\t%s" % (x, command))
+			os.system(command)
 		except:
-			pass
-			#verbose("BUM!")
+			verbose("no remote command")
 
 
 
