@@ -22,7 +22,7 @@ __version__   = "0.5alpha"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial, time
+import sys, ConfigParser, serial, time, os
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor
 from PyQt4.QtCore import Qt, QPoint
@@ -60,7 +60,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
-			fadeValue = config.getint('Hardware', 'fade')
+			#fadeValue = config.getint('Hardware', 'fade')
 			#self.sendConfiguration(fadeValue)
 			#self._Timer.start(config.getint('Timer', 'interval'))
 			self._Timer.start(100) ##XXX
@@ -113,15 +113,15 @@ class MyForm(QtGui.QMainWindow):
 		sum = 0
 		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
 		for color in colors:
-			red = float(QtGui.qRed(color))/255
-			green = float(QtGui.qGreen(color))/255
-			blue = float(QtGui.qBlue(color))/255
-			verbose("k: %d" % (colors.index(color)+1)) #XXX debug purposes
-			verbose("\trgb: %f, %f, %f" % (red, green, blue))
-			red = int(red*red*100)
-			green = int(green*green*100)
-			blue = int(blue*blue*100)
-			verbose("\t\trgb: %f, %f, %f" % (red, green, blue)) #XXX debug purposes
+			red = QtGui.qRed(color)*10/255
+			green = QtGui.qGreen(color)*10/255
+			blue = QtGui.qBlue(color)*10/255
+			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
+			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
+			red = red*red
+			green = green*green
+			blue = blue*blue
+			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
 			kod += chr(blue)
@@ -154,10 +154,25 @@ class MyForm(QtGui.QMainWindow):
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
-			verbose(x)
+			if x == 14: command='smplayer -send-action pause'#works as pause/play
+			if x == 59: command='smplayer -send-action pause'#works as pause/play
+			if x == 10: command='smplayer -send-action stop'
+			if x == 0: command='smplayer -send-action play'
+			if x == 16: command='smplayer -send-action increase_volume'
+			if x == 17: command='smplayer -send-action decrease_volume'
+			if x == 13: command='smplayer -send-action mute' #mute/unmute
+			if x == 5: command='smplayer -send-action dec_sub_scale' #decrease subtitles
+			if x == 8: command='smplayer -send-action inc_sub_scale' #increase subtitles
+			if x == 7: command='smplayer -send-action rewind1' #small jump
+			if x == 9: command='smplayer -send-action forward1'
+			if x == 4: command='smplayer -send-action rewind2' #medium jump
+			if x == 6: command='smplayer -send-action forward2'
+			if x == 1: command='smplayer -send-action rewind3'#large jump
+			if x == 3: command='smplayer -send-action forward3'
+			verbose("%s:\t%s" % (x, command), 2)
+			os.system(command)
 		except:
-			pass
-			#verbose("BUM!")
+			verbose("no remote command", 2)
 
 
 
@@ -218,10 +233,10 @@ class MyForm(QtGui.QMainWindow):
 			response = message.clickedButton().text()
 		if response == SAVE:
 			self.saveFields() 							###TODO save prompt
-			verbose("--\nSaved")
+			verbose("--\nSaved", 1)
 			self.closeFields()
 		elif response == CANCEL:
-			verbose("--\nClosing without saving...")
+			verbose("--\nClosing without saving...", 1)
 			self.closeFields()
 
 	def closeFields(self):
@@ -253,7 +268,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
 		config.set("Port", "number", self.ui.portNumberSpinBox.value())
-		config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
+		#config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
 		if self.ui.AutoArrangeCheckBox.isChecked():
 			config.set("Fields", "autoarrange", "on")
 		else:
@@ -275,30 +290,30 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.read("presets/autoarrange.mrl")
 		else:
 			fieldsconfig.read("presets/default.mrl")
-			verbose("--\nLoading default fields' preset") ##XXX debug purposes
+			verbose("--\nLoading default fields' preset", 1) ##XXX debug purposes
 
 		try:
 			global ser 									##XXX uhh a nasty code...
 			ser = serial.Serial(config.getint('Port', 'number'), 38400, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
-			verbose("--\nSelected port: %s" % ser.portstr)       # check which port was really used ##XXX debug purposes
+			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used ##XXX debug purposes
 		except:
-			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!")
+			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!", 1)
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
 		self.ui.TimerHorizontalSlider.setValue(config.getint("Timer", "interval"))
 		self.ui.TimerValueLabel.setText(str(config.getint("Timer", "interval")))
-		self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
+		#self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
 		if config.get("Fields", "autoarrange") == "on":
 			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
 		else:
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
-		try:
-			self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
-		except:
-			verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
+		#try:
+			#self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
+		#except:
+			#verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
 
 	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
@@ -328,12 +343,12 @@ class MyForm(QtGui.QMainWindow):
 		verticalHeight = sh/2
 		horizontalWidth = sw/3
 		horizontalHeight = (sh/100)*factor
-		verbose("--\nAuto arranging...")
-		verbose("Size factor: \t\t%d" % factor) 							#XXXX debug purposes
-		verbose("vertical width: \t%d" % verticalWidth)
-		verbose("vertical height: \t%d" % verticalHeight)
-		verbose("horizontal width: \t%d" % horizontalWidth)
-		verbose("horizontal height: \t%d" % horizontalHeight)
+		verbose("--\nAuto arranging...", 1)
+		verbose("Size factor: \t\t%d" % factor, 1) 							#XXXX debug purposes
+		verbose("vertical width: \t%d" % verticalWidth, 1)
+		verbose("vertical height: \t%d" % verticalHeight, 1)
+		verbose("horizontal width: \t%d" % horizontalWidth, 1)
+		verbose("horizontal height: \t%d" % horizontalHeight, 1)
 
 
 		def writeToConfing(field, x, y, w, h):
@@ -414,12 +429,21 @@ class FieldDialog(QtGui.QWidget):
 		h = geometry.height()
 		return x, y, w, h
 
-def verbose (msg):
+def verbose (msg, level):
 	try:
-		if sys.argv[1] == "-v":
-			print msg;
+		for item in sys.argv:
+			if item == "-v" and level == 1:
+				print msg
+				break
+			elif item == "-vv" and level <= 2:
+				print msg
+				break
+			elif item == "-vvv" and level <= 3:
+				print msg
+				break
 	except IndexError:
 		pass
+
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
