@@ -68,6 +68,8 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
+			blackout = [0,0,0,0,0,0,0,0]
+			self.sendColors(blackout)
 
 	def getColor(self, px, py, w, h ):
 		"""
