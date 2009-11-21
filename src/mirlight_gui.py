@@ -431,14 +431,19 @@ class FieldDialog(QtGui.QWidget):
 
 def verbose (msg, level):
 	try:
-		if sys.argv[1] == "-v" and level == 1:
-			print msg;
-		elif sys.argv[1] == "-vv" and level <= 2:
-			print msg;
-		elif sys.argv[1] == "-vvv" and level <= 3:
-			print msg;
+		for item in sys.argv:
+			if item == "-v" and level == 1:
+				print msg
+				break
+			elif item == "-vv" and level <= 2:
+				print msg
+				break
+			elif item == "-vvv" and level <= 3:
+				print msg
+				break
 	except IndexError:
 		pass
+
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
