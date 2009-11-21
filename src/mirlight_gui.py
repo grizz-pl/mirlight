@@ -154,6 +154,7 @@ class MyForm(QtGui.QMainWindow):
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
+			command = "echo \'not bind\'" ##XXX debug
 			if x == 14: command='smplayer -send-action pause'#works as pause/play
 			if x == 59: command='smplayer -send-action pause'#works as pause/play
 			if x == 10: command='smplayer -send-action stop'
