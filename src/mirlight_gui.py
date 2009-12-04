@@ -112,10 +112,10 @@ class MyForm(QtGui.QMainWindow):
 			print "color! %s " % colors ##XXX debug purposes
 
 		elif self.timerTick < 10:
-			self.fade(self.fadeBefore, self.fadeAfter)
+			self.fade(self.fadeBefore, self.fadeAfter, self.timerTick)
 			self.timerTick += 1
 
-	def fade(self, before, after):
+	def fade(self, before, after, tick):
 		print "fade %s, %s" % (before, after) ##XXX debug purposes
 
 
