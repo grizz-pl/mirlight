@@ -91,7 +91,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		getColor for every field and display it on appropriate label
 		"""
-		if self.timerTick == 11:
+		if self.timerTick == 10:
 			self.timerTick = 0; # reset timer
 
 		if self.timerTick == 0:
@@ -130,14 +130,14 @@ class MyForm(QtGui.QMainWindow):
 		sum = 0
 		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
 		for color in zip(beforeColors, afterColors):
-			red = ((QtGui.qRed(color[1])-QtGui.qRed(color[0]))/10*tick+QtGui.qRed(color[0]))*10/255
-			green = ((QtGui.qGreen(color[1])-QtGui.qGreen(color[0]))/10*tick+QtGui.qGreen(color[0]))*10/255
-			blue = ((QtGui.qBlue(color[1])-QtGui.qBlue(color[0]))/10*tick+QtGui.qBlue(color[0]))*10/255
+			red = float((QtGui.qRed(color[1])-QtGui.qRed(color[0]))/10*tick+QtGui.qRed(color[0]))/255
+			green = float((QtGui.qGreen(color[1])-QtGui.qGreen(color[0]))/10*tick+QtGui.qGreen(color[0]))/255
+			blue = float((QtGui.qBlue(color[1])-QtGui.qBlue(color[0]))/10*tick+QtGui.qBlue(color[0]))/255
 			## verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes ##XXX rewrite
 			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
-			red = red*red
-			green = green*green
-			blue = blue*blue
+			red = int(red*red*100)
+			green = int(green*green*100)
+			blue = int(blue*blue*100)
 			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
 			kod += chr(red)
 			kod += chr(green) 
