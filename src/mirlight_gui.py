@@ -53,10 +53,6 @@ class MyForm(QtGui.QMainWindow):
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
 
-		self.timerTick = 0 #XXX initialization
-		self.fadeBefore = []
-		self.fadeAfter = []
-
 
 	def startStop(self):
 		"""
@@ -67,13 +63,13 @@ class MyForm(QtGui.QMainWindow):
 			#fadeValue = config.getint('Hardware', 'fade')
 			#self.sendConfiguration(fadeValue)
 			#self._Timer.start(config.getint('Timer', 'interval'))
-			self._Timer.start(10) ##XXX 10ms - but getColor() timer is 100ms!
+			self._Timer.start(100) ##XXX
 			
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
 			blackout = [0,0,0,0,0,0,0,0]
-			self.sendColors(blackout, blackout, 0)
+			self.sendColors(blackout)
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -91,31 +87,20 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		getColor for every field and display it on appropriate label
 		"""
-		if self.timerTick == 10:
-			self.timerTick = 0; # reset timer
-
-		if self.timerTick == 0:
-			colors = []
-			for field, x, y, w, h in [(1, fieldsconfig.getint('1', 'x'), fieldsconfig.getint('1', 'y'), fieldsconfig.getint('1', 'w'), fieldsconfig.getint('1', 'h')),
-										(2, fieldsconfig.getint('2', 'x'), fieldsconfig.getint('2', 'y'), fieldsconfig.getint('2', 'w'), fieldsconfig.getint('2', 'h')),
-										(3, fieldsconfig.getint('3', 'x'), fieldsconfig.getint('3', 'y'), fieldsconfig.getint('3', 'w'), fieldsconfig.getint('3', 'h')),
-										(4, fieldsconfig.getint('4', 'x'), fieldsconfig.getint('4', 'y'), fieldsconfig.getint('4', 'w'), fieldsconfig.getint('4', 'h')),
-										(5, fieldsconfig.getint('5', 'x'), fieldsconfig.getint('5', 'y'), fieldsconfig.getint('5', 'w'), fieldsconfig.getint('5', 'h')),
-										(6, fieldsconfig.getint('6', 'x'), fieldsconfig.getint('6', 'y'), fieldsconfig.getint('6', 'w'), fieldsconfig.getint('6', 'h')),
-										(7, fieldsconfig.getint('7', 'x'), fieldsconfig.getint('7', 'y'), fieldsconfig.getint('7', 'w'), fieldsconfig.getint('7', 'h')),
-										(8, fieldsconfig.getint('8', 'x'), fieldsconfig.getint('8', 'y'), fieldsconfig.getint('8', 'w'), fieldsconfig.getint('8', 'h'))]:
-				color = self.getColor(x, y, w, h)
-				colors.append(color)
-				self.updateLabel(field, x, y, w, h, color)
-			self.fadeBefore = self.fadeAfter
-			self.fadeAfter = colors
-
-			print "color! %s " % colors ##XXX debug purposes
-
-		self.sendColors(self.fadeBefore, self.fadeAfter, self.timerTick)
-		self.timerTick += 1
-
-
+		colors = []
+		for field, x, y, w, h in [(1, fieldsconfig.getint('1', 'x'), fieldsconfig.getint('1', 'y'), fieldsconfig.getint('1', 'w'), fieldsconfig.getint('1', 'h')),
+									(2, fieldsconfig.getint('2', 'x'), fieldsconfig.getint('2', 'y'), fieldsconfig.getint('2', 'w'), fieldsconfig.getint('2', 'h')),
+									(3, fieldsconfig.getint('3', 'x'), fieldsconfig.getint('3', 'y'), fieldsconfig.getint('3', 'w'), fieldsconfig.getint('3', 'h')),
+									(4, fieldsconfig.getint('4', 'x'), fieldsconfig.getint('4', 'y'), fieldsconfig.getint('4', 'w'), fieldsconfig.getint('4', 'h')),
+									(5, fieldsconfig.getint('5', 'x'), fieldsconfig.getint('5', 'y'), fieldsconfig.getint('5', 'w'), fieldsconfig.getint('5', 'h')),
+									(6, fieldsconfig.getint('6', 'x'), fieldsconfig.getint('6', 'y'), fieldsconfig.getint('6', 'w'), fieldsconfig.getint('6', 'h')),
+									(7, fieldsconfig.getint('7', 'x'), fieldsconfig.getint('7', 'y'), fieldsconfig.getint('7', 'w'), fieldsconfig.getint('7', 'h')),
+									(8, fieldsconfig.getint('8', 'x'), fieldsconfig.getint('8', 'y'), fieldsconfig.getint('8', 'w'), fieldsconfig.getint('8', 'h'))]:
+			color = self.getColor(x, y, w, h)
+			colors.append(color)
+			self.updateLabel(field, x, y, w, h, color)
+		self.sendColors(colors)
+		
 
 	def addSum(self, value):
 		global sum
@@ -124,16 +109,16 @@ class MyForm(QtGui.QMainWindow):
 			sum -=256
 
 
-	def sendColors(self, beforeColors, afterColors, tick):
+	def sendColors(self, colors):
 		kod = chr(128) #kod inicjujacy poczatek standardowej paczki + konfig
 		global sum
 		sum = 0
 		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
-		for color in zip(beforeColors, afterColors):
-			red = float((QtGui.qRed(color[1])-QtGui.qRed(color[0]))/10*tick+QtGui.qRed(color[0]))/255
-			green = float((QtGui.qGreen(color[1])-QtGui.qGreen(color[0]))/10*tick+QtGui.qGreen(color[0]))/255
-			blue = float((QtGui.qBlue(color[1])-QtGui.qBlue(color[0]))/10*tick+QtGui.qBlue(color[0]))/255
-			## verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes ##XXX rewrite
+		for color in colors:
+			red = float(QtGui.qRed(color))/255
+			green = float(QtGui.qGreen(color))/255
+			blue = float(QtGui.qBlue(color))/255
+			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
 			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
 			red = int(red*red*100)
 			green = int(green*green*100)
