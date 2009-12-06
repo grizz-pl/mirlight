@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Wed Nov 18 12:42:51 2009
+# Created: Sun Dec  6 13:25:25 2009
 #      by: PyQt4 UI code generator 4.5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,11 +12,18 @@ from PyQt4 import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(644, 480)
+        MainWindow.resize(640, 434)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(640, 434))
+        MainWindow.setMaximumSize(QtCore.QSize(640, 434))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(12, 400, 621, 51))
+        self.pushButton.setGeometry(QtCore.QRect(10, 340, 621, 51))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1252,6 +1259,15 @@ class Ui_MainWindow(object):
         self.AutoArrangeCheckBox.setMinimumSize(QtCore.QSize(0, 32))
         self.AutoArrangeCheckBox.setObjectName("AutoArrangeCheckBox")
         self.gridLayout_8.addWidget(self.AutoArrangeCheckBox, 0, 0, 1, 1)
+        self.showFieldsPushButton = QtGui.QPushButton(self.tab_2)
+        self.showFieldsPushButton.setGeometry(QtCore.QRect(10, 160, 201, 31))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.showFieldsPushButton.sizePolicy().hasHeightForWidth())
+        self.showFieldsPushButton.setSizePolicy(sizePolicy)
+        self.showFieldsPushButton.setCheckable(True)
+        self.showFieldsPushButton.setObjectName("showFieldsPushButton")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -1307,31 +1323,13 @@ class Ui_MainWindow(object):
         self.AboutUrlLabel_2.setObjectName("AboutUrlLabel_2")
         self.gridLayout_7.addWidget(self.AboutUrlLabel_2, 1, 1, 1, 1)
         self.tabWidget.addTab(self.tab_3, "")
-        self.saveFieldsPushButton = QtGui.QPushButton(self.centralwidget)
-        self.saveFieldsPushButton.setGeometry(QtCore.QRect(334, 340, 300, 51))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.saveFieldsPushButton.sizePolicy().hasHeightForWidth())
-        self.saveFieldsPushButton.setSizePolicy(sizePolicy)
-        self.saveFieldsPushButton.setObjectName("saveFieldsPushButton")
-        self.showFieldsPushButton = QtGui.QPushButton(self.centralwidget)
-        self.showFieldsPushButton.setGeometry(QtCore.QRect(13, 340, 300, 51))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.showFieldsPushButton.sizePolicy().hasHeightForWidth())
-        self.showFieldsPushButton.setSizePolicy(sizePolicy)
-        self.showFieldsPushButton.setCheckable(True)
-        self.showFieldsPushButton.setFlat(False)
-        self.showFieldsPushButton.setObjectName("showFieldsPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.TimerHorizontalSlider, QtCore.SIGNAL("sliderMoved(int)"), self.TimerValueLabel.setNum)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1368,6 +1366,8 @@ class Ui_MainWindow(object):
         self.AutoarrangeHorizontalSlider.setStatusTip(QtGui.QApplication.translate("MainWindow", "Size Factor", None, QtGui.QApplication.UnicodeUTF8))
         self.AutoArrangeCheckBox.setStatusTip(QtGui.QApplication.translate("MainWindow", "Use autoarrange insteed", None, QtGui.QApplication.UnicodeUTF8))
         self.AutoArrangeCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Autoarrange", None, QtGui.QApplication.UnicodeUTF8))
+        self.showFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Show fields size and position", None, QtGui.QApplication.UnicodeUTF8))
+        self.showFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Show and set fields", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "settings", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutProjectLabel.setText(QtGui.QApplication.translate("MainWindow", "mirlight", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutVersionLabel.setText(QtGui.QApplication.translate("MainWindow", "ver. XX", None, QtGui.QApplication.UnicodeUTF8))
@@ -1377,8 +1377,4 @@ class Ui_MainWindow(object):
         self.AboutUrlDescLabel_2.setText(QtGui.QApplication.translate("MainWindow", "Hardware page: ", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutUrlLabel_2.setText(QtGui.QApplication.translate("MainWindow", "<a href=\'http://mirley.firlej.org/mirlight/\'>http://mirley.firlej.org/mirlight/</a>", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("MainWindow", "about", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Save current fields settings to file", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Save fields", None, QtGui.QApplication.UnicodeUTF8))
-        self.showFieldsPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Show fields size and position", None, QtGui.QApplication.UnicodeUTF8))
-        self.showFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Show fields", None, QtGui.QApplication.UnicodeUTF8))
 

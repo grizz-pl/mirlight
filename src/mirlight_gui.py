@@ -41,7 +41,6 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
-		QtCore.QObject.connect(self.ui.saveFieldsPushButton,QtCore.SIGNAL("clicked()"), self.saveFields)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
 		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
@@ -228,7 +227,7 @@ class MyForm(QtGui.QMainWindow):
 			CANCEL = "Cancel"
 			message = QtGui.QMessageBox(self)
 			message.setText('Nie zapisano zmian w pliku')
-			message.setWindowTitle('Notatnik')
+			message.setWindowTitle('Mirlight')
 			message.setIcon(QtGui.QMessageBox.Question)
 			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
 			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
@@ -248,7 +247,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		for widget in self.fieldsWidgets:
 			widget.close()
-		self.ui.showFieldsPushButton.setText("Show fields")
+		self.ui.showFieldsPushButton.setText("Show and set fields")
 
 	def saveFields(self):
 		"""
@@ -265,6 +264,7 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "h", h)
 		with open('presets/default.mrl', 'wb') as configfile:
 			fieldsconfig.write(configfile)
+		self.loadConfiguration() ##XXX it's bad here! reThink that.
 
 
 	def listAviablePresets(self):
