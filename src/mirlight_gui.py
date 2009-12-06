@@ -254,6 +254,18 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		save fields to conf file
 		"""
+		for field, widget in zip([1,2,3,4,5,6,7,8], self.fieldsWidgets):
+			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
+				fieldsconfig.add_section(`field`)
+			x, y, w, h = widget.getGeometry()
+			verbose("Field: %d\tx: %d\ty: %d\tw: %d\th: %d" % (field,x,y,w,h), 1)
+			fieldsconfig.set(`field`, "x", x)
+			fieldsconfig.set(`field`, "y", y)
+			fieldsconfig.set(`field`, "w", w)
+			fieldsconfig.set(`field`, "h", h)
+		with open('presets/default.mrl', 'wb') as configfile:
+			fieldsconfig.write(configfile)
+
 
 	def listAviablePresets(self):
 		"""
