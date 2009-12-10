@@ -199,7 +199,25 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		draw fields
 		"""
+
+
 		if  self.ui.showFieldsPushButton.isChecked():
+			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0): ###XXX ugly hack
+				SAVE = "Save"
+				CANCEL = "Cancel"
+				message = QtGui.QMessageBox(self)
+				message.setText('Save changes before?')
+				message.setWindowTitle('Mirlight')
+				message.setIcon(QtGui.QMessageBox.Question)
+				message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
+				message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
+				message.exec_()
+				response = message.clickedButton().text()
+				if response == SAVE:
+					self.saveConfiguration()
+				else:
+					self.loadConfiguration()
+
 			self.fieldsWidgets = [] ## clear to avoid multiple instances
 			self.widget1 = FieldDialog(1)
 			self.fieldsWidgets.append(self.widget1)
@@ -221,24 +239,28 @@ class MyForm(QtGui.QMainWindow):
 			for widget in self.fieldsWidgets:
 				widget.show()
 			self.ui.showFieldsPushButton.setText("Hide fields")
+			self.ui.AutoArrangeCheckBox.setEnabled(0)
+			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
-		else:
+		elif config.get("Fields", "autoarrange") == "off":
 			SAVE = "Save"
 			CANCEL = "Cancel"
 			message = QtGui.QMessageBox(self)
-			message.setText('Nie zapisano zmian w pliku')
+			message.setText('Save Fields size and position?')
 			message.setWindowTitle('Mirlight')
 			message.setIcon(QtGui.QMessageBox.Question)
 			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
 			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
 			message.exec_()
 			response = message.clickedButton().text()
-		if response == SAVE:
-			self.saveFields() 							###TODO save prompt
-			verbose("--\nSaved", 1)
-			self.closeFields()
-		elif response == CANCEL:
-			verbose("--\nClosing without saving...", 1)
+			if response == SAVE:
+				self.saveFields() 							###TODO save prompt
+				verbose("--\nSaved", 1)
+				self.closeFields()
+			elif response == CANCEL:
+				verbose("--\nClosing without saving...", 1)
+				self.closeFields()
+		else:
 			self.closeFields()
 
 	def closeFields(self):
@@ -248,6 +270,10 @@ class MyForm(QtGui.QMainWindow):
 		for widget in self.fieldsWidgets:
 			widget.close()
 		self.ui.showFieldsPushButton.setText("Show and set fields")
+
+		self.ui.AutoArrangeCheckBox.setEnabled(1)
+		self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
+
 
 	def saveFields(self):
 		"""
