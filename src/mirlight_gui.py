@@ -202,7 +202,7 @@ class MyForm(QtGui.QMainWindow):
 
 
 		if  self.ui.showFieldsPushButton.isChecked():
-			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0): ###XXX ugly hack
+			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0) or (config.getint("Fields", "size") != self.ui.AutoarrangeHorizontalSlider.value()): ###XXX ugly hack
 				SAVE = "Save"
 				CANCEL = "Cancel"
 				message = QtGui.QMessageBox(self)
