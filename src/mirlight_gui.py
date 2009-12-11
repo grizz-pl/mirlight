@@ -331,7 +331,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			fieldsconfig.read("presets/default.mrl")
 			verbose("--\nLoading default fields' preset", 1) ##XXX debug purposes
-
+			verbose("--\nAutoarrange is off", 1)
 		try:
 			global ser 									##XXX uhh a nasty code...
 			ser = serial.Serial(config.getint('Port', 'number'), 38400, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
@@ -341,8 +341,10 @@ class MyForm(QtGui.QMainWindow):
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
-		self.ui.TimerHorizontalSlider.setValue(config.getint("Timer", "interval"))
-		self.ui.TimerValueLabel.setText(str(config.getint("Timer", "interval")))
+		timerInterval = config.getint("Timer", "interval")
+		self.ui.TimerHorizontalSlider.setValue(timerInterval)
+		verbose("--\nScan Interval: %d" % timerInterval, 1)
+		self.ui.TimerValueLabel.setText(str(timerInterval))
 		#self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
 		if config.get("Fields", "autoarrange") == "on":
 			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
