@@ -61,8 +61,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.pushButton.setText("Stop!")
 			#fadeValue = config.getint('Hardware', 'fade')
 			#self.sendConfiguration(fadeValue)
-			#self._Timer.start(config.getint('Timer', 'interval'))
-			self._Timer.start(100) ##XXX
+			self._Timer.start(config.getint('Timer', 'interval'))
 			
 		else:
 			self._Timer.stop()
