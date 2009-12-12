@@ -307,7 +307,7 @@ class MyForm(QtGui.QMainWindow):
 		save configuration to mirlight.conf file
 		"""
 		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
-		config.set("Port", "number", self.ui.portNumberSpinBox.value())
+		config.set("Port", "number", self.ui.portNumberLineEdit.text())
 		#config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
 		if self.ui.AutoArrangeCheckBox.isChecked():
 			config.set("Fields", "autoarrange", "on")
@@ -334,13 +334,16 @@ class MyForm(QtGui.QMainWindow):
 			verbose("--\nAutoarrange is off", 1)
 		try:
 			global ser 									##XXX uhh a nasty code...
-			ser = serial.Serial(config.getint('Port', 'number'), 38400, timeout=0) ##TODO maybe not int, but string /dev/ttyS01 ?
+			port = config.get('Port', 'number')
+			if port.isdigit():
+				port = int(port)
+			ser = serial.Serial(port, 38400, timeout=0)
 			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used ##XXX debug purposes
 		except:
 			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!", 1)
 		
 		self._watchTimer.start(300)
-		self.ui.portNumberSpinBox.setValue(config.getint("Port", "number"))
+		self.ui.portNumberLineEdit.setText(config.get("Port", "number"))
 		timerInterval = config.getint("Timer", "interval")
 		self.ui.TimerHorizontalSlider.setValue(timerInterval)
 		verbose("--\nScan Interval: %d" % timerInterval, 1)

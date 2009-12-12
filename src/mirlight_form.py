@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Dec  6 13:25:25 2009
+# Created: Sat Dec 12 11:34:20 2009
 #      by: PyQt4 UI code generator 4.5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1192,19 +1192,17 @@ class Ui_MainWindow(object):
         self.buttonBox.setCenterButtons(True)
         self.buttonBox.setObjectName("buttonBox")
         self.layoutWidget1 = QtGui.QWidget(self.tab_2)
-        self.layoutWidget1.setGeometry(QtCore.QRect(10, 10, 181, 42))
+        self.layoutWidget1.setGeometry(QtCore.QRect(10, 10, 221, 34))
         self.layoutWidget1.setObjectName("layoutWidget1")
-        self.gridLayout_2 = QtGui.QGridLayout(self.layoutWidget1)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.portNumberSpinBox = QtGui.QSpinBox(self.layoutWidget1)
-        self.portNumberSpinBox.setMinimumSize(QtCore.QSize(0, 32))
-        self.portNumberSpinBox.setMaximum(24)
-        self.portNumberSpinBox.setObjectName("portNumberSpinBox")
-        self.gridLayout_2.addWidget(self.portNumberSpinBox, 0, 1, 1, 1)
+        self.horizontalLayout = QtGui.QHBoxLayout(self.layoutWidget1)
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.portNumberLabel = QtGui.QLabel(self.layoutWidget1)
         self.portNumberLabel.setMinimumSize(QtCore.QSize(0, 32))
         self.portNumberLabel.setObjectName("portNumberLabel")
-        self.gridLayout_2.addWidget(self.portNumberLabel, 0, 0, 1, 1)
+        self.horizontalLayout.addWidget(self.portNumberLabel)
+        self.portNumberLineEdit = QtGui.QLineEdit(self.layoutWidget1)
+        self.portNumberLineEdit.setObjectName("portNumberLineEdit")
+        self.horizontalLayout.addWidget(self.portNumberLineEdit)
         self.layoutWidget2 = QtGui.QWidget(self.tab_2)
         self.layoutWidget2.setGeometry(QtCore.QRect(10, 242, 281, 51))
         self.layoutWidget2.setObjectName("layoutWidget2")
@@ -1232,10 +1230,12 @@ class Ui_MainWindow(object):
         self.TimerHorizontalSlider = QtGui.QSlider(self.layoutWidget3)
         self.TimerHorizontalSlider.setMinimumSize(QtCore.QSize(0, 32))
         self.TimerHorizontalSlider.setMinimum(10)
-        self.TimerHorizontalSlider.setMaximum(1000)
+        self.TimerHorizontalSlider.setMaximum(500)
         self.TimerHorizontalSlider.setSingleStep(10)
         self.TimerHorizontalSlider.setPageStep(50)
+        self.TimerHorizontalSlider.setSliderPosition(100)
         self.TimerHorizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.TimerHorizontalSlider.setTickPosition(QtGui.QSlider.TicksBothSides)
         self.TimerHorizontalSlider.setObjectName("TimerHorizontalSlider")
         self.gridLayout_5.addWidget(self.TimerHorizontalSlider, 0, 1, 1, 1)
         self.TimerValueLabel = QtGui.QLabel(self.layoutWidget3)
@@ -1329,7 +1329,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QObject.connect(self.TimerHorizontalSlider, QtCore.SIGNAL("sliderMoved(int)"), self.TimerValueLabel.setNum)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1355,7 +1355,9 @@ class Ui_MainWindow(object):
         self.label_8.setStatusTip(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setText(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "preview", None, QtGui.QApplication.UnicodeUTF8))
+        self.portNumberLabel.setStatusTip(QtGui.QApplication.translate("MainWindow", "Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)", None, QtGui.QApplication.UnicodeUTF8))
         self.portNumberLabel.setText(QtGui.QApplication.translate("MainWindow", "Port number:", None, QtGui.QApplication.UnicodeUTF8))
+        self.portNumberLineEdit.setStatusTip(QtGui.QApplication.translate("MainWindow", "Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)", None, QtGui.QApplication.UnicodeUTF8))
         self.PresetsComboBox.setStatusTip(QtGui.QApplication.translate("MainWindow", "Not yet available", None, QtGui.QApplication.UnicodeUTF8))
         self.PresetsLabel.setStatusTip(QtGui.QApplication.translate("MainWindow", "Not yet available", None, QtGui.QApplication.UnicodeUTF8))
         self.PresetsLabel.setText(QtGui.QApplication.translate("MainWindow", "Presets:", None, QtGui.QApplication.UnicodeUTF8))
