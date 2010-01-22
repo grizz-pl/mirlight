@@ -403,6 +403,8 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "y", y)
 			fieldsconfig.set(`field`, "w", w)
 			fieldsconfig.set(`field`, "h", h)
+			if not os.path.exists('presets/autoarrange.mrl'):
+				os.mkdir('presets')
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
