@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.5alpha"
+__version__   = "d.2010.01.25.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -499,7 +499,8 @@ if __name__ == "__main__":
 	config = ConfigParser.ConfigParser() 								##TODO create config automatically
 	fieldsconfig = ConfigParser.ConfigParser()
 	ser = "ziaaaf" 														# just an initialization
-	sum = 0 ##XXX 	
+	sum = 0 ##XXX
+	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
 	sys.exit(app.exec_())
 #	ser.close()             # close port ##XXX here?
