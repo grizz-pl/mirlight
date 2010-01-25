@@ -62,11 +62,23 @@ Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/>
 
 Changelog
 ---------
+### ver.0.5beta 2010/01/25
+(based on  var. d.2010.01.25.1)
+
+*  GUI changes
+*  New color algorithm
+*  Showing and set fields
+*  Verbose mode
+
+
 ### ver.0.5alfa 2009/11/15
-Switch to a new hardware.
+
+*  Switch to a new hardware.
 
 ### ver.0.25 2009/03/29
-Making average color for each screen region is much better.
+
+*  Making average color for each screen region is much better.
 
 ### ver.0.2 2009/03/29
-All basic functions work.
+
+*  All basic functions work.
