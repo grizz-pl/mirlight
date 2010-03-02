@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.02.1"
+__version__   = "d.2010.03.02.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -324,6 +324,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		load configuration from mirlight.conf
 		"""
+		self.checkFiles()
 		config.read("mirlight.conf")
 		if config.get("Fields", "autoarrange") == "on":
 			self.autoArrangeFields()
@@ -368,6 +369,29 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
+	def checkFiles(self):
+		"""
+		Check if basic conf file exists. If not, create them.
+		"""
+		if not os.path.exists('mirlight.conf'):
+			verbose("Creating mirlight.conf file", 1)
+			config.add_section("Fields")
+			config.add_section("Timer")
+			config.add_section("Port")
+			config.set("Fields", "autoarrange", "on")
+			config.set("Fields", "size", 5)
+			config.set("Timer", "interval", 100)
+			config.set("Port", "number", "1")
+			with open('mirlight.conf', 'wb') as configfile:
+				config.write(configfile)
+
+		if not os.path.exists('presets/'):
+			os.mkdir('presets')
+
+		#if not os.path.exists('presets/autoarrange.mrl'): # not need, as autoarrange is set by default in case of the lack of confings
+			# ...
+		
+
 	def closeEvent(self, closeEvent):
 		"""
 		blackout and clean screan on close
@@ -407,8 +431,6 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "y", y)
 			fieldsconfig.set(`field`, "w", w)
 			fieldsconfig.set(`field`, "h", h)
-			if not os.path.exists('presets/autoarrange.mrl'):
-				os.mkdir('presets')
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
