@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #mirlight by grizz - Witek Firlej http://grizz.pl
-# Copyright (C) 2009 Witold Firlej
+# Copyright (C) 2009-2010 Witold Firlej
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.5beta"
+__version__   = "0.5beta2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -51,6 +51,7 @@ class MyForm(QtGui.QMainWindow):
 
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
+		self.blackout = [0,0,0,0,0,0,0,0]
 
 
 	def startStop(self):
@@ -66,8 +67,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			blackout = [0,0,0,0,0,0,0,0]
-			self.sendColors(blackout)
+			self.sendColors(self.blackout)
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -324,6 +324,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		load configuration from mirlight.conf
 		"""
+		self.checkFiles()
 		config.read("mirlight.conf")
 		if config.get("Fields", "autoarrange") == "on":
 			self.autoArrangeFields()
@@ -368,8 +369,35 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
+	def checkFiles(self):
+		"""
+		Check if basic conf file exists. If not, create them.
+		"""
+		if not os.path.exists('mirlight.conf'):
+			verbose("Creating mirlight.conf file", 1)
+			config.add_section("Fields")
+			config.add_section("Timer")
+			config.add_section("Port")
+			config.set("Fields", "autoarrange", "on")
+			config.set("Fields", "size", 5)
+			config.set("Timer", "interval", 100)
+			config.set("Port", "number", "1")
+			with open('mirlight.conf', 'wb') as configfile:
+				config.write(configfile)
+
+		if not os.path.exists('presets/'):
+			os.mkdir('presets')
+
+		#if not os.path.exists('presets/autoarrange.mrl'): # not need, as autoarrange is set by default in case of the lack of confings
+			# ...
+		
+
 	def closeEvent(self, closeEvent):
+		"""
+		blackout and clean screan on close
+		"""
 		self.closeFields()
+		self.sendColors(self.blackout)
 
 	def autoArrangeFields(self):
 		"""
@@ -403,8 +431,6 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "y", y)
 			fieldsconfig.set(`field`, "w", w)
 			fieldsconfig.set(`field`, "h", h)
-			if not os.path.exists('presets/autoarrange.mrl'):
-				os.mkdir('presets')
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
