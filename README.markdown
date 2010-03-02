@@ -62,8 +62,13 @@ Informacje na temat projektu będą zapewne pojawiać się na <http://grizz.pl/>
 
 Changelog
 ---------
+### ver.0.5beta2 2010/03/02
+(based on ver. d.2010.03.02.2)
+
+*  Auto create confing files
+
 ### ver.0.5beta 2010/01/25
-(based on  var. d.2010.01.25.1)
+(based on  ver. d.2010.01.25.1)
 
 *  GUI changes
 *  New color algorithm
