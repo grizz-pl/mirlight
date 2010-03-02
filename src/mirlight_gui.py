@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.01.25.1"
+__version__   = "d.2010.03.02.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -51,6 +51,7 @@ class MyForm(QtGui.QMainWindow):
 
 		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
+		self.blackout = [0,0,0,0,0,0,0,0]
 
 
 	def startStop(self):
@@ -66,8 +67,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
-			blackout = [0,0,0,0,0,0,0,0]
-			self.sendColors(blackout)
+			self.sendColors(self.blackout)
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -369,7 +369,11 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
 	def closeEvent(self, closeEvent):
+		"""
+		blackout and clean screan on close
+		"""
 		self.closeFields()
+		self.sendColors(self.blackout)
 
 	def autoArrangeFields(self):
 		"""
