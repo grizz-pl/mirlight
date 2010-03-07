@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Mar  7 15:57:44 2010
+# Created: Sun Mar  7 20:01:59 2010
 #      by: PyQt4 UI code generator 4.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,6 +20,9 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QtCore.QSize(640, 434))
         MainWindow.setMaximumSize(QtCore.QSize(640, 434))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/pic/mirlight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtGui.QPushButton(self.centralwidget)
@@ -1034,13 +1037,6 @@ class Ui_MainWindow(object):
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 2, 2, 1, 1)
-        self.label_9 = QtGui.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(28)
-        self.label_9.setFont(font)
-        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_9.setObjectName("label_9")
-        self.gridLayout.addWidget(self.label_9, 1, 1, 1, 1)
         self.label_8 = QtGui.QLabel(self.layoutWidget)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -1182,7 +1178,15 @@ class Ui_MainWindow(object):
         self.label_8.setAutoFillBackground(True)
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
-        self.gridLayout.addWidget(self.label_8, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_8, 3, 0, 1, 3)
+        self.label_9 = QtGui.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(28)
+        self.label_9.setFont(font)
+        self.label_9.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
+        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout.addWidget(self.label_9, 1, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -1268,6 +1272,14 @@ class Ui_MainWindow(object):
         self.showFieldsPushButton.setSizePolicy(sizePolicy)
         self.showFieldsPushButton.setCheckable(True)
         self.showFieldsPushButton.setObjectName("showFieldsPushButton")
+        self.label_11 = QtGui.QLabel(self.tab_2)
+        self.label_11.setGeometry(QtCore.QRect(570, 0, 51, 51))
+        font = QtGui.QFont()
+        font.setPointSize(28)
+        self.label_11.setFont(font)
+        self.label_11.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
+        self.label_11.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_11.setObjectName("label_11")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -1322,6 +1334,14 @@ class Ui_MainWindow(object):
         self.AboutUrlLabel_2.setOpenExternalLinks(True)
         self.AboutUrlLabel_2.setObjectName("AboutUrlLabel_2")
         self.gridLayout_7.addWidget(self.AboutUrlLabel_2, 1, 1, 1, 1)
+        self.label_12 = QtGui.QLabel(self.tab_3)
+        self.label_12.setGeometry(QtCore.QRect(570, 0, 51, 51))
+        font = QtGui.QFont()
+        font.setPointSize(28)
+        self.label_12.setFont(font)
+        self.label_12.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
+        self.label_12.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_12.setObjectName("label_12")
         self.tabWidget.addTab(self.tab_3, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -1329,7 +1349,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.TimerHorizontalSlider, QtCore.SIGNAL("sliderMoved(int)"), self.TimerValueLabel.setNum)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1351,7 +1371,6 @@ class Ui_MainWindow(object):
         self.label.setText(QtGui.QApplication.translate("MainWindow", "1", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setStatusTip(QtGui.QApplication.translate("MainWindow", "7", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setText(QtGui.QApplication.translate("MainWindow", "7", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_9.setText(QtGui.QApplication.translate("MainWindow", "mirlight", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setStatusTip(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
         self.label_8.setText(QtGui.QApplication.translate("MainWindow", "8", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "preview", None, QtGui.QApplication.UnicodeUTF8))
@@ -1380,3 +1399,4 @@ class Ui_MainWindow(object):
         self.AboutUrlLabel_2.setText(QtGui.QApplication.translate("MainWindow", "<a href=\'http://mirley.firlej.org/mirlight/\'>http://mirley.firlej.org/mirlight/</a>", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("MainWindow", "about", None, QtGui.QApplication.UnicodeUTF8))
 
+import mirlight_rc

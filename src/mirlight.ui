@@ -31,6 +31,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mirlight.qrc">
+    <normaloff>:/pic/mirlight.png</normaloff>:/pic/mirlight.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
@@ -70,7 +74,7 @@
      <locale language="English" country="UnitedStates"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3103,22 +3107,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <pointsize>28</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>mirlight</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
+       <item row="3" column="0" colspan="3">
         <widget class="QLabel" name="label_8">
          <property name="palette">
           <palette>
@@ -3549,6 +3538,24 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_9">
+         <property name="font">
+          <font>
+           <pointsize>28</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -3816,6 +3823,30 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>0</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -3936,12 +3967,38 @@
        </item>
       </layout>
      </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>0</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="mirlight.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>TimerHorizontalSlider</sender>
