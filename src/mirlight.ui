@@ -38,7 +38,7 @@
       <x>10</x>
       <y>340</y>
       <width>621</width>
-      <height>51</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -70,7 +70,7 @@
      <locale language="English" country="UnitedStates"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3632,14 +3632,14 @@
           </size>
          </property>
          <property name="statusTip">
-          <string>Not yet available</string>
+          <string>Choose preset</string>
          </property>
         </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="PresetsLabel">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="minimumSize">
           <size>
@@ -3648,7 +3648,7 @@
           </size>
          </property>
          <property name="statusTip">
-          <string>Not yet available</string>
+          <string>Choose preset</string>
          </property>
          <property name="text">
           <string>Presets:</string>
