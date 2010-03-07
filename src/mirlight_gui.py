@@ -247,8 +247,9 @@ class MyForm(QtGui.QMainWindow):
 	#		message = QtGui.QMessageBox(self)
 	#		result = QtGui.QInputDialog.getText("imgSeek","Program name to run:" ,QtGui.QLineEdit.Normal, "gimp")
 			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Enter preset name:", QtGui.QLineEdit.Normal, "preset-")
+			###XXX check if preset name exist!
 			if state == True and len(presetName) > 0:
-				self.saveFields()
+				self.saveFields(presetName)
 				verbose("--\nSaved as: %s.mrl" % presetName,1)
 			else:
 				verbose("--\nPreset not saved",1)
@@ -268,7 +269,7 @@ class MyForm(QtGui.QMainWindow):
 		self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
 
 
-	def saveFields(self):
+	def saveFields(self, name):
 		"""
 		save fields to conf file
 		"""
@@ -281,8 +282,13 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "y", y)
 			fieldsconfig.set(`field`, "w", w)
 			fieldsconfig.set(`field`, "h", h)
-		with open('presets/default.mrl', 'wb') as configfile:
+		with open('presets/%s.mrl' % name, 'wb') as configfile:
 			fieldsconfig.write(configfile)
+
+		config.set("Fields", "preset", name)
+		with open('mirlight.conf', 'wb') as configfile:
+			config.write(configfile)
+
 		self.loadConfiguration() ##XXX it's bad here! reThink that.
 
 
@@ -324,8 +330,9 @@ class MyForm(QtGui.QMainWindow):
 			self.autoArrangeFields()
 			fieldsconfig.read("presets/autoarrange.mrl")
 		else:
-			fieldsconfig.read("presets/default.mrl")
-			verbose("--\nLoading default fields' preset", 1) ##XXX debug purposes
+			name = config.get("Fields", "preset", "default")
+			fieldsconfig.read("presets/%s.mrl" % name)
+			verbose("--\nLoading >>> %s <<< preset" % name, 1) ##XXX debug purposes
 			verbose("--\nAutoarrange is off", 1)
 		try:
 			global ser 									##XXX uhh a nasty code...
