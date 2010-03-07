@@ -18,11 +18,11 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.07.1"
+__version__   = "d.2010.03.07.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial, time, os
+import sys, ConfigParser, serial, time, os, glob
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor, QInputDialog
 from PyQt4.QtCore import Qt, QPoint
@@ -246,7 +246,11 @@ class MyForm(QtGui.QMainWindow):
 			CANCEL = "Cancel"
 	#		message = QtGui.QMessageBox(self)
 	#		result = QtGui.QInputDialog.getText("imgSeek","Program name to run:" ,QtGui.QLineEdit.Normal, "gimp")
-			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Enter preset name:", QtGui.QLineEdit.Normal, "preset-")
+			presets = ""
+			for infile in glob.glob("presets/*.mrl"):
+				presets += infile[8:-4] + ", "
+			print presets
+			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, "preset-")
 			###XXX check if preset name exist!
 			if state == True and len(presetName) > 0:
 				self.saveFields(presetName)
@@ -314,6 +318,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			config.set("Fields", "autoarrange", "off")
 		config.set("Fields", "size", self.ui.AutoarrangeHorizontalSlider.value())
+		config.set("Fields", "preset", self.ui.PresetsComboBox.currentText())
 		with open('mirlight.conf', 'wb') as configfile:
 				config.write(configfile)
 
@@ -367,6 +372,11 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
 		else:
+			self.ui.PresetsComboBox.clear()
+			for infile in glob.glob("presets/*.mrl"):
+				name = infile[8:-4] 		#cut "presets/" and ".mrl"
+				self.ui.PresetsComboBox.addItem(name)
+			self.ui.PresetsComboBox.setCurrentIndex(self.ui.PresetsComboBox.findText(config.get("Fields", "preset"))) 	### XXX write what to do on ERRORs !
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 
