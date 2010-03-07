@@ -18,50 +18,16 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.05.1"
+__version__   = "0.5beta2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
 import sys, ConfigParser, serial, time, os
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor
-from PyQt4.QtCore import Qt, QPoint, QThread
+from PyQt4.QtCore import Qt, QPoint
 
 from mirlight_form import Ui_MainWindow
-
-class SendColors(QtCore.QThread):
-	def __init__(self, parent, colors):
-		kod = chr(128) #kod inicjujacy poczatek standardowej paczki + konfig
-		global sum
-		sum = 0
-		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
-		for color in colors:
-			red = float(QtGui.qRed(color))/255
-			green = float(QtGui.qGreen(color))/255
-			blue = float(QtGui.qBlue(color))/255
-			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
-			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
-			red = int(red*red*100)
-			green = int(green*green*100)
-			blue = int(blue*blue*100)
-			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
-			kod += chr(red)
-			kod += chr(green) 
-			kod += chr(blue)
-			self.addSum(red)
-			self.addSum(green)
-			self.addSum(blue)
-		kod += chr(sum/2)
-		ser.write(kod)
-		time.sleep(0.009) # hack needed by hardware
-
-	def addSum(self, value):
-		global sum
-		sum += value ##???
-		if sum > 255:
-			sum -=256
-
-
 
 class MyForm(QtGui.QMainWindow):
 	
@@ -134,13 +100,38 @@ class MyForm(QtGui.QMainWindow):
 		self.sendColors(colors)
 		
 
+	def addSum(self, value):
+		global sum
+		sum += value ##???
+		if sum > 255:
+			sum -=256
 
 
 	def sendColors(self, colors):
-		self.x = SendColors(self, colors)
-		self.x.start()
+		kod = chr(128) #kod inicjujacy poczatek standardowej paczki + konfig
+		global sum
+		sum = 0
+		self.addSum(128) #suma kontrolna tj. suma wszystkich wartosci, skrocona do 7 bitow (bajt podzielony przez dwa)
+		for color in colors:
+			red = float(QtGui.qRed(color))/255
+			green = float(QtGui.qGreen(color))/255
+			blue = float(QtGui.qBlue(color))/255
+			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
+			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
+			red = int(red*red*100)
+			green = int(green*green*100)
+			blue = int(blue*blue*100)
+			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
+			kod += chr(red)
+			kod += chr(green) 
+			kod += chr(blue)
+			self.addSum(red)
+			self.addSum(green)
+			self.addSum(blue)
+		kod += chr(sum/2)
+		ser.write(kod)
+		time.sleep(0.009) # hack needed by hardware
 
-		
 	def sendConfiguration(self, value):
 		"""
 		send fade value
