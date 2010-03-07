@@ -407,6 +407,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		blackout and clean screan on close
 		"""
+		self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
 
