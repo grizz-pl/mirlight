@@ -18,13 +18,13 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.5beta2"
+__version__   = "d.2010.03.07.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
 import sys, ConfigParser, serial, time, os
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QWidget, QApplication, QCursor
+from PyQt4.QtGui import QWidget, QApplication, QCursor, QInputDialog
 from PyQt4.QtCore import Qt, QPoint
 
 from mirlight_form import Ui_MainWindow
@@ -244,21 +244,15 @@ class MyForm(QtGui.QMainWindow):
 		elif config.get("Fields", "autoarrange") == "off":
 			SAVE = "Save"
 			CANCEL = "Cancel"
-			message = QtGui.QMessageBox(self)
-			message.setText('Save Fields size and position?')
-			message.setWindowTitle('Mirlight')
-			message.setIcon(QtGui.QMessageBox.Question)
-			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
-			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
-			message.exec_()
-			response = message.clickedButton().text()
-			if response == SAVE:
-				self.saveFields() 							###TODO save prompt
-				verbose("--\nSaved", 1)
-				self.closeFields()
-			elif response == CANCEL:
-				verbose("--\nClosing without saving...", 1)
-				self.closeFields()
+	#		message = QtGui.QMessageBox(self)
+	#		result = QtGui.QInputDialog.getText("imgSeek","Program name to run:" ,QtGui.QLineEdit.Normal, "gimp")
+			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Enter preset name:", QtGui.QLineEdit.Normal, "preset-")
+			if state == True and len(presetName) > 0:
+				self.saveFields()
+				verbose("--\nSaved as: %s.mrl" % presetName,1)
+			else:
+				verbose("--\nPreset not saved",1)
+			self.closeFields()
 		else:
 			self.closeFields()
 
