@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.09.1"
+__version__   = "d.2010.03.09.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -60,8 +60,6 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.ui.pushButton.setText("Stop!")
-			#fadeValue = config.getint('Hardware', 'fade')
-			#self.sendConfiguration(fadeValue)
 			self._Timer.start(config.getint('Timer', 'interval'))
 			
 		else:
@@ -116,12 +114,12 @@ class MyForm(QtGui.QMainWindow):
 			red = float(QtGui.qRed(color))/255
 			green = float(QtGui.qGreen(color))/255
 			blue = float(QtGui.qBlue(color))/255
-			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
+			verbose("k: %d" % (colors.index(color)+1), 3)
 			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
 			red = int(red*red*100)
 			green = int(green*green*100)
 			blue = int(blue*blue*100)
-			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
+			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3)
 			kod += chr(red)
 			kod += chr(green) 
 			kod += chr(blue)
@@ -134,20 +132,6 @@ class MyForm(QtGui.QMainWindow):
 		except:
 			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
-
-	def sendConfiguration(self, value):
-		"""
-		send fade value
-		"""
-		value = value*25+55
-		if value > 255: 										# fadeValue can be between 1 and 255 but in config it is 1-8 so multiply it!
-			value = 255
-		elif value < 1:
-			value = 1
-		fadeId = 16*9
-		ser.write(chr(fadeId))
-		ser.write(chr(value))
-		time.sleep(0.01) ##hack needed by hardware
 
 	def watch(self):
 		"""
@@ -247,14 +231,11 @@ class MyForm(QtGui.QMainWindow):
 		elif config.get("Fields", "autoarrange") == "off":
 			SAVE = "Save"
 			CANCEL = "Cancel"
-	#		message = QtGui.QMessageBox(self)
-	#		result = QtGui.QInputDialog.getText("imgSeek","Program name to run:" ,QtGui.QLineEdit.Normal, "gimp")
 			presets = ""
 			for infile in glob.glob("presets/*.mrl"):
 				presets += infile[8:-4] + ", "
 			print presets
 			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, "preset-")
-			###XXX check if preset name exist!
 			if state == True and len(presetName) > 0:
 				self.saveFields(presetName)
 				verbose("--\nSaved as: %s.mrl" % presetName,1)
@@ -315,7 +296,6 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
 		config.set("Port", "number", self.ui.portNumberLineEdit.text())
-		#config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
 		if self.ui.AutoArrangeCheckBox.isChecked():
 			config.set("Fields", "autoarrange", "on")
 		else:
@@ -340,7 +320,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			name = config.get("Fields", "preset", "default")
 			fieldsconfig.read("presets/%s.mrl" % name)
-			verbose("--\nLoading >>> %s <<< preset" % name, 1) ##XXX debug purposes
+			verbose("--\nLoading >>> %s <<< preset" % name, 1)
 			verbose("--\nAutoarrange is off", 1)
 		try:
 			global ser 									##XXX uhh a nasty code...
@@ -348,7 +328,7 @@ class MyForm(QtGui.QMainWindow):
 			if port.isdigit():
 				port = int(port)
 			ser = serial.Serial(port, 38400, timeout=0)
-			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used ##XXX debug purposes
+			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used 
 		except:
 			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!", 1)
 		
@@ -358,19 +338,14 @@ class MyForm(QtGui.QMainWindow):
 		self.ui.TimerHorizontalSlider.setValue(timerInterval)
 		verbose("--\nScan Interval: %d" % timerInterval, 1)
 		self.ui.TimerValueLabel.setText(str(timerInterval))
-		#self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
 		if config.get("Fields", "autoarrange") == "on":
 			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
 		else:
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
-		#try:
-			#self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
-		#except:
-			#verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
 
-	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
+	def changePresetsComboBoxEnabled(self):
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
 			self.ui.PresetsComboBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
@@ -432,7 +407,7 @@ class MyForm(QtGui.QMainWindow):
 		horizontalWidth = sw/3
 		horizontalHeight = (sh/100)*factor
 		verbose("--\nAuto arranging...", 1)
-		verbose("Size factor: \t\t%d" % factor, 1) 							#XXXX debug purposes
+		verbose("Size factor: \t\t%d" % factor, 1)
 		verbose("vertical width: \t%d" % verticalWidth, 1)
 		verbose("vertical height: \t%d" % verticalHeight, 1)
 		verbose("horizontal width: \t%d" % horizontalWidth, 1)
@@ -449,7 +424,6 @@ class MyForm(QtGui.QMainWindow):
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
-		###TODO do this like in timer()
 		for field, x, y, w, h in [(1, 0, sh/2, verticalWidth, verticalHeight),\
 									(2, 0, 0, verticalWidth, verticalHeight),\
 									(3, 0, 0, sw/3, horizontalHeight),\
@@ -537,10 +511,10 @@ if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	myapp = MyForm()
 	myapp.show()
-	config = ConfigParser.ConfigParser() 								##TODO create config automatically
+	config = ConfigParser.ConfigParser()
 	fieldsconfig = ConfigParser.ConfigParser()
 	ser = "ziaaaf" 														# just an initialization
-	sum = 0 ##XXX
+	sum = 0 															# just an initialization
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
 	sys.exit(app.exec_())
