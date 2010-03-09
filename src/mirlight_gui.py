@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.09.2"
+__version__   = "d.2010.03.09.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -45,7 +45,7 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
 		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
 
-		self.setWindowTitle(__project__ + " ver. " + __version__ + " by " + __author__)
+		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
 
