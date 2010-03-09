@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.07.2"
+__version__   = "d.2010.03.09.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -129,7 +129,10 @@ class MyForm(QtGui.QMainWindow):
 			self.addSum(green)
 			self.addSum(blue)
 		kod += chr(sum/2)
-		ser.write(kod)
+		try:
+			ser.write(kod)
+		except:
+			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
 
 	def sendConfiguration(self, value):
