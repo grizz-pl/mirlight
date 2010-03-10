@@ -9,7 +9,6 @@ Mirlight by Witold Firlej
 Uwaga
 -----
 
-### PL
 Mirlight występuje w dwóch wersjach sprzetu. Oprogramowanie uzywające starej wersji umieszczone jest w gałęzi **old_hardware_version** i nie jest juz rozwijane.  
 Nowa wersja (>= 0.5) jest umieszczona w gałezi **master**.
 
@@ -18,7 +17,7 @@ Wymagania
 
 *  python 2.6
 *  Qt 4.5
-*  pyQt
+*  PyQt4
 *  pyserial <http://pyserial.wiki.sourceforge.net/pySerial>
 
 Więcej informacji

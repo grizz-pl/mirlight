@@ -17,7 +17,7 @@ Requirements
 
 *  python 2.6
 *  Qt 4.5
-*  pyQt
+*  PyQt4
 *  pyserial <http://pyserial.wiki.sourceforge.net/pySerial>
 
 More info
