@@ -443,7 +443,7 @@ class FieldDialog(QtGui.QFrame):
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
 		self.setWindowTitle('Field: ' + str(field))
-		self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint) 		#no window border and stay on top
+		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint) #no window border, baypass panels etc. and stay on top
 		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
 		self.setLineWidth(2)
 		self.showPos() 					#update toolTip on start
