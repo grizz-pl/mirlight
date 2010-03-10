@@ -10,4 +10,4 @@ import py2exe
 
 # zipfile=None ## To create one large exe - uncoment this, and use --bundle 1 option
 
-setup(windows=[{"script" : "mirlight_gui.py"}],options={"py2exe":{"includes":["sip"]}})
+setup(windows=[{"script" : "mirlight_gui.py", "icon_resources": [(0, "mirlight.ico")]}],options={"py2exe":{"includes":["sip"]}})
