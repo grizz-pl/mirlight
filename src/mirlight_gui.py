@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.10.3"
+__version__   = "d.2010.03.10.4"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -348,6 +348,7 @@ class MyForm(QtGui.QMainWindow):
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
 			self.ui.PresetsComboBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
+			self.ui.showFieldsPushButton.setText("Show fields")
 		else:
 			self.ui.PresetsComboBox.clear()
 			for infile in glob.glob("presets/*.mrl"):
@@ -356,6 +357,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setCurrentIndex(self.ui.PresetsComboBox.findText(config.get("Fields", "preset"))) 	### XXX write what to do on ERRORs !
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
+			self.ui.showFieldsPushButton.setText("Show and set fields")
 
 	def checkFiles(self):
 		"""
