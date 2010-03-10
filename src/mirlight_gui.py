@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.10.1"
+__version__   = "d.2010.03.10.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
