@@ -3,11 +3,9 @@
 #mirlight by grizz - Witek Firlej http://grizz.pl
 # Copyright (C) 2009-2010 Witold Firlej
 #
-# To build an .exe file use: python setup_win_exe.py py2exe --includes sip
+# To build an .exe file use: python setup_win_exe.py py2exe
 
 from distutils.core import setup
 import py2exe
 
-# zipfile=None ## To create one large exe - uncoment this, and use --bundle 1 option
-
-setup(windows=[{"script" : "mirlight_gui.py", "icon_resources": [(0, "mirlight.ico")]}],options={"py2exe":{"includes":["sip"]}})
+setup(windows=[{"script" : "mirlight_gui.py", "icon_resources": [(0, "mirlight.ico")]}],zipfile=None,options={"py2exe":{"includes":["sip"],"bundle_files": 1}})
