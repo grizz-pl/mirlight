@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.09.3"
+__version__   = "d.2010.03.10.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -234,7 +234,6 @@ class MyForm(QtGui.QMainWindow):
 			presets = ""
 			for infile in glob.glob("presets/*.mrl"):
 				presets += infile[8:-4] + ", "
-			print presets
 			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, "preset-")
 			if state == True and len(presetName) > 0:
 				self.saveFields(presetName)
@@ -369,6 +368,7 @@ class MyForm(QtGui.QMainWindow):
 			config.add_section("Port")
 			config.set("Fields", "autoarrange", "on")
 			config.set("Fields", "size", 5)
+			config.set("Fields", "preset", "")
 			config.set("Timer", "interval", 100)
 			config.set("Port", "number", "1")
 			with open('mirlight.conf', 'wb') as configfile:
