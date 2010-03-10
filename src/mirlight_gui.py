@@ -434,33 +434,24 @@ class MyForm(QtGui.QMainWindow):
 									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
 			writeToConfing(field, x, y, w, h)
 
-class FieldDialog(QtGui.QWidget):
+class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
-		QtGui.QWidget.__init__(self, parent)
+		QtGui.QFrame.__init__(self, parent)
 		x = fieldsconfig.getint(str(field), 'x')
 		y = fieldsconfig.getint(str(field), 'y')
 		w = fieldsconfig.getint(str(field), 'w')
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
-#		self.setMinimumSize (30, 30)						##XXX do it?
 		self.setWindowTitle('Field: ' + str(field))
-		self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-		
-		self.button = QtGui.QPushButton('', self)
-		self.button.setGeometry(0, 0, 30, 30)
-		self.button.setText(str(field))
-		self.button.setFocusPolicy(QtCore.Qt.NoFocus)
-
-		self.label = QtGui.QLabel('Dialog', self)
-		self.label.setText("Saved position: " + str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
-		self.label.move(35, 8)
-		self.setToolTip("Click and hold left mouse button to move field \nClick and hold right mouse button to resize field")
-
-
-		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
+		self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint) 		#no window border and stay on top
+		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
+		self.setLineWidth(2)
+		self.showPos() 					#update toolTip on start
 
 	def mousePressEvent(self, event): # moving - thx to salmon http://forum.python.org.pl/index.php?topic=846.msg4359#msg4359
 		self.last_pos = QCursor.pos()
+		self.showPos()
+
 
 	def mouseMoveEvent(self, event):
 		buttons = event.buttons()
@@ -474,10 +465,14 @@ class FieldDialog(QtGui.QWidget):
 			self.resize(size.width() + offset.x(), size.height() + offset.y())
 			self.update()
 		self.last_pos = QPoint(new_pos)
+		self.showPos()
 	
 	def showPos(self):
+		position = QCursor.pos()
 		x, y, w, h = self.getGeometry()
-		self.label.setText(str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
+		text = "%s\n\tPosition\tx: %d\ty: %d\n\tSize:\tw: %d\th: %d\n\nClick and hold left mouse button to move field \nClick and hold right mouse button to resize field"  % (self.windowTitle(),x,y,w,h)
+		self.setToolTip(text)
+		QtGui.QToolTip.showText(position, text) 
 	
 	def getGeometry(self):
 		"""
