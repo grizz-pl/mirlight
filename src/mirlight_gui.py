@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.10.4"
+__version__   = "d.2010.03.10.5"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -445,7 +445,7 @@ class FieldDialog(QtGui.QFrame):
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
 		self.setWindowTitle('Field: ' + str(field))
-		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint) #no window border, baypass panels etc. and stay on top
+		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint) #no window border, baypass panels etc. and stay on top
 		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
 		self.setLineWidth(2)
 		self.showPos() 					#update toolTip on start
