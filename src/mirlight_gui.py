@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.10.2"
+__version__   = "d.2010.03.10.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -234,7 +234,7 @@ class MyForm(QtGui.QMainWindow):
 			presets = ""
 			for infile in glob.glob("presets/*.mrl"):
 				presets += infile[8:-4] + ", "
-			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, "preset-")
+			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, self.ui.PresetsComboBox.currentText())
 			if state == True and len(presetName) > 0:
 				self.saveFields(presetName)
 				verbose("--\nSaved as: %s.mrl" % presetName,1)
