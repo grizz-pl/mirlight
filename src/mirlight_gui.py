@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.11.1"
+__version__   = "d.2010.03.11.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -228,6 +228,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.AutoArrangeCheckBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 			self.ui.buttonBox.setEnabled(0)
+			self.ui.PresetsComboBox.setEnabled(0)
 
 		elif config.get("Fields", "autoarrange") == "off":
 			SAVE = "Save"
@@ -253,7 +254,6 @@ class MyForm(QtGui.QMainWindow):
 			widget.close()
 		self.changePresetsComboBoxEnabled() 			#to apply an appropriate label on fieldsPushButton
 		self.ui.AutoArrangeCheckBox.setEnabled(1)
-		self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
 		self.ui.buttonBox.setEnabled(1)
 
 
