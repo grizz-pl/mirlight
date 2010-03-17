@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.17.2"
+__version__   = "d.2010.03.17.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -61,6 +61,7 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		global ser
 		if not self._Timer.isActive(): 							# if timer doesn't work
+			self.loadConfiguration()
 			self.ui.pushButton.setText("Stop!")
 			self.ui.tab_2.setEnabled(0) 						# no messing with settings during work!
 			if ser.isOpen(): 									# close and open port - hardware likes it
