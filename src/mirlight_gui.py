@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.11.3"
+__version__   = "d.2010.03.17.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -40,6 +40,7 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
+		QtCore.QObject.connect(self.ui.testPortPushButton,QtCore.SIGNAL("clicked()"), self.testPort)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
@@ -148,7 +149,7 @@ class MyForm(QtGui.QMainWindow):
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
-			command = "echo \'not bind\'" ##XXX debug
+			command = "echo \'%d - not bind\'" % x ##XXX debug
 			if x == 14: command='smplayer -send-action pause'#works as pause/play
 			if x == 59: command='smplayer -send-action pause'#works as pause/play
 			if x == 10: command='smplayer -send-action stop'
@@ -443,6 +444,42 @@ class MyForm(QtGui.QMainWindow):
 									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
 									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
 			writeToConfing(field, x, y, w, h)
+
+	def testPort(self):
+		self._watchTimer.stop() 				#to do not mess with watch()
+		verbose("--\nTest started",1)
+		if os.name == "posix":
+			verbose("Testing posix system",1)
+			for port in glob.glob("/dev/ttyUSB*"):
+				verbose("\n\nTesting %s..." % port,1)
+				try:
+					testSer = serial.Serial(port, 38400, timeout=0)
+					testSer.close()
+					testSer.open()
+					testSer.flushInput()
+					if testSer.isOpen():
+						kod = chr(130) #kod inicjujacy początek sprawdzającej paczki
+						for i in range(24):
+							kod += chr(0)
+						kod += chr(65)
+						testSer.write(kod)
+						time.sleep(0.5) 					#hack needed by hardware
+						x = ord(testSer.read())
+						if x == 130:
+							verbose("%s: OK" % port,1)
+							self.ui.portNumberLineEdit.setText(port)
+						else:
+							verbose("%s: FAIL" % port,1)
+				except:
+					verbose("Fail to open: %s" % port,1)
+		elif os.name == "nt":
+			verbose("Testing Windows system",1)
+		else:
+			verbose("Test isn't possible",1)
+		verbose("Test stopped",1)
+		self._watchTimer.start(300)
+	#except:
+	#			verbose("%s: FAIL to open" % port,1)
 
 class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
