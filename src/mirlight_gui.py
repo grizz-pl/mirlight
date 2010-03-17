@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.17.1"
+__version__   = "d.2010.03.17.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -286,17 +286,6 @@ class MyForm(QtGui.QMainWindow):
 			config.write(configfile)
 
 		self.loadConfiguration() ##XXX it's bad here! reThink that.
-
-
-	def listAviablePresets(self):
-		"""
-		list presets aviable in presets folder
-		"""
-
-	def loadPreset(self, preset):
-		"""
-		load fields preset from file
-		"""
 
 	def saveConfiguration(self):
 		"""
