@@ -3759,8 +3759,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="testPortPushButton">
+         <property name="statusTip">
+          <string>Try to find port automatically</string>
+         </property>
          <property name="text">
-          <string>Test</string>
+          <string>Auto Find</string>
          </property>
         </widget>
        </item>

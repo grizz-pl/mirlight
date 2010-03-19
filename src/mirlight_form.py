@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Wed Mar 10 20:08:48 2010
+# Created: Fri Mar 19 10:10:24 2010
 #      by: PyQt4 UI code generator 4.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -1395,7 +1395,8 @@ class Ui_MainWindow(object):
         self.showFieldsPushButton.setText(QtGui.QApplication.translate("MainWindow", "Show and set fields", None, QtGui.QApplication.UnicodeUTF8))
         self.gridGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Port", None, QtGui.QApplication.UnicodeUTF8))
         self.portNumberLineEdit.setStatusTip(QtGui.QApplication.translate("MainWindow", "Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)", None, QtGui.QApplication.UnicodeUTF8))
-        self.testPortPushButton.setText(QtGui.QApplication.translate("MainWindow", "Test", None, QtGui.QApplication.UnicodeUTF8))
+        self.testPortPushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Try to find port automatically", None, QtGui.QApplication.UnicodeUTF8))
+        self.testPortPushButton.setText(QtGui.QApplication.translate("MainWindow", "Auto Find", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox1.setTitle(QtGui.QApplication.translate("MainWindow", "Scan interval", None, QtGui.QApplication.UnicodeUTF8))
         self.TimerValueLabel.setText(QtGui.QApplication.translate("MainWindow", "0000", None, QtGui.QApplication.UnicodeUTF8))
         self.TimerHorizontalSlider.setStatusTip(QtGui.QApplication.translate("MainWindow", "Speed of scanning screen interval", None, QtGui.QApplication.UnicodeUTF8))
