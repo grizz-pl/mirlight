@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.17.3"
+__version__   = "d.2010.03.19.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -26,6 +26,12 @@ import sys, ConfigParser, serial, time, os, glob
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor, QInputDialog
 from PyQt4.QtCore import Qt, QPoint
+
+try: 							# need to testport on Windows
+	import _winreg as winreg
+	import itertools
+except:
+	pass
 
 from mirlight_form import Ui_MainWindow
 
@@ -436,40 +442,65 @@ class MyForm(QtGui.QMainWindow):
 			writeToConfing(field, x, y, w, h)
 
 	def testPort(self):
+		def sendTestCode(port):
+			verbose("\n\nTesting %s..." % port,1)
+			try:
+				testSer = serial.Serial(port, 38400, timeout=0)
+				testSer.close()
+				testSer.open()
+				testSer.flushInput()
+				if testSer.isOpen():
+					kod = chr(130) #kod inicjujacy początek sprawdzającej paczki
+					for i in range(24):
+						kod += chr(0)
+					kod += chr(65)
+					testSer.write(kod)
+					time.sleep(0.5) 					#hack needed by hardware
+					x = ord(testSer.read())
+					if x == 130:
+						verbose("%s: OK" % port,1)
+						self.ui.portNumberLineEdit.setText(port)
+					else:
+						verbose("%s: FAIL" % port,1)
+			except:
+				verbose("Fail to open: %s" % port,1)
+
+		def enumerate_serial_ports():
+			""" Uses the Win32 registry to return an
+			iterator of serial (COM) ports
+			existing on this computer.
+			(code from http://eli.thegreenplace.net/2009/07/31/listing-all-serial-ports-on-windows-with-python/)
+			@return an iterator of serial (COM) ports
+			"""
+			path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
+			try:
+				key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
+			except WindowsError:
+				raise IterationError
+
+			for i in itertools.count():
+				try:
+					val = winreg.EnumValue(key, i)
+					yield str(val[1])
+				except EnvironmentError:
+					break
+
 		self._watchTimer.stop() 				#to do not mess with watch()
 		verbose("--\nTest started",1)
 		if os.name == "posix":
 			verbose("Testing posix system",1)
 			for port in glob.glob("/dev/ttyUSB*"):
-				verbose("\n\nTesting %s..." % port,1)
-				try:
-					testSer = serial.Serial(port, 38400, timeout=0)
-					testSer.close()
-					testSer.open()
-					testSer.flushInput()
-					if testSer.isOpen():
-						kod = chr(130) #kod inicjujacy początek sprawdzającej paczki
-						for i in range(24):
-							kod += chr(0)
-						kod += chr(65)
-						testSer.write(kod)
-						time.sleep(0.5) 					#hack needed by hardware
-						x = ord(testSer.read())
-						if x == 130:
-							verbose("%s: OK" % port,1)
-							self.ui.portNumberLineEdit.setText(port)
-						else:
-							verbose("%s: FAIL" % port,1)
-				except:
-					verbose("Fail to open: %s" % port,1)
+				sendTestCode(port)
 		elif os.name == "nt":
 			verbose("Testing Windows system",1)
+			ports = enumerate_serial_ports()
+			for port in ports:
+				sendTestCode(port)
 		else:
 			verbose("Test isn't possible",1)
-		verbose("Test stopped",1)
+		verbose("\n\nTest stopped",1)
 		self._watchTimer.start(300)
-	#except:
-	#			verbose("%s: FAIL to open" % port,1)
+
 
 class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
