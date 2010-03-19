@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.19.2"
+__version__   = "d.2010.03.19.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -73,9 +73,9 @@ class MyForm(QtGui.QMainWindow):
 			try:
 				if ser.isOpen(): 									# close and open port - hardware likes it
 					ser.close()
+				ser.open()
 			except:
 				pass
-			ser.open()
 			self._Timer.start(config.getint('Timer', 'interval'))
 			
 		else:
@@ -83,7 +83,10 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.pushButton.setText("Start!")
 			self.ui.tab_2.setEnabled(1)
 			self.sendColors(self.blackout)
-			ser.close()
+			try:
+				ser.close()
+			except:
+				pass
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -337,7 +340,7 @@ class MyForm(QtGui.QMainWindow):
 			ser = serial.Serial(port, 38400, timeout=0)
 			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used 
 		except:
-			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!", 1)
+			verbose("--\nError:\tUnable to open \"%s\" port\nCheck your configuration!" % port, 1)
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberLineEdit.setText(config.get("Port", "number"))
