@@ -18,11 +18,17 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.19.3"
+__version__   = "d.2010.03.19.4"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial, time, os, glob
+import sys
+import ConfigParser
+import serial
+import time
+import os
+import glob
+
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QWidget, QApplication, QCursor, QInputDialog
 from PyQt4.QtCore import Qt, QPoint
@@ -88,6 +94,7 @@ class MyForm(QtGui.QMainWindow):
 			except:
 				pass
 
+
 	def getColor(self, px, py, w, h ):
 		"""
 		Grab specific field and resize it to receive average color of field
@@ -99,6 +106,7 @@ class MyForm(QtGui.QMainWindow):
 		self.destImage = self.destPixmap.toImage()
 		value = self.destImage.pixel(0,0)
 		return value
+
 
 	def timer(self):
 		"""
@@ -118,6 +126,7 @@ class MyForm(QtGui.QMainWindow):
 			self.updateLabel(field, x, y, w, h, color)
 		self.sendColors(colors)
 		
+
 
 	def addSum(self, value):
 		global sum
@@ -142,7 +151,7 @@ class MyForm(QtGui.QMainWindow):
 			blue = int(blue*blue*100)
 			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3)
 			kod += chr(red)
-			kod += chr(green) 
+			kod += chr(green)
 			kod += chr(blue)
 			self.addSum(red)
 			self.addSum(green)
@@ -154,11 +163,12 @@ class MyForm(QtGui.QMainWindow):
 			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
 
+
 	def watch(self):
 		"""
 		Get remote code and perform an action
 		"""
-		try: 
+		try:
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
@@ -184,12 +194,12 @@ class MyForm(QtGui.QMainWindow):
 			verbose("no remote command", 2)
 
 
-
 	def getLabel (self, field):
 		"""
 		@return label corresponding to field
 		"""
 		return self.labels[field-1]
+
 
 	def updateLabel (self, field, x, y, w, h, color = 0): # default color is black
 		"""
@@ -206,8 +216,6 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		draw fields
 		"""
-
-
 		if  self.ui.showFieldsPushButton.isChecked():
 			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0) or (config.getint("Fields", "size") != self.ui.AutoarrangeHorizontalSlider.value()): ###XXX ugly hack
 				SAVE = "Save"
@@ -267,6 +275,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self.closeFields()
 
+
 	def closeFields(self):
 		"""
 		hide fields preview
@@ -299,6 +308,7 @@ class MyForm(QtGui.QMainWindow):
 			config.write(configfile)
 
 		self.loadConfiguration() ##XXX it's bad here! reThink that.
+
 
 	def saveConfiguration(self):
 		"""
@@ -355,6 +365,7 @@ class MyForm(QtGui.QMainWindow):
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
 
+
 	def changePresetsComboBoxEnabled(self):
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
 			self.ui.PresetsComboBox.setEnabled(0)
@@ -369,6 +380,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 			self.ui.showFieldsPushButton.setText("Show and set fields")
+
 
 	def checkFiles(self):
 		"""
@@ -394,6 +406,7 @@ class MyForm(QtGui.QMainWindow):
 			# ...
 		
 
+
 	def closeEvent(self, closeEvent):
 		"""
 		blackout and clean screan on close
@@ -401,6 +414,7 @@ class MyForm(QtGui.QMainWindow):
 		self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
+
 
 	def autoArrangeFields(self):
 		"""
@@ -426,7 +440,6 @@ class MyForm(QtGui.QMainWindow):
 		verbose("horizontal width: \t%d" % horizontalWidth, 1)
 		verbose("horizontal height: \t%d" % horizontalHeight, 1)
 
-
 		def writeToConfing(field, x, y, w, h):
 			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
 				fieldsconfig.add_section(`field`)
@@ -446,6 +459,7 @@ class MyForm(QtGui.QMainWindow):
 									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
 									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
 			writeToConfing(field, x, y, w, h)
+
 
 	def testPort(self):
 		def sendTestCode(port):
@@ -472,9 +486,8 @@ class MyForm(QtGui.QMainWindow):
 				verbose("Fail to open: %s" % port,1)
 
 		def enumerate_serial_ports():
-			""" Uses the Win32 registry to return an
-			iterator of serial (COM) ports
-			existing on this computer.
+			"""
+			Uses the Win32 registry to return ani terator of serial (COM) ports existing on this computer.
 			(code from http://eli.thegreenplace.net/2009/07/31/listing-all-serial-ports-on-windows-with-python/)
 			@return an iterator of serial (COM) ports
 			"""
@@ -508,6 +521,8 @@ class MyForm(QtGui.QMainWindow):
 		self._watchTimer.start(300)
 
 
+
+
 class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
 		QtGui.QFrame.__init__(self, parent)
@@ -521,6 +536,7 @@ class FieldDialog(QtGui.QFrame):
 		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
 		self.setLineWidth(2)
 		self.showPos() 					#update toolTip on start
+
 
 	def mousePressEvent(self, event): # moving - thx to salmon http://forum.python.org.pl/index.php?topic=846.msg4359#msg4359
 		self.last_pos = QCursor.pos()
@@ -540,14 +556,16 @@ class FieldDialog(QtGui.QFrame):
 			self.update()
 		self.last_pos = QPoint(new_pos)
 		self.showPos()
-	
+
+
 	def showPos(self):
 		position = QCursor.pos()
 		x, y, w, h = self.getGeometry()
 		text = "%s\n\tPosition\tx: %d\ty: %d\n\tSize:\tw: %d\th: %d\n\nClick and hold left mouse button to move field \nClick and hold right mouse button to resize field"  % (self.windowTitle(),x,y,w,h)
 		self.setToolTip(text)
 		QtGui.QToolTip.showText(position, text) 
-	
+
+
 	def getGeometry(self):
 		"""
 		get frame geometry
@@ -559,6 +577,10 @@ class FieldDialog(QtGui.QFrame):
 		w = geometry.width()
 		h = geometry.height()
 		return x, y, w, h
+
+
+
+
 
 def verbose (msg, level):
 	try:
@@ -576,6 +598,8 @@ def verbose (msg, level):
 		pass
 
 
+
+
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	myapp = MyForm()
@@ -587,4 +611,3 @@ if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
 	sys.exit(app.exec_())
-#	ser.close()             # close port ##XXX here?
