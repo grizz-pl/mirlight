@@ -24,6 +24,18 @@ Requirements
 
 Changelog
 ---------
+
+### ver.0.8beta 2010/04/02
+(based on ver. d.2010.04.02.1)
+
+*  Windows standalone executable
+*  Save/Load presets  
+*  App Icon
+*  better Fields preview
+*  Auto find port
+*  Gui lifting
+*  some small fixes
+
 ### ver.0.5beta2 2010/03/02
 (based on ver. d.2010.03.02.2)
 
