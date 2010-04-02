@@ -18,14 +18,26 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.5beta2"
+__version__   = "d.2010.03.19.4"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
-import sys, ConfigParser, serial, time, os
+import sys
+import ConfigParser
+import serial
+import time
+import os
+import glob
+
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QWidget, QApplication, QCursor
+from PyQt4.QtGui import QWidget, QApplication, QCursor, QInputDialog
 from PyQt4.QtCore import Qt, QPoint
+
+try: 							# need to testport on Windows
+	import _winreg as winreg
+	import itertools
+except:
+	pass
 
 from mirlight_form import Ui_MainWindow
 
@@ -40,12 +52,13 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
+		QtCore.QObject.connect(self.ui.testPortPushButton,QtCore.SIGNAL("clicked()"), self.testPort)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
 		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
 
-		self.setWindowTitle(__project__ + " ver. " + __version__ + " by " + __author__)
+		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
 
@@ -58,16 +71,29 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		start/stop Timer and change text on Button
 		"""
+		global ser
 		if not self._Timer.isActive(): 							# if timer doesn't work
+			self.loadConfiguration()
 			self.ui.pushButton.setText("Stop!")
-			#fadeValue = config.getint('Hardware', 'fade')
-			#self.sendConfiguration(fadeValue)
+			self.ui.tab_2.setEnabled(0) 						# no messing with settings during work!
+			try:
+				if ser.isOpen(): 									# close and open port - hardware likes it
+					ser.close()
+				ser.open()
+			except:
+				pass
 			self._Timer.start(config.getint('Timer', 'interval'))
 			
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
+			self.ui.tab_2.setEnabled(1)
 			self.sendColors(self.blackout)
+			try:
+				ser.close()
+			except:
+				pass
+
 
 	def getColor(self, px, py, w, h ):
 		"""
@@ -80,6 +106,7 @@ class MyForm(QtGui.QMainWindow):
 		self.destImage = self.destPixmap.toImage()
 		value = self.destImage.pixel(0,0)
 		return value
+
 
 	def timer(self):
 		"""
@@ -100,6 +127,7 @@ class MyForm(QtGui.QMainWindow):
 		self.sendColors(colors)
 		
 
+
 	def addSum(self, value):
 		global sum
 		sum += value ##???
@@ -116,45 +144,35 @@ class MyForm(QtGui.QMainWindow):
 			red = float(QtGui.qRed(color))/255
 			green = float(QtGui.qGreen(color))/255
 			blue = float(QtGui.qBlue(color))/255
-			verbose("k: %d" % (colors.index(color)+1), 3) #XXX debug purposes
+			verbose("k: %d" % (colors.index(color)+1), 3)
 			verbose("\trgb: %f, %f, %f" % (red, green, blue), 3)
 			red = int(red*red*100)
 			green = int(green*green*100)
 			blue = int(blue*blue*100)
-			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3) #XXX debug purposes
+			verbose("\t\trgb: %f, %f, %f" % (red, green, blue), 3)
 			kod += chr(red)
-			kod += chr(green) 
+			kod += chr(green)
 			kod += chr(blue)
 			self.addSum(red)
 			self.addSum(green)
 			self.addSum(blue)
 		kod += chr(sum/2)
-		ser.write(kod)
+		try:
+			ser.write(kod)
+		except:
+			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
 
-	def sendConfiguration(self, value):
-		"""
-		send fade value
-		"""
-		value = value*25+55
-		if value > 255: 										# fadeValue can be between 1 and 255 but in config it is 1-8 so multiply it!
-			value = 255
-		elif value < 1:
-			value = 1
-		fadeId = 16*9
-		ser.write(chr(fadeId))
-		ser.write(chr(value))
-		time.sleep(0.01) ##hack needed by hardware
 
 	def watch(self):
 		"""
 		Get remote code and perform an action
 		"""
-		try: 
+		try:
 			temp=ser.read()
 			ser.flushInput()
 			x=ord(temp)
-			command = "echo \'not bind\'" ##XXX debug
+			command = "echo \'%d - not bind\'" % x ##XXX debug
 			if x == 14: command='smplayer -send-action pause'#works as pause/play
 			if x == 59: command='smplayer -send-action pause'#works as pause/play
 			if x == 10: command='smplayer -send-action stop'
@@ -176,12 +194,12 @@ class MyForm(QtGui.QMainWindow):
 			verbose("no remote command", 2)
 
 
-
 	def getLabel (self, field):
 		"""
 		@return label corresponding to field
 		"""
 		return self.labels[field-1]
+
 
 	def updateLabel (self, field, x, y, w, h, color = 0): # default color is black
 		"""
@@ -198,8 +216,6 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		draw fields
 		"""
-
-
 		if  self.ui.showFieldsPushButton.isChecked():
 			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0) or (config.getint("Fields", "size") != self.ui.AutoarrangeHorizontalSlider.value()): ###XXX ugly hack
 				SAVE = "Save"
@@ -240,27 +256,25 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.showFieldsPushButton.setText("Hide fields")
 			self.ui.AutoArrangeCheckBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
+			self.ui.buttonBox.setEnabled(0)
+			self.ui.PresetsComboBox.setEnabled(0)
 
 		elif config.get("Fields", "autoarrange") == "off":
 			SAVE = "Save"
 			CANCEL = "Cancel"
-			message = QtGui.QMessageBox(self)
-			message.setText('Save Fields size and position?')
-			message.setWindowTitle('Mirlight')
-			message.setIcon(QtGui.QMessageBox.Question)
-			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
-			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
-			message.exec_()
-			response = message.clickedButton().text()
-			if response == SAVE:
-				self.saveFields() 							###TODO save prompt
-				verbose("--\nSaved", 1)
-				self.closeFields()
-			elif response == CANCEL:
-				verbose("--\nClosing without saving...", 1)
-				self.closeFields()
+			presets = ""
+			for infile in glob.glob("presets/*.mrl"):
+				presets += infile[8:-4] + ", "
+			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, self.ui.PresetsComboBox.currentText())
+			if state == True and len(presetName) > 0:
+				self.saveFields(presetName)
+				verbose("--\nSaved as: %s.mrl" % presetName,1)
+			else:
+				verbose("--\nPreset not saved",1)
+			self.closeFields()
 		else:
 			self.closeFields()
+
 
 	def closeFields(self):
 		"""
@@ -268,13 +282,12 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		for widget in self.fieldsWidgets:
 			widget.close()
-		self.ui.showFieldsPushButton.setText("Show and set fields")
-
+		self.changePresetsComboBoxEnabled() 			#to apply an appropriate label on fieldsPushButton
 		self.ui.AutoArrangeCheckBox.setEnabled(1)
-		self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
+		self.ui.buttonBox.setEnabled(1)
 
 
-	def saveFields(self):
+	def saveFields(self, name):
 		"""
 		save fields to conf file
 		"""
@@ -287,20 +300,15 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.set(`field`, "y", y)
 			fieldsconfig.set(`field`, "w", w)
 			fieldsconfig.set(`field`, "h", h)
-		with open('presets/default.mrl', 'wb') as configfile:
+		with open('presets/%s.mrl' % name, 'wb') as configfile:
 			fieldsconfig.write(configfile)
+
+		config.set("Fields", "preset", name)
+		with open('mirlight.conf', 'wb') as configfile:
+			config.write(configfile)
+
 		self.loadConfiguration() ##XXX it's bad here! reThink that.
 
-
-	def listAviablePresets(self):
-		"""
-		list presets aviable in presets folder
-		"""
-
-	def loadPreset(self, preset):
-		"""
-		load fields preset from file
-		"""
 
 	def saveConfiguration(self):
 		"""
@@ -308,12 +316,12 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		config.set("Timer", "interval", self.ui.TimerHorizontalSlider.value())
 		config.set("Port", "number", self.ui.portNumberLineEdit.text())
-		#config.set("Hardware", "fade", self.ui.FadeHorizontalSlider.value())
 		if self.ui.AutoArrangeCheckBox.isChecked():
 			config.set("Fields", "autoarrange", "on")
 		else:
 			config.set("Fields", "autoarrange", "off")
 		config.set("Fields", "size", self.ui.AutoarrangeHorizontalSlider.value())
+		config.set("Fields", "preset", self.ui.PresetsComboBox.currentText())
 		with open('mirlight.conf', 'wb') as configfile:
 				config.write(configfile)
 
@@ -330,8 +338,9 @@ class MyForm(QtGui.QMainWindow):
 			self.autoArrangeFields()
 			fieldsconfig.read("presets/autoarrange.mrl")
 		else:
-			fieldsconfig.read("presets/default.mrl")
-			verbose("--\nLoading default fields' preset", 1) ##XXX debug purposes
+			name = config.get("Fields", "preset", "default")
+			fieldsconfig.read("presets/%s.mrl" % name)
+			verbose("--\nLoading >>> %s <<< preset" % name, 1)
 			verbose("--\nAutoarrange is off", 1)
 		try:
 			global ser 									##XXX uhh a nasty code...
@@ -339,9 +348,9 @@ class MyForm(QtGui.QMainWindow):
 			if port.isdigit():
 				port = int(port)
 			ser = serial.Serial(port, 38400, timeout=0)
-			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used ##XXX debug purposes
+			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used 
 		except:
-			verbose("--\nError:\tUnable to open port\nCheck your port (com (ttyS)) configuration!", 1)
+			verbose("--\nError:\tUnable to open \"%s\" port\nCheck your configuration!" % port, 1)
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberLineEdit.setText(config.get("Port", "number"))
@@ -349,25 +358,29 @@ class MyForm(QtGui.QMainWindow):
 		self.ui.TimerHorizontalSlider.setValue(timerInterval)
 		verbose("--\nScan Interval: %d" % timerInterval, 1)
 		self.ui.TimerValueLabel.setText(str(timerInterval))
-		#self.ui.FadeHorizontalSlider.setValue(config.getint("Hardware", "fade"))
 		if config.get("Fields", "autoarrange") == "on":
 			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
 		else:
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
 		self.ui.AutoarrangeHorizontalSlider.setValue(config.getint("Fields", "size"))
-		#try:
-			#self.sendConfiguration(config.getint("Hardware", "fade"))  # send fade value to refresh it
-		#except:
-			#verbose("--\nError:\tSomething is wrong with communication propably unable to open port\nCheck your port (com (ttyS)) configuration!")
 
-	def changePresetsComboBoxEnabled(self): 						##XXX an ugly hack... :/
+
+	def changePresetsComboBoxEnabled(self):
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
 			self.ui.PresetsComboBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
+			self.ui.showFieldsPushButton.setText("Show fields")
 		else:
+			self.ui.PresetsComboBox.clear()
+			for infile in glob.glob("presets/*.mrl"):
+				name = infile[8:-4] 		#cut "presets/" and ".mrl"
+				self.ui.PresetsComboBox.addItem(name)
+			self.ui.PresetsComboBox.setCurrentIndex(self.ui.PresetsComboBox.findText(config.get("Fields", "preset"))) 	### XXX write what to do on ERRORs !
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
+			self.ui.showFieldsPushButton.setText("Show and set fields")
+
 
 	def checkFiles(self):
 		"""
@@ -380,6 +393,7 @@ class MyForm(QtGui.QMainWindow):
 			config.add_section("Port")
 			config.set("Fields", "autoarrange", "on")
 			config.set("Fields", "size", 5)
+			config.set("Fields", "preset", "")
 			config.set("Timer", "interval", 100)
 			config.set("Port", "number", "1")
 			with open('mirlight.conf', 'wb') as configfile:
@@ -392,12 +406,15 @@ class MyForm(QtGui.QMainWindow):
 			# ...
 		
 
+
 	def closeEvent(self, closeEvent):
 		"""
 		blackout and clean screan on close
 		"""
+		self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
+
 
 	def autoArrangeFields(self):
 		"""
@@ -417,12 +434,11 @@ class MyForm(QtGui.QMainWindow):
 		horizontalWidth = sw/3
 		horizontalHeight = (sh/100)*factor
 		verbose("--\nAuto arranging...", 1)
-		verbose("Size factor: \t\t%d" % factor, 1) 							#XXXX debug purposes
+		verbose("Size factor: \t\t%d" % factor, 1)
 		verbose("vertical width: \t%d" % verticalWidth, 1)
 		verbose("vertical height: \t%d" % verticalHeight, 1)
 		verbose("horizontal width: \t%d" % horizontalWidth, 1)
 		verbose("horizontal height: \t%d" % horizontalHeight, 1)
-
 
 		def writeToConfing(field, x, y, w, h):
 			if not fieldsconfig.has_section(`field`): 			# if there is no section FIELD, create one
@@ -434,7 +450,6 @@ class MyForm(QtGui.QMainWindow):
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
-		###TODO do this like in timer()
 		for field, x, y, w, h in [(1, 0, sh/2, verticalWidth, verticalHeight),\
 									(2, 0, 0, verticalWidth, verticalHeight),\
 									(3, 0, 0, sw/3, horizontalHeight),\
@@ -445,33 +460,88 @@ class MyForm(QtGui.QMainWindow):
 									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
 			writeToConfing(field, x, y, w, h)
 
-class FieldDialog(QtGui.QWidget):
+
+	def testPort(self):
+		def sendTestCode(port):
+			verbose("\n\nTesting %s..." % port,1)
+			try:
+				testSer = serial.Serial(port, 38400, timeout=0)
+				testSer.close()
+				testSer.open()
+				testSer.flushInput()
+				if testSer.isOpen():
+					kod = chr(130) #kod inicjujacy początek sprawdzającej paczki
+					for i in range(24):
+						kod += chr(0)
+					kod += chr(65)
+					testSer.write(kod)
+					time.sleep(0.5) 					#hack needed by hardware
+					x = ord(testSer.read())
+					if x == 130:
+						verbose("%s: OK" % port,1)
+						self.ui.portNumberLineEdit.setText(port)
+					else:
+						verbose("%s: FAIL" % port,1)
+			except:
+				verbose("Fail to open: %s" % port,1)
+
+		def enumerate_serial_ports():
+			"""
+			Uses the Win32 registry to return ani terator of serial (COM) ports existing on this computer.
+			(code from http://eli.thegreenplace.net/2009/07/31/listing-all-serial-ports-on-windows-with-python/)
+			@return an iterator of serial (COM) ports
+			"""
+			path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
+			try:
+				key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
+			except WindowsError:
+				raise IterationError
+
+			for i in itertools.count():
+				try:
+					val = winreg.EnumValue(key, i)
+					yield str(val[1])
+				except EnvironmentError:
+					break
+
+		self._watchTimer.stop() 				#to do not mess with watch()
+		verbose("--\nTest started",1)
+		if os.name == "posix":
+			verbose("Testing posix system",1)
+			for port in glob.glob("/dev/ttyUSB*"):
+				sendTestCode(port)
+		elif os.name == "nt":
+			verbose("Testing Windows system",1)
+			ports = enumerate_serial_ports()
+			for port in ports:
+				sendTestCode(port)
+		else:
+			verbose("Test isn't possible",1)
+		verbose("\n\nTest stopped",1)
+		self._watchTimer.start(300)
+
+
+
+
+class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
-		QtGui.QWidget.__init__(self, parent)
+		QtGui.QFrame.__init__(self, parent)
 		x = fieldsconfig.getint(str(field), 'x')
 		y = fieldsconfig.getint(str(field), 'y')
 		w = fieldsconfig.getint(str(field), 'w')
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
-#		self.setMinimumSize (30, 30)						##XXX do it?
 		self.setWindowTitle('Field: ' + str(field))
-		self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-		
-		self.button = QtGui.QPushButton('', self)
-		self.button.setGeometry(0, 0, 30, 30)
-		self.button.setText(str(field))
-		self.button.setFocusPolicy(QtCore.Qt.NoFocus)
+		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint) #no window border, baypass panels etc. and stay on top
+		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
+		self.setLineWidth(2)
+		self.showPos() 					#update toolTip on start
 
-		self.label = QtGui.QLabel('Dialog', self)
-		self.label.setText("Saved position: " + str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
-		self.label.move(35, 8)
-		self.setToolTip("Click and hold left mouse button to move field \nClick and hold right mouse button to resize field")
-
-
-		QtCore.QObject.connect(self.button,QtCore.SIGNAL("pressed()"), self.showPos)
 
 	def mousePressEvent(self, event): # moving - thx to salmon http://forum.python.org.pl/index.php?topic=846.msg4359#msg4359
 		self.last_pos = QCursor.pos()
+		self.showPos()
+
 
 	def mouseMoveEvent(self, event):
 		buttons = event.buttons()
@@ -485,11 +555,17 @@ class FieldDialog(QtGui.QWidget):
 			self.resize(size.width() + offset.x(), size.height() + offset.y())
 			self.update()
 		self.last_pos = QPoint(new_pos)
-	
+		self.showPos()
+
+
 	def showPos(self):
+		position = QCursor.pos()
 		x, y, w, h = self.getGeometry()
-		self.label.setText(str(x) + ", " + str(y) + ", " + str(w) + ", " + str(h))
-	
+		text = "%s\n\tPosition\tx: %d\ty: %d\n\tSize:\tw: %d\th: %d\n\nClick and hold left mouse button to move field \nClick and hold right mouse button to resize field"  % (self.windowTitle(),x,y,w,h)
+		self.setToolTip(text)
+		QtGui.QToolTip.showText(position, text) 
+
+
 	def getGeometry(self):
 		"""
 		get frame geometry
@@ -501,6 +577,10 @@ class FieldDialog(QtGui.QWidget):
 		w = geometry.width()
 		h = geometry.height()
 		return x, y, w, h
+
+
+
+
 
 def verbose (msg, level):
 	try:
@@ -518,15 +598,16 @@ def verbose (msg, level):
 		pass
 
 
+
+
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	myapp = MyForm()
 	myapp.show()
-	config = ConfigParser.ConfigParser() 								##TODO create config automatically
+	config = ConfigParser.ConfigParser()
 	fieldsconfig = ConfigParser.ConfigParser()
 	ser = "ziaaaf" 														# just an initialization
-	sum = 0 ##XXX
+	sum = 0 															# just an initialization
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
 	sys.exit(app.exec_())
-#	ser.close()             # close port ##XXX here?

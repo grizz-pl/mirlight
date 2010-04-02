@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>434</height>
+    <width>492</width>
+    <height>390</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,27 +18,31 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>640</width>
-    <height>434</height>
+    <width>492</width>
+    <height>390</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>640</width>
-    <height>434</height>
+    <width>492</width>
+    <height>390</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mirlight.qrc">
+    <normaloff>:/pic/mirlight.png</normaloff>:/pic/mirlight.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>340</y>
-      <width>621</width>
-      <height>51</height>
+      <x>5</x>
+      <y>324</y>
+      <width>481</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -60,17 +64,17 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>5</x>
       <y>10</y>
-      <width>631</width>
-      <height>321</height>
+      <width>481</width>
+      <height>311</height>
      </rect>
     </property>
     <property name="locale">
      <locale language="English" country="UnitedStates"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -81,8 +85,8 @@
        <rect>
         <x>3</x>
         <y>0</y>
-        <width>621</width>
-        <height>281</height>
+        <width>465</width>
+        <height>271</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -3103,22 +3107,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <pointsize>28</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>mirlight</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
+       <item row="3" column="0" colspan="3">
         <widget class="QLabel" name="label_8">
          <property name="palette">
           <palette>
@@ -3549,6 +3538,24 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_9">
+         <property name="font">
+          <font>
+           <pointsize>28</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -3556,193 +3563,45 @@
      <attribute name="title">
       <string>settings</string>
      </attribute>
-     <widget class="QDialogButtonBox" name="buttonBox">
+     <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>420</x>
-        <y>250</y>
-        <width>201</width>
-        <height>32</height>
+        <x>0</x>
+        <y>110</y>
+        <width>471</width>
+        <height>130</height>
        </rect>
       </property>
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-      </property>
-      <property name="centerButtons">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>221</width>
-        <height>34</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="portNumberLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)</string>
-         </property>
-         <property name="locale">
-          <locale language="English" country="UnitedStates"/>
-         </property>
-         <property name="text">
-          <string>Port number:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="portNumberLineEdit">
-         <property name="statusTip">
-          <string>Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>242</y>
-        <width>281</width>
-        <height>51</height>
-       </rect>
+      <property name="title">
+       <string>Fields</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="1">
+       <item row="2" column="1">
         <widget class="QComboBox" name="PresetsComboBox">
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
-           <width>200</width>
+           <width>100</width>
            <height>32</height>
           </size>
          </property>
          <property name="statusTip">
-          <string>Not yet available</string>
+          <string>Choose preset</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="PresetsLabel">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Not yet available</string>
-         </property>
-         <property name="text">
-          <string>Presets:</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>371</width>
-        <height>34</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0">
-        <widget class="QLabel" name="TimerLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Speed of scanning screen interval</string>
-         </property>
-         <property name="text">
-          <string>Scan interval:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="TimerHorizontalSlider">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="statusTip">
-          <string>Speed of scanning screen interval</string>
-         </property>
-         <property name="minimum">
-          <number>10</number>
-         </property>
-         <property name="maximum">
-          <number>500</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="pageStep">
-          <number>50</number>
-         </property>
-         <property name="sliderPosition">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="tickPosition">
-          <enum>QSlider::TicksBothSides</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="TimerValueLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>0000</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>200</y>
-        <width>261</width>
-        <height>34</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QSlider" name="AutoarrangeHorizontalSlider">
          <property name="minimumSize">
           <size>
@@ -3751,7 +3610,7 @@
           </size>
          </property>
          <property name="statusTip">
-          <string>Size Factor</string>
+          <string>Fields size</string>
          </property>
          <property name="minimum">
           <number>1</number>
@@ -3765,6 +3624,19 @@
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBothSides</enum>
+         </property>
+         <property name="tickInterval">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Size factor:</string>
+         </property>
         </widget>
        </item>
        <item row="0" column="0">
@@ -3776,7 +3648,7 @@
           </size>
          </property>
          <property name="statusTip">
-          <string>Use autoarrange insteed</string>
+          <string>Use autoarrange</string>
          </property>
          <property name="locale">
           <locale language="English" country="UnitedStates"/>
@@ -3786,33 +3658,202 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Preset:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="showFieldsPushButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="locale">
+          <locale language="English" country="UnitedStates"/>
+         </property>
+         <property name="text">
+          <string>Show and set fields</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="showFieldsPushButton">
+     <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>201</width>
-        <height>31</height>
+        <x>570</x>
+        <y>0</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="gridGroupBox">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>171</width>
+        <height>111</height>
        </rect>
       </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="statusTip">
-       <string>Show fields size and position</string>
+      <property name="title">
+       <string>Port</string>
       </property>
-      <property name="locale">
-       <locale language="English" country="UnitedStates"/>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLineEdit" name="portNumberLineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="statusTip">
+          <string>Port number (Windows: COM1 = 0) or adress (e.g.COM1; /dev/ttyUSB01)</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="testPortPushButton">
+         <property name="statusTip">
+          <string>Try to find port automatically</string>
+         </property>
+         <property name="text">
+          <string>Auto Find</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>0</y>
+        <width>301</width>
+        <height>111</height>
+       </rect>
       </property>
-      <property name="text">
-       <string>Show and set fields</string>
+      <property name="title">
+       <string>Scan interval</string>
       </property>
-      <property name="checkable">
+      <widget class="QLabel" name="TimerValueLabel">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>70</y>
+         <width>31</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>0000</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="TimerHorizontalSlider">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>281</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="statusTip">
+        <string>Speed of scanning screen interval</string>
+       </property>
+       <property name="minimum">
+        <number>10</number>
+       </property>
+       <property name="maximum">
+        <number>500</number>
+       </property>
+       <property name="singleStep">
+        <number>10</number>
+       </property>
+       <property name="pageStep">
+        <number>50</number>
+       </property>
+       <property name="sliderPosition">
+        <number>100</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBothSides</enum>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>250</y>
+        <width>212</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+      </property>
+      <property name="centerButtons">
        <bool>true</bool>
       </property>
      </widget>
@@ -3863,8 +3904,8 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>288</x>
-        <y>223</y>
+        <x>140</x>
+        <y>210</y>
         <width>331</width>
         <height>61</height>
        </rect>
@@ -3936,26 +3977,52 @@
        </item>
       </layout>
      </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>0</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="mirlight.qrc">:/pic/mirlight.png</pixmap>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="mirlight.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>TimerHorizontalSlider</sender>
-   <signal>sliderMoved(int)</signal>
+   <signal>valueChanged(int)</signal>
    <receiver>TimerValueLabel</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>119</y>
+     <x>459</x>
+     <y>62</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>118</y>
+     <x>560</x>
+     <y>62</y>
     </hint>
    </hints>
   </connection>
