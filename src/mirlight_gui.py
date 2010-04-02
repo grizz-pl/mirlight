@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.03.19.4"
+__version__   = "d.2010.04.02.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -462,6 +462,7 @@ class MyForm(QtGui.QMainWindow):
 
 
 	def testPort(self):
+		portFinded = ["no"]
 		def sendTestCode(port):
 			verbose("\n\nTesting %s..." % port,1)
 			try:
@@ -480,6 +481,8 @@ class MyForm(QtGui.QMainWindow):
 					if x == 130:
 						verbose("%s: OK" % port,1)
 						self.ui.portNumberLineEdit.setText(port)
+						portFinded[0]= "yes"
+						portFinded.append(port)
 					else:
 						verbose("%s: FAIL" % port,1)
 			except:
@@ -518,6 +521,10 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			verbose("Test isn't possible",1)
 		verbose("\n\nTest stopped",1)
+		if portFinded[0] == "no":
+			QtGui.QMessageBox.warning( None, "Mirlight", "Unable to find port. Check connection!" )
+		elif len(portFinded) > 2: 				# more than "yes" + port number
+			QtGui.QMessageBox.warning( None, "Mirlight", "Woha! More than one port found\n%s\nChoose one manually" % portFinded[1:] )
 		self._watchTimer.start(300)
 
 
