@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.04.11.1"
+__version__   = "d.2010.04.11.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -526,7 +526,8 @@ class MyForm(QtGui.QMainWindow):
 		if portFinded[0] == "no":
 			QtGui.QMessageBox.warning( None, "Mirlight", self.tr("Unable to find port. Check connection!"))
 		elif len(portFinded) > 2: 				# more than "yes" + port number
-			QtGui.QMessageBox.warning( None, "Mirlight", "Woha! More than one port found\n%s\nChoose one manually" % portFinded[1:] )
+			ms = self.tr("Woha! More than one port found\nChoose one manually")
+			QtGui.QMessageBox.warning( None, "Mirlight", "%s\n%s" % (ms, portFinded[1:]))
 		self._watchTimer.start(300)
 
 
@@ -540,7 +541,7 @@ class FieldDialog(QtGui.QFrame):
 		w = fieldsconfig.getint(str(field), 'w')
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
-		self.setWindowTitle('Field: ' + str(field))
+		self.setWindowTitle(self.tr('Field: ') + str(field))
 		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint) #no window border, baypass panels etc. and stay on top
 		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
 		self.setLineWidth(2)
@@ -570,7 +571,10 @@ class FieldDialog(QtGui.QFrame):
 	def showPos(self):
 		position = QCursor.pos()
 		x, y, w, h = self.getGeometry()
-		text = "%s\n\tPosition\tx: %d\ty: %d\n\tSize:\tw: %d\th: %d\n\nClick and hold left mouse button to move field \nClick and hold right mouse button to resize field"  % (self.windowTitle(),x,y,w,h)
+		ms1= self.tr("Position")
+		ms2= self.tr("Size")
+		ms3= self.tr("Click and hold left mouse button to move field \nClick and hold right mouse button to resize field")
+		text = "%s\n\t%s\tx: %d\ty: %d\n\t%s\tw: %d\th: %d\n\n%s"  % (self.windowTitle(),ms1,x,y,ms2,w,h,ms3)
 		self.setToolTip(text)
 		QtGui.QToolTip.showText(position, text) 
 
