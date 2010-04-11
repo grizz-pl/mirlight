@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Fri Mar 19 10:10:24 2010
-#      by: PyQt4 UI code generator 4.7
+# Created: Sun Apr 11 15:31:16 2010
+#      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,9 +32,11 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
         self.pushButton.setSizePolicy(sizePolicy)
+        self.pushButton.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.pushButton.setObjectName("pushButton")
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(5, 10, 481, 311))
+        self.tabWidget.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtGui.QWidget()
         self.tab.setObjectName("tab")
@@ -1183,6 +1185,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(28)
         self.label_9.setFont(font)
+        self.label_9.setText("")
         self.label_9.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
@@ -1221,6 +1224,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.label_13, 1, 0, 1, 1)
         self.AutoArrangeCheckBox = QtGui.QCheckBox(self.groupBox)
         self.AutoArrangeCheckBox.setMinimumSize(QtCore.QSize(0, 32))
+        self.AutoArrangeCheckBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.AutoArrangeCheckBox.setObjectName("AutoArrangeCheckBox")
         self.gridLayout_3.addWidget(self.AutoArrangeCheckBox, 0, 0, 1, 1)
         self.label_14 = QtGui.QLabel(self.groupBox)
@@ -1232,6 +1236,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.showFieldsPushButton.sizePolicy().hasHeightForWidth())
         self.showFieldsPushButton.setSizePolicy(sizePolicy)
+        self.showFieldsPushButton.setStatusTip("")
+        self.showFieldsPushButton.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.showFieldsPushButton.setCheckable(True)
         self.showFieldsPushButton.setFlat(False)
         self.showFieldsPushButton.setObjectName("showFieldsPushButton")
@@ -1241,6 +1247,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(28)
         self.label_11.setFont(font)
+        self.label_11.setText("")
         self.label_11.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
         self.label_11.setAlignment(QtCore.Qt.AlignCenter)
         self.label_11.setObjectName("label_11")
@@ -1313,7 +1320,7 @@ class Ui_MainWindow(object):
         self.label_10.setObjectName("label_10")
         self.gridLayout_6.addWidget(self.label_10, 2, 0, 1, 1)
         self.layoutWidget2 = QtGui.QWidget(self.tab_3)
-        self.layoutWidget2.setGeometry(QtCore.QRect(140, 210, 331, 61))
+        self.layoutWidget2.setGeometry(QtCore.QRect(10, 210, 451, 61))
         self.layoutWidget2.setObjectName("layoutWidget2")
         self.gridLayout_7 = QtGui.QGridLayout(self.layoutWidget2)
         self.gridLayout_7.setObjectName("gridLayout_7")
@@ -1350,6 +1357,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(28)
         self.label_12.setFont(font)
+        self.label_12.setText("")
         self.label_12.setPixmap(QtGui.QPixmap(":/pic/mirlight.png"))
         self.label_12.setAlignment(QtCore.Qt.AlignCenter)
         self.label_12.setObjectName("label_12")

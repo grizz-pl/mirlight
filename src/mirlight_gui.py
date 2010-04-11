@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.8beta"
+__version__   = "d.2010.04.11.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -218,10 +218,10 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		if  self.ui.showFieldsPushButton.isChecked():
 			if (config.get("Fields", "autoarrange") == "on" and self.ui.AutoArrangeCheckBox.checkState() != 2) or (config.get("Fields", "autoarrange") == "off" and self.ui.AutoArrangeCheckBox.checkState() != 0) or (config.getint("Fields", "size") != self.ui.AutoarrangeHorizontalSlider.value()): ###XXX ugly hack
-				SAVE = "Save"
-				CANCEL = "Cancel"
+				SAVE = self.tr("Save")
+				CANCEL = self.tr("Cancel")
 				message = QtGui.QMessageBox(self)
-				message.setText('Save changes before?')
+				message.setText(self.tr('Save changes before?'))
 				message.setWindowTitle('Mirlight')
 				message.setIcon(QtGui.QMessageBox.Question)
 				message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
@@ -253,19 +253,21 @@ class MyForm(QtGui.QMainWindow):
 
 			for widget in self.fieldsWidgets:
 				widget.show()
-			self.ui.showFieldsPushButton.setText("Hide fields")
+			self.ui.showFieldsPushButton.setText(self.tr("Hide fields"))
 			self.ui.AutoArrangeCheckBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
 			self.ui.buttonBox.setEnabled(0)
 			self.ui.PresetsComboBox.setEnabled(0)
 
 		elif config.get("Fields", "autoarrange") == "off":
-			SAVE = "Save"
-			CANCEL = "Cancel"
+			SAVE = self.tr("Save")
+			CANCEL = self.tr("Cancel")
 			presets = ""
 			for infile in glob.glob("presets/*.mrl"):
 				presets += infile[8:-4] + ", "
-			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "Existed names: %s\nEnter a new name (or an old one to overwrite):" % presets, QtGui.QLineEdit.Normal, self.ui.PresetsComboBox.currentText())
+			ms1 = self.tr("Existed names:")
+			ms2 = self.tr("Enter a new name (or an old one to overwrite):")
+			(presetName, state) = QtGui.QInputDialog.getText(self, "Mirlight", "%s %s\n%s" % (ms1, presets, ms2), QtGui.QLineEdit.Normal, self.ui.PresetsComboBox.currentText())
 			if state == True and len(presetName) > 0:
 				self.saveFields(presetName)
 				verbose("--\nSaved as: %s.mrl" % presetName,1)
@@ -370,7 +372,7 @@ class MyForm(QtGui.QMainWindow):
 		if self.ui.AutoArrangeCheckBox.checkState() == 2:
 			self.ui.PresetsComboBox.setEnabled(0)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(1)
-			self.ui.showFieldsPushButton.setText("Show fields")
+			self.ui.showFieldsPushButton.setText(self.tr("Show fields"))
 		else:
 			self.ui.PresetsComboBox.clear()
 			for infile in glob.glob("presets/*.mrl"):
@@ -379,7 +381,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.PresetsComboBox.setCurrentIndex(self.ui.PresetsComboBox.findText(config.get("Fields", "preset"))) 	### XXX write what to do on ERRORs !
 			self.ui.PresetsComboBox.setEnabled(1)
 			self.ui.AutoarrangeHorizontalSlider.setEnabled(0)
-			self.ui.showFieldsPushButton.setText("Show and set fields")
+			self.ui.showFieldsPushButton.setText(self.tr("Show and set fields"))
 
 
 	def checkFiles(self):
@@ -522,7 +524,7 @@ class MyForm(QtGui.QMainWindow):
 			verbose("Test isn't possible",1)
 		verbose("\n\nTest stopped",1)
 		if portFinded[0] == "no":
-			QtGui.QMessageBox.warning( None, "Mirlight", "Unable to find port. Check connection!" )
+			QtGui.QMessageBox.warning( None, "Mirlight", self.tr("Unable to find port. Check connection!"))
 		elif len(portFinded) > 2: 				# more than "yes" + port number
 			QtGui.QMessageBox.warning( None, "Mirlight", "Woha! More than one port found\n%s\nChoose one manually" % portFinded[1:] )
 		self._watchTimer.start(300)
@@ -609,6 +611,10 @@ def verbose (msg, level):
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
+	locale = QtCore.QLocale.system().name()
+	qtTranslator = QtCore.QTranslator()
+	if qtTranslator.load("mirlight_" + locale, ":tra/"):
+		app.installTranslator(qtTranslator)
 	myapp = MyForm()
 	myapp.show()
 	config = ConfigParser.ConfigParser()

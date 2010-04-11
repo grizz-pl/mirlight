@@ -2,4 +2,7 @@
   <qresource prefix="pic">
     <file>mirlight.png</file>
   </qresource>
+  <qresource prefix="tra">
+    <file>mirlight_pl.qm</file>
+  </qresource>
 </RCC>
