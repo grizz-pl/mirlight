@@ -241,7 +241,7 @@ Podaj nową nazwę zestawu (uzyj już istniejącej by nadpisać):</translation>
     <message>
         <location filename="mirlight_gui.py" line="527"/>
         <source>Unable to find port. Check connection!</source>
-        <translation>Nie znalezione portu. Sprawdź połączenie!</translation>
+        <translation>Nie znaleziono portu. Sprawdź połączenie!</translation>
     </message>
     <message>
         <location filename="mirlight_gui.py" line="375"/>
@@ -267,7 +267,7 @@ Podaj nową nazwę zestawu (uzyj już istniejącej by nadpisać):</translation>
         <location filename="mirlight_gui.py" line="529"/>
         <source>Woha! More than one port found
 Choose one manually</source>
-        <translation>Jej! Znalezione więcej niż jeden port
+        <translation>Jej! Znaleziono więcej niż jeden port
 Ustaw jeden ręcznie</translation>
     </message>
 </context>
