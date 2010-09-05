@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.04.17.1"
+__version__   = "d.2010.09.05.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -417,7 +417,8 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		blackout and clean screan on close
 		"""
-		self.startStop() 			# stoping timer prevent from restart lights after blackout
+		if  self._Timer.isActive(): 
+			self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
 
