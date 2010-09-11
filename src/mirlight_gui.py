@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.09.05.1"
+__version__   = "d.2010.09.11.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -259,7 +259,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.buttonBox.setEnabled(0)
 			self.ui.PresetsComboBox.setEnabled(0)
 
-		elif config.get("Fields", "autoarrange") == "off":
+		elif config.get("Fields", "autoarrange") == "off" and self.checkFieldsAreChanged():
 			SAVE = self.tr("Save")
 			CANCEL = self.tr("Cancel")
 			presets = ""
@@ -287,6 +287,24 @@ class MyForm(QtGui.QMainWindow):
 		self.changePresetsComboBoxEnabled() 			#to apply an appropriate label on fieldsPushButton
 		self.ui.AutoArrangeCheckBox.setEnabled(1)
 		self.ui.buttonBox.setEnabled(1)
+
+	def checkFieldsAreChanged(self):
+		"""
+		check if even one field has changed position or size
+		@return True or False
+		"""
+		for field, widget in zip([1,2,3,4,5,6,7,8], self.fieldsWidgets):
+			x, y, w, h = widget.getGeometry()
+			if int(fieldsconfig.get(`field`, "x")) == x and \
+					int(fieldsconfig.get(`field`, "y")) == y and \
+					int(fieldsconfig.get(`field`, "w")) == w and \
+					int(fieldsconfig.get(`field`, "h")) == h:
+				pass
+			else:
+				return True
+		verbose("--\nThere is no change in fields",1)
+		return False
+
 
 
 	def saveFields(self, name):
