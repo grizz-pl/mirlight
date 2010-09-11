@@ -89,15 +89,14 @@ class MyForm(QtGui.QMainWindow):
 		"""
 		start/stop Timer and change text on Button
 		"""
-		global ser
-		if not self._Timer.isActive(): 							# if timer doesn't work
+		if not self._Timer.isActive():  # if timer doesn't work
 			self.loadConfiguration()
 			self.ui.pushButton.setText("Stop!")
-			self.ui.tab_2.setEnabled(0) 						# no messing with settings during work!
+			self.ui.tab_2.setEnabled(0)  # no messing with settings during work!
 			try:
-				if ser.isOpen(): 									# close and open port - hardware likes it
-					ser.close()
-				ser.open()
+				if self.ser.isOpen(): # close and open port - hardware likes it
+					self.ser.close()
+				self.ser.open()
 			except:
 				pass
 			self._Timer.start(config.getint('Timer', 'interval'))
@@ -108,7 +107,7 @@ class MyForm(QtGui.QMainWindow):
 			self.ui.tab_2.setEnabled(1)
 			self.sendColors(self.blackout)
 			try:
-				ser.close()
+				self.ser.close()
 			except:
 				pass
 
@@ -176,7 +175,7 @@ class MyForm(QtGui.QMainWindow):
 			self.addSum(blue)
 		kod += chr(sum/2)
 		try:
-			ser.write(kod)
+			self.ser.write(kod)
 		except:
 			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
@@ -187,7 +186,7 @@ class MyForm(QtGui.QMainWindow):
 		Get remote code and perform an action
 		"""
 		try:
-			temp=ser.read()
+			temp = selfser.read()
 			ser.flushInput()
 			x=ord(temp)
 			command = "echo \'%d - not bind\'" % x ##XXX debug
@@ -670,7 +669,6 @@ if __name__ == "__main__":
 	myapp.show()
 	config = ConfigParser.ConfigParser()
 	fieldsconfig = ConfigParser.ConfigParser()
-	ser = "ziaaaf" 														# just an initialization
 	sum = 0 															# just an initialization
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
