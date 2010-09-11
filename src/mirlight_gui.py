@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 __author__    = "Witold Firlej (http://grizz.pl)"
-__project__      = "mirlight"
+__project__   = "mirlight"
 __version__   = "0.8"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
@@ -93,12 +93,13 @@ class MyForm(QtGui.QMainWindow):
 			self.loadConfiguration()
 			self.ui.pushButton.setText("Stop!")
 			self.ui.tab_2.setEnabled(0)  # no messing with settings during work!
-			try:
-				if self.ser.isOpen(): # close and open port - hardware likes it
-					self.ser.close()
-				self.ser.open()
-			except:
-				pass
+            if self.ser:
+			    try:
+				    if self.ser.isOpen(): # close and open port - hardware likes it
+					    self.ser.close()
+				    self.ser.open()
+			    except SerialException:
+				    pass
 			self._Timer.start(config.getint('Timer', 'interval'))
 			
 		else:
@@ -108,7 +109,7 @@ class MyForm(QtGui.QMainWindow):
 			self.sendColors(self.blackout)
 			try:
 				self.ser.close()
-			except:
+			except SerialException:
 				pass
 
 
@@ -176,7 +177,7 @@ class MyForm(QtGui.QMainWindow):
 		kod += chr(sum/2)
 		try:
 			self.ser.write(kod)
-		except:
+		except SerialException:
 			verbose("--\nCannot send to device. Check your configuration!",1)
 		time.sleep(0.009) # hack needed by hardware
 
