@@ -13,15 +13,6 @@ In English - read README_EN.markdown
 
 Po polsku - czytaj plik README_PL.markdown
 
-Requirements
-------------
-
-*  python 2.6
-*  Qt 4.5
-*  PyQt4
-*  pyserial <http://pyserial.wiki.sourceforge.net/pySerial>
-
-
 Changelog
 ---------
 

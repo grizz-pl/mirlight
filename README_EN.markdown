@@ -15,8 +15,8 @@ A new version (>= 0.5) is placed in branch **master**.
 Requirements
 ------------
 
-*  python 2.6
-*  Qt 4.5
+*  python 2.6 (not tested with other versions)
+*  Qt >= 4.5
 *  PyQt4
 *  pyserial <http://pyserial.wiki.sourceforge.net/pySerial>
 

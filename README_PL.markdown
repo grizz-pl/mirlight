@@ -15,8 +15,8 @@ Nowa wersja (>= 0.5) jest umieszczona w gałezi **master**.
 Wymagania
 ---------
 
-*  python 2.6
-*  Qt 4.5
+*  python 2.6 (nie testowane na innych wersjach)
+*  Qt >= 4.5 
 *  PyQt4
 *  pyserial <http://pyserial.wiki.sourceforge.net/pySerial>
 
