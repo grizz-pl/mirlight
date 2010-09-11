@@ -15,6 +15,12 @@ Po polsku - czytaj plik README_PL.markdown
 
 Changelog
 ---------
+### ver.0.8 2010/09/11
+(based on ver. d.2010.09.11.1)
+
+* Polish translation
+* small fix with auto port finding
+* no save prompt if there is no change in Fields Preview
 
 ### ver.0.8beta 2010/04/02
 (based on ver. d.2010.04.02.1)
