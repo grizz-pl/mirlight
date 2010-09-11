@@ -25,6 +25,7 @@ __copyright__ = "Witold Firlej"
 import sys
 import ConfigParser
 import serial
+from serial.serialutil import SerialException
 import time
 import os
 import glob
@@ -36,10 +37,11 @@ from PyQt4.QtCore import Qt, QPoint
 try: 							# need to testport on Windows
 	import _winreg as winreg
 	import itertools
-except:
+except ImportError:
 	pass
 
 from mirlight_form import Ui_MainWindow
+
 
 class MyForm(QtGui.QMainWindow):
 	
@@ -51,20 +53,36 @@ class MyForm(QtGui.QMainWindow):
 		self._watchTimer = QtCore.QTimer(self)
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
-		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
-		QtCore.QObject.connect(self.ui.testPortPushButton,QtCore.SIGNAL("clicked()"), self.testPort)
-		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
-		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
-		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
-		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
+		QtCore.QObject.connect(self.ui.pushButton,
+            QtCore.SIGNAL("clicked()"), self.startStop)
+		QtCore.QObject.connect(self.ui.testPortPushButton,
+            QtCore.SIGNAL("clicked()"), self.testPort)
+		QtCore.QObject.connect(self.ui.showFieldsPushButton,
+            QtCore.SIGNAL("clicked()"), self.showFields)
+		QtCore.QObject.connect(self.ui.buttonBox,
+            QtCore.SIGNAL("accepted()"), self.saveConfiguration)
+		QtCore.QObject.connect(self.ui.buttonBox,
+            QtCore.SIGNAL("rejected()"), self.loadConfiguration)
+		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox, 
+            QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
 
-		self.setWindowTitle(__project__ + " ver. " + __version__ )
+		self.setWindowTitle('%s ver. %s' % (__project__,  __version__))
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
 
-		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
+		self.labels = [
+            self.ui.label,
+            self.ui.label_2,
+            self.ui.label_3,
+            self.ui.label_4,
+            self.ui.label_5,
+            self.ui.label_6,
+            self.ui.label_7,
+            self.ui.label_8
+        ] # fieldlabels
 		self.fieldsWidgets = []
 		self.blackout = [0,0,0,0,0,0,0,0]
+        self.ser = None
 
 
 	def startStop(self):
@@ -347,11 +365,11 @@ class MyForm(QtGui.QMainWindow):
 
 		self.loadConfiguration() 						# reload after saving
 
-
 	def loadConfiguration(self):
 		"""
 		load configuration from mirlight.conf
 		"""
+
 		self.checkFiles()
 		config.read("mirlight.conf")
 		if config.get("Fields", "autoarrange") == "on":
@@ -362,19 +380,18 @@ class MyForm(QtGui.QMainWindow):
 			fieldsconfig.read("presets/%s.mrl" % name)
 			verbose("--\nLoading >>> %s <<< preset" % name, 1)
 			verbose("--\nAutoarrange is off", 1)
-		try:
-			global ser 									##XXX uhh a nasty code...
-			port = config.get('Port', 'number')
-			if port.isdigit():
-				port = int(port)
-			ser = serial.Serial(port, 38400, timeout=0)
-			verbose("--\nSelected port: %s" % ser.portstr, 1)       # check which port was really used 
-		except:
-			verbose("--\nError:\tUnable to open \"%s\" port\nCheck your configuration!" % port, 1)
-			try:
-				del ser 								# hack need to stop using old port number if tere is no way to set a new one
-			except:
-				pass
+			
+        port = config.get('Port', 'number')
+		if port.isdigit():
+			port = int(port) 
+			verbose("--\nSelected port: %s" % self.ser.portstr, 1)  # check which port was really used 
+
+            try:
+                self.ser = serial.Serial(port, 38400, timeout=0)
+            except SerialException:
+                verbose("--\nError:\tUnable to open \"%s\" port\nCheck your configuration!" % port, 1)
+                if self.ser:
+                    serf.ser = None
 		
 		self._watchTimer.start(300)
 		self.ui.portNumberLineEdit.setText(config.get("Port", "number"))
@@ -383,7 +400,7 @@ class MyForm(QtGui.QMainWindow):
 		verbose("--\nScan Interval: %d" % timerInterval, 1)
 		self.ui.TimerValueLabel.setText(str(timerInterval))
 		if config.get("Fields", "autoarrange") == "on":
-			self.ui.AutoArrangeCheckBox.setCheckState(2) 				# no "1" that is for no-change
+			self.ui.AutoArrangeCheckBox.setCheckState(2)  # no "1" that is for no-change
 		else:
 			self.ui.AutoArrangeCheckBox.setCheckState(0)
 		self.changePresetsComboBoxEnabled()
@@ -475,14 +492,18 @@ class MyForm(QtGui.QMainWindow):
 			with open('presets/autoarrange.mrl', 'wb') as configfile:
 				fieldsconfig.write(configfile)
 
-		for field, x, y, w, h in [(1, 0, sh/2, verticalWidth, verticalHeight),\
-									(2, 0, 0, verticalWidth, verticalHeight),\
-									(3, 0, 0, sw/3, horizontalHeight),\
-									(4, sw/3, 0, sw/3, horizontalHeight),\
-									(5, (sw/3)*2, 0, sw/3, horizontalHeight),\
-									(6, sw-verticalWidth, 0, verticalWidth, verticalHeight),\
-									(7, sw-verticalWidth, sh/2, verticalWidth, verticalHeight),\
-									(8, sw/4, sh-horizontalHeight, sw/2, horizontalHeight)]:
+        fields = [
+            (1, 0, sh / 2, verticalWidth, verticalHeight),
+            (2, 0, 0, verticalWidth, verticalHeight),
+            (3, 0, 0, sw / 3, horizontalHeight),
+			(4, sw / 3, 0, sw / 3, horizontalHeight),
+			(5, (sw / 3) * 2, 0, sw / 3, horizontalHeight),
+            (6, sw - verticalWidth, 0, verticalWidth, verticalHeight),
+			(7, sw - verticalWidth, sh / 2, verticalWidth, verticalHeight),
+			(8, sw / 4, sh - horizontalHeight, sw / 2, horizontalHeight),
+        ]
+
+        for (field, x, y, w, h) in fields:
 			writeToConfing(field, x, y, w, h)
 
 
@@ -565,7 +586,10 @@ class FieldDialog(QtGui.QFrame):
 		h = fieldsconfig.getint(str(field), 'h')
 		self.setGeometry(x, y, w, h)
 		self.setWindowTitle(self.tr('Field: ') + str(field))
-		self.setWindowFlags(QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint) #no window border, baypass panels etc. and stay on top
+		self.setWindowFlags(
+            QtCore.Qt.X11BypassWindowManagerHint \
+            | QtCore.Qt.WindowStaysOnTopHint \
+            | QtCore.Qt.FramelessWindowHint) #no window border, baypass panels etc. and stay on top
 		self.setFrameStyle(QtGui.QFrame.Box | QtGui.QFrame.Plain); 	#draw a thin frame
 		self.setLineWidth(2)
 		self.showPos() 					#update toolTip on start
