@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "0.8"
+__version__   = "d.2010.12.31.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -234,22 +234,7 @@ class MyForm(QtGui.QMainWindow):
 					self.loadConfiguration()
 
 			self.fieldsWidgets = [] ## clear to avoid multiple instances
-			self.widget1 = FieldDialog(1)
-			self.fieldsWidgets.append(self.widget1)
-			self.widget2 = FieldDialog(2)
-			self.fieldsWidgets.append(self.widget2)
-			self.widget3 = FieldDialog(3)
-			self.fieldsWidgets.append(self.widget3)
-			self.widget4 = FieldDialog(4)
-			self.fieldsWidgets.append(self.widget4)
-			self.widget5 = FieldDialog(5)
-			self.fieldsWidgets.append(self.widget5)
-			self.widget6 = FieldDialog(6)
-			self.fieldsWidgets.append(self.widget6)
-			self.widget7 = FieldDialog(7)
-			self.fieldsWidgets.append(self.widget7)
-			self.widget8 = FieldDialog(8)
-			self.fieldsWidgets.append(self.widget8)
+			self.fieldsWidgets = [FieldDialog(n) for n in range(1, 9)]  ## thanks to LQC http://pl.python.org/forum/index.php?topic=1982.msg9349#msg9349
 
 			for widget in self.fieldsWidgets:
 				widget.show()
