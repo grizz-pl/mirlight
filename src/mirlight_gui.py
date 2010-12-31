@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.12.31.1"
+__version__   = "d.2010.12.31.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -62,7 +62,6 @@ class MyForm(QtGui.QMainWindow):
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
 
-		self.labels = [self.ui.label, self.ui.label_2, self.ui.label_3, self.ui.label_4, self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8]	# fieldlabels
 		self.fieldsWidgets = []
 		self.blackout = [0,0,0,0,0,0,0,0]
 
@@ -196,9 +195,14 @@ class MyForm(QtGui.QMainWindow):
 
 	def getLabel (self, field):
 		"""
+		thx to zuo http://pl.python.org/forum/index.php?topic=1982.msg9353#msg9353
 		@return label corresponding to field
 		"""
-		return self.labels[field-1]
+		if field > 0 and field < 9:
+			attrName=('label_%d' % field if field != 1 else 'label')
+			return getattr(self.ui, attrName)
+		else:
+			verbose("Wrong Field Number! Using field n°1",1)
 
 
 	def updateLabel (self, field, x, y, w, h, color = 0): # default color is black
