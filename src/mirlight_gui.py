@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2010.12.31.2"
+__version__   = "d.2011.01.26.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -166,6 +166,7 @@ class MyForm(QtGui.QMainWindow):
 	def watch(self):
 		"""
 		Get remote code and perform an action
+		It works, but there is no gui, so Uncoment all self._watchTimer.start(300) and self._watchTimer.stop() for remote control- to enable
 		"""
 		try:
 			temp=ser.read()
@@ -365,7 +366,7 @@ class MyForm(QtGui.QMainWindow):
 			except:
 				pass
 		
-		self._watchTimer.start(300)
+		#self._watchTimer.start(300) ## Uncoment for remote control
 		self.ui.portNumberLineEdit.setText(config.get("Port", "number"))
 		timerInterval = config.getint("Timer", "interval")
 		self.ui.TimerHorizontalSlider.setValue(timerInterval)
@@ -521,7 +522,7 @@ class MyForm(QtGui.QMainWindow):
 				except EnvironmentError:
 					break
 
-		self._watchTimer.stop() 				#to do not mess with watch()
+		#self._watchTimer.stop() 				#to do not mess with watch() ## Uncoment for remote control
 		verbose("--\nTest started",1)
 		if os.name == "posix":
 			verbose("Testing posix system",1)
@@ -540,7 +541,7 @@ class MyForm(QtGui.QMainWindow):
 		elif len(portFinded) > 2: 				# more than "yes" + port number
 			ms = self.tr("Woha! More than one port found\nChoose one manually")
 			QtGui.QMessageBox.warning( None, "Mirlight", "%s\n%s" % (ms, portFinded[1:]))
-		self._watchTimer.start(300)
+		#self._watchTimer.start(300) ## Uncoment for remote control
 
 
 
