@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #mirlight by grizz - Witek Firlej http://grizz.pl
-# Copyright (C) 2009-2010 Witold Firlej
+# Copyright (C) 2009-2011 Witold Firlej
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2011.03.05.1"
+__version__   = "d.2011.03.05.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -57,6 +57,7 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
 		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
+		QtCore.QObject.connect(self.ui.LicensePushButton,QtCore.SIGNAL("clicked()"), self.showLicenseBox)
 
 		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
@@ -542,6 +543,37 @@ class MyForm(QtGui.QMainWindow):
 			ms = self.tr("Woha! More than one port found\nChoose one manually")
 			QtGui.QMessageBox.warning( None, "Mirlight", "%s\n%s" % (ms, portFinded[1:]))
 		#self._watchTimer.start(300) ## Uncoment for remote control
+
+
+	def showLicenseBox(self):
+		"""
+		Just show  box with LICENSE file
+		"""
+		message = QtGui.QMessageBox(self)
+		message.setText(self.tr('License'))
+		message.setWindowTitle('Mirlight')
+		message.setIcon(QtGui.QMessageBox.Information)
+		message.addButton(QtGui.QMessageBox.Close)
+		message.setInformativeText("""mirlight by grizz - Witek Firlej http://grizz.pl
+Copyright (C) 2009-2011 Witold Firlej
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+Copy of GNU General Public License is in LICENSE file.
+You can read it now by cliking details button,
+or visit <http://www.gnu.org/licenses/>
+""")
+		license = open('LICENSE').read()
+		message.setDetailedText(license)
+		message.exec_()
 
 
 
