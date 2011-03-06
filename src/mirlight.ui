@@ -4178,7 +4178,7 @@
         <x>0</x>
         <y>0</y>
         <width>471</width>
-        <height>174</height>
+        <height>161</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
@@ -4372,9 +4372,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>171</y>
+        <y>160</y>
         <width>471</width>
-        <height>132</height>
+        <height>121</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_8">
@@ -4718,7 +4718,10 @@
         <locale language="English" country="UnitedStates"/>
        </property>
        <property name="text">
-        <string>Passive</string>
+        <string>Start Passive Mode</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

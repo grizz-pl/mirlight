@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mirlight.ui'
 #
-# Created: Sun Mar  6 18:03:52 2011
+# Created: Sun Mar  6 19:43:29 2011
 #      by: PyQt4 UI code generator 4.8.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1443,7 +1443,7 @@ class Ui_MainWindow(object):
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
         self.layoutWidget_2 = QtGui.QWidget(self.tab_5)
-        self.layoutWidget_2.setGeometry(QtCore.QRect(0, 0, 471, 174))
+        self.layoutWidget_2.setGeometry(QtCore.QRect(0, 0, 471, 161))
         self.layoutWidget_2.setObjectName(_fromUtf8("layoutWidget_2"))
         self.gridLayout_4 = QtGui.QGridLayout(self.layoutWidget_2)
         self.gridLayout_4.setMargin(0)
@@ -1543,7 +1543,7 @@ class Ui_MainWindow(object):
         self.PMpushButton_9.setObjectName(_fromUtf8("PMpushButton_9"))
         self.gridLayout_4.addWidget(self.PMpushButton_9, 1, 1, 1, 1)
         self.gridLayoutWidget = QtGui.QWidget(self.tab_5)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 171, 471, 132))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 160, 471, 121))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout_8 = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout_8.setMargin(0)
@@ -1695,6 +1695,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
         self.pushButton_2.setSizePolicy(sizePolicy)
         self.pushButton_2.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
+        self.pushButton_2.setCheckable(True)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout_5.addWidget(self.pushButton_2, 1, 1, 1, 1)
         self.InfoLabel = QtGui.QLabel(self.layoutWidget3)
@@ -1810,7 +1811,7 @@ class Ui_MainWindow(object):
         self.pushButton.setStatusTip(QtGui.QApplication.translate("MainWindow", "Start/Stop", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Start!", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_2.setStatusTip(QtGui.QApplication.translate("MainWindow", "Start/Stop", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton_2.setText(QtGui.QApplication.translate("MainWindow", "Passive", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButton_2.setText(QtGui.QApplication.translate("MainWindow", "Start Passive Mode", None, QtGui.QApplication.UnicodeUTF8))
 
 import mirlight_rc
 import mirlight_rc

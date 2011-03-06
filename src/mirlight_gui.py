@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2011.03.06.1"
+__version__   = "d.2011.03.06.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -52,12 +52,14 @@ class MyForm(QtGui.QMainWindow):
 		self.connect(self._Timer, QtCore.SIGNAL('timeout()'), self.timer)
 		self.connect(self._watchTimer, QtCore.SIGNAL('timeout()'), self.watch)
 		QtCore.QObject.connect(self.ui.pushButton,QtCore.SIGNAL("clicked()"), self.startStop)
+		QtCore.QObject.connect(self.ui.pushButton_2,QtCore.SIGNAL("clicked()"), self.PMStartStop)
 		QtCore.QObject.connect(self.ui.testPortPushButton,QtCore.SIGNAL("clicked()"), self.testPort)
 		QtCore.QObject.connect(self.ui.showFieldsPushButton,QtCore.SIGNAL("clicked()"), self.showFields)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("accepted()"), self.saveConfiguration)
 		QtCore.QObject.connect(self.ui.buttonBox,QtCore.SIGNAL("rejected()"), self.loadConfiguration)
 		QtCore.QObject.connect(self.ui.AutoArrangeCheckBox,QtCore.SIGNAL("clicked()"), self.changePresetsComboBoxEnabled)
 		QtCore.QObject.connect(self.ui.LicensePushButton,QtCore.SIGNAL("clicked()"), self.showLicenseBox)
+		QtCore.QObject.connect(self.ui.PMpushButton_9,QtCore.SIGNAL("clicked()"), self.selectColor)
 
 		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
@@ -65,6 +67,27 @@ class MyForm(QtGui.QMainWindow):
 
 		self.fieldsWidgets = []
 		self.blackout = [0,0,0,0,0,0,0,0]
+		self.passiveColors = [255,255,255,255,255,255,255,255]
+
+		self.ui.OneColorCheckBox.setChecked(True) ###TODO temporary
+		self.ui.OneColorCheckBox.setDisabled(True) ###TODO temporary
+
+	def PMStartStop(self):
+		"""
+		start/stop passive mode
+		"""
+		if  self.ui.pushButton_2.isChecked():
+			button = self.ui.PMpushButton_9 #TODO all buttons
+			palette = QtGui.QPalette(button.palette())
+			color = QtGui.QColor.rgb(palette.color(QtGui.QPalette.Button))
+			self.sendColors([color]*8)
+			self.ui.pushButton_2.setText("Stop Passive Mode")
+			self.ui.pushButton.setDisabled(True)
+		else:
+			self.sendColors(self.blackout)
+			self.ui.pushButton_2.setText("Start Passive Mode")
+			self.ui.pushButton.setEnabled(True)
+
 
 
 	def startStop(self):
@@ -75,6 +98,7 @@ class MyForm(QtGui.QMainWindow):
 		if not self._Timer.isActive(): 							# if timer doesn't work
 			self.loadConfiguration()
 			self.ui.pushButton.setText("Stop!")
+			self.ui.pushButton_2.setDisabled(True)
 			self.ui.tab_2.setEnabled(0) 						# no messing with settings during work!
 			try:
 				if ser.isOpen(): 									# close and open port - hardware likes it
@@ -87,6 +111,7 @@ class MyForm(QtGui.QMainWindow):
 		else:
 			self._Timer.stop()
 			self.ui.pushButton.setText("Start!")
+			self.ui.pushButton_2.setEnabled(True)
 			self.ui.tab_2.setEnabled(1)
 			self.sendColors(self.blackout)
 			try:
@@ -217,6 +242,15 @@ class MyForm(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Window, QtGui.QColor(color))
 		label.setPalette(palette)
 
+	def updatePushButton (self, color = 0): # default color is black
+		"""
+		set pushButton background color
+		"""
+		button = self.ui.PMpushButton_9 #TODO all buttons
+		palette = QtGui.QPalette(button.palette())
+		palette.setColor(QtGui.QPalette.Button, QtGui.QColor(color))
+		button.setPalette(palette)
+		button.setText("aaaaa")
 
 	def showFields(self):
 		"""
@@ -576,6 +610,17 @@ or visit <http://www.gnu.org/licenses/>
 		message.exec_()
 
 
+	def selectColor(self):
+		"""
+		select color from dialog set is as button background, and return it as rgb
+		@return color
+		"""
+		color = QtGui.QColorDialog.getColor()
+		self.updatePushButton(color)
+		if    self.ui.pushButton_2.isChecked(): ###TODO temporary fix... rewrite it
+			self.ui.pushButton_2.setChecked(True)
+			self.PMStartStop()
+		return QtGui.QColor.rgb(color)
 
 
 class FieldDialog(QtGui.QFrame):
