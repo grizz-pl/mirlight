@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2011.03.06.2"
+__version__   = "d.2011.08.09.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -38,6 +38,8 @@ try: 							# need to testport on Windows
 	import itertools
 except:
 	pass
+
+###TODO: passive mode nie działa po zatrzymaniu trybu aktywnego
 
 from mirlight_form import Ui_MainWindow
 
@@ -61,6 +63,7 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.LicensePushButton,QtCore.SIGNAL("clicked()"), self.showLicenseBox)
 		QtCore.QObject.connect(self.ui.PMpushButton_9,QtCore.SIGNAL("clicked()"), self.selectColor)
 
+		self.setWindowFlags(QtCore.Qt.Tool) 		#no entry in taskbar
 		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
@@ -464,6 +467,7 @@ class MyForm(QtGui.QMainWindow):
 			self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
+		exit() 							###TODO to bypass QtCore.Qt.Tool and system tray
 
 
 	def autoArrangeFields(self):
@@ -622,6 +626,19 @@ or visit <http://www.gnu.org/licenses/>
 			self.PMStartStop()
 		return QtGui.QColor.rgb(color)
 
+	def tray(self):
+	  self.tray=QtGui.QSystemTrayIcon(QtGui.QIcon("src/mirlight.png"))
+	  myapp.connect(self.tray,QtCore.SIGNAL("activated (QSystemTrayIcon::ActivationReason)"),self.trayActivated)
+	  self.tray.show()
+
+	def trayActivated(self,reason):
+	  if reason==QtGui.QSystemTrayIcon.MiddleClick:
+		self.showNormal()
+	  elif reason==QtGui.QSystemTrayIcon.DoubleClick:
+		self.startStop()
+	  else:
+		self.tray.showMessage("Mirlight", u'Click middle mouse button to show window\nDouble click left mouse button to start/stop active mode', QtGui.QSystemTrayIcon.Information, 2000)
+
 
 class FieldDialog(QtGui.QFrame):
 	def __init__(self, field, parent=None):
@@ -684,7 +701,6 @@ class FieldDialog(QtGui.QFrame):
 
 
 
-
 def verbose (msg, level):
 	try:
 		for item in sys.argv:
@@ -717,4 +733,5 @@ if __name__ == "__main__":
 	sum = 0 															# just an initialization
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	myapp.loadConfiguration()
+	myapp.tray()
 	sys.exit(app.exec_())
