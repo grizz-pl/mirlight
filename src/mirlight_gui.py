@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "mirlight"
-__version__   = "d.2011.08.09.1"
+__version__   = "d.2011.08.10.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -63,7 +63,7 @@ class MyForm(QtGui.QMainWindow):
 		QtCore.QObject.connect(self.ui.LicensePushButton,QtCore.SIGNAL("clicked()"), self.showLicenseBox)
 		QtCore.QObject.connect(self.ui.PMpushButton_9,QtCore.SIGNAL("clicked()"), self.selectColor)
 
-		self.setWindowFlags(QtCore.Qt.Tool) 		#no entry in taskbar
+		#self.setWindowFlags(QtCore.Qt.Tool) 		###TODO - no entry in taskbar - QT.Tool make problems
 		self.setWindowTitle(__project__ + " ver. " + __version__ )
 
 		self.ui.AboutVersionLabel.setText("ver. " + __version__)
@@ -467,7 +467,6 @@ class MyForm(QtGui.QMainWindow):
 			self.startStop() 			# stoping timer prevent from restart lights after blackout
 		self.closeFields()
 		self.sendColors(self.blackout)
-		exit() 							###TODO to bypass QtCore.Qt.Tool and system tray
 
 
 	def autoArrangeFields(self):
